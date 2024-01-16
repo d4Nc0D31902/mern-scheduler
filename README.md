@@ -1,4 +1,4 @@
-# shopit-2023
+# mern-scheduler
 MERN stack shopping app from UDEMY
 
 #features
