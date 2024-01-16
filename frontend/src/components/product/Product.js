@@ -5,7 +5,11 @@ const Product = ({ product }) => {
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-3">
       <div className="card p-3 rounded">
-        <img className="card-img-top mx-auto" src={product.images[0].url} />
+        <img
+          className="card-img-top mx-auto img-fluid"
+          src={product.images[0].url}
+          alt={product.name}
+        />
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">
             <a href="">{product.name}</a>
@@ -20,7 +24,6 @@ const Product = ({ product }) => {
             <span id="no_of_reviews">({product.numOfReviews} reviews)</span>
           </div>
           <p className="card-text">₱{product.price}</p>
-          {/* <BrowserRouter> */}
           <Link
             to={`/product/${product._id}`}
             id="view_btn"
@@ -28,10 +31,10 @@ const Product = ({ product }) => {
           >
             View Details
           </Link>
-          {/* </BrowserRouter> */}
         </div>
       </div>
     </div>
   );
 };
+
 export default Product;
