@@ -1,11 +1,4 @@
 # mern-scheduler
-MERN stack shopping app from UDEMY
+MERN stack Scheduler App for University
 
-#features
-React Router 6
-Protected Routes
-CORS
-Upload image size increase
-RECharts line bar pie
-Cleared Cart icon after checkout
-Removed Stripe API
+"Effortless Organization, Seamless Collaboration: Elevate your productivity with our intuitive scheduler site. Your all-in-one solution for streamlined scheduling and efficient task management."
