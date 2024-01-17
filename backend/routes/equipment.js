@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getEquipments,
+  getEquipment,
   createEquipment,
   getEquipmentById,
   updateEquipment,
@@ -11,13 +11,13 @@ const {
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
-router.get("/equipments", getEquipments);
+router.get("/equipments", getEquipment);
 
 router.get(
   "/admin/equipments",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  getEquipments
+  getEquipment
 );
 
 router.post("/equipment/new", isAuthenticatedUser, createEquipment);

@@ -92,15 +92,17 @@ export const getEquipmentDetails = (id) => async (dispatch) => {
 export const allEquipments = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_EQUIPMENTS_REQUEST });
+
     const { data } = await axios.get(
       `${process.env.REACT_APP_API}/api/v1/equipments`,
       {
         withCredentials: true,
       }
     );
+
     dispatch({
       type: ALL_EQUIPMENTS_SUCCESS,
-      payload: data,
+      payload: data.equipmentList, // Make sure to use the correct property from the API response
     });
   } catch (error) {
     dispatch({

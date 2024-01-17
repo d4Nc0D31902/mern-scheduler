@@ -169,14 +169,14 @@ export const clearErrors = () => async (dispatch) => {
 
 export const joinAppointment = (appointmentId) => async (dispatch) => {
   try {
-    // Make an API request to join the appointment
+
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/v1/appointments/${appointmentId}/join`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include your authentication token
+          Authorization: `Bearer ${localStorage.getItem("token")}`, 
         },
       }
     );
@@ -186,19 +186,19 @@ export const joinAppointment = (appointmentId) => async (dispatch) => {
     if (response.ok) {
       dispatch({
         type: APPOINTMENT_JOIN_SUCCESS,
-        payload: data.appointment, // Assuming the backend returns the updated appointment
+        payload: data.appointment, 
       });
     } else {
       dispatch({
         type: APPOINTMENT_JOIN_FAIL,
-        payload: data.message, // Assuming the backend returns an error message
+        payload: data.message, 
       });
     }
   } catch (error) {
     console.error("Error joining appointment: ", error);
     dispatch({
       type: APPOINTMENT_JOIN_FAIL,
-      payload: "Failed to join appointment", // Set a generic error message
+      payload: "Failed to join appointment",
     });
   }
 };

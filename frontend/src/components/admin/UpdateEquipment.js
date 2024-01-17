@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
 import MetaData from "../layout/MetaData";
-import Sidebar from "../admin/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import {
   updateEquipment,
   getEquipmentDetails,
@@ -20,24 +20,47 @@ const UpdateEquipment = () => {
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [sports, setSports] = useState([]);
 
   const dispatch = useDispatch();
   const { error, equipment } = useSelector((state) => state.equipmentDetails);
-  const equipmentState = useSelector((state) => state.equipment);
-  const loading = equipmentState ? equipmentState.loading : false;
-  const updateError = equipmentState ? equipmentState.error : null;
-  const isUpdated = equipmentState ? equipmentState.isUpdated : false;
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const {
+    loading,
+    error: updateError,
+    isUpdated,
+  } = useSelector((state) => state.equipment) || {};
+  let { id } = useParams();
+  let navigate = useNavigate();
 
   const errMsg = (message = "") =>
     toast.error(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
+
   const successMsg = (message = "") =>
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
+
+  const reloadPage = () => {
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    const fetchSports = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/sports`
+        );
+        setSports(response.data.sports);
+      } catch (error) {
+        console.error("Error fetching sports:", error);
+      }
+    };
+
+    fetchSports();
+  }, []);
 
   useEffect(() => {
     if (!equipment || equipment._id !== id) {
@@ -47,9 +70,6 @@ const UpdateEquipment = () => {
       setDescription(equipment.description);
       setSport(equipment.sport);
       setStock(equipment.stock);
-      // Assume images array structure is similar to UpdateAppointment.js
-      setImages(equipment.images || []);
-      setImagesPreview(equipment.imagesPreview || []);
       setOldImages(equipment.images);
     }
 
@@ -63,23 +83,36 @@ const UpdateEquipment = () => {
       dispatch(clearErrors());
     }
 
-    if (isUpdated) {
-      navigate("/admin/equipments");
-      successMsg("Equipment updated successfully");
+    if (isUpdated && !isFormSubmitted) {
+      setIsFormSubmitted(true);
       dispatch({ type: UPDATE_EQUIPMENT_RESET });
     }
-  }, [dispatch, error, isUpdated, navigate, updateError, equipment, id]);
+  }, [dispatch, error, isUpdated, equipment, id, isFormSubmitted, updateError]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    const updatedEquipment = {
-      name,
-      description,
-      sport,
-      stock,
-      images,
-    };
-    dispatch(updateEquipment(equipment._id, updatedEquipment));
+    try {
+      const formData = new FormData();
+      formData.set("name", name);
+      formData.set("description", description);
+      formData.set("sport", sport);
+      formData.set("stock", stock);
+      images.forEach((image) => {
+        formData.append("images", image);
+      });
+
+      await dispatch(updateEquipment(equipment._id, formData));
+
+      successMsg("Equipment updated successfully");
+      dispatch({ type: UPDATE_EQUIPMENT_RESET });
+
+      setTimeout(() => {
+        navigate("/admin/equipments");
+        reloadPage();
+      }, 1000);
+    } catch (error) {
+      errMsg("Error updating equipment");
+    }
   };
 
   const onChange = (e) => {
@@ -87,17 +120,14 @@ const UpdateEquipment = () => {
     setImagesPreview([]);
     setImages([]);
     setOldImages([]);
-
     files.forEach((file) => {
       const reader = new FileReader();
-
       reader.onload = () => {
         if (reader.readyState === 2) {
           setImagesPreview((oldArray) => [...oldArray, reader.result]);
-          setImages((oldArray) => [...oldArray, file]);
+          setImages((oldArray) => [...oldArray, reader.result]);
         }
       };
-
       reader.readAsDataURL(file);
     });
   };
@@ -105,133 +135,133 @@ const UpdateEquipment = () => {
   return (
     <Fragment>
       <MetaData title={"Update Equipment"} />
-      <div className="row">
-        <div className="col-12 col-md-2">
-          <Sidebar />
-        </div>
-        <div className="col-12 col-md-10">
-          <div className="wrapper my-5">
-            <form
-              className="shadow-lg"
-              onSubmit={submitHandler}
-              encType="multipart/form-data"
-            >
-              <h1 className="mb-4">Update Equipment</h1>
-
-              <div className="form-group">
-                <label htmlFor="name_field">Name</label>
-                <input
-                  type="text"
-                  id="name_field"
-                  className="form-control"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="description_field">Description</label>
-                <textarea
-                  className="form-control"
-                  id="description_field"
-                  rows="8"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                ></textarea>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="sport_field">Sport</label>
-                {/* Use your logic to fetch sports and set the options */}
-                {/* Replace options with actual sports fetched */}
-                <select
-                  id="sport_field"
-                  className="form-control"
-                  value={sport}
-                  onChange={(e) => setSport(e.target.value)}
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-md-8 m-auto">
+            <Fragment>
+              <div className="wrapper my-5">
+                <form
+                  className="shadow-lg"
+                  onSubmit={submitHandler}
+                  encType="multipart/form-data"
                 >
-                  <option value="football">Football</option>
-                  <option value="basketball">Basketball</option>
-                  <option value="tennis">Tennis</option>
-                  {/* Add more options as needed */}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="stock_field">Stock</label>
-                <div className="input-group">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={() => setStock(stock - 1 >= 0 ? stock - 1 : 0)}
-                  >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    id="stock_field"
-                    className="form-control"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={() => setStock(stock + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Images</label>
-                <div className="custom-file">
-                  <input
-                    type="file"
-                    name="images"
-                    className="custom-file-input"
-                    id="customFile"
-                    onChange={onChange}
-                    multiple
-                  />
-                  <label className="custom-file-label" htmlFor="customFile">
-                    Choose Images
-                  </label>
-                </div>
-
-                {oldImages &&
-                  oldImages.map((img) => (
-                    <img
-                      key={img.public_id}
-                      src={img.url}
-                      alt={img.url}
-                      className="mt-3 mr-2"
-                      width="55"
-                      height="52"
+                  <h1 className="mb-4">Update Equipment</h1>
+                  <div className="form-group">
+                    <label htmlFor="name_field">Name</label>
+                    <input
+                      type="text"
+                      id="name_field"
+                      className="form-control"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
-                  ))}
+                  </div>
 
-                {imagesPreview.map((img, index) => (
-                  <img
-                    src={img}
-                    key={index}
-                    alt="Images Preview"
-                    className="mt-3 mr-2"
-                    width="55"
-                    height="52"
-                  />
-                ))}
+                  <div className="form-group">
+                    <label htmlFor="description_field">Description</label>
+                    <textarea
+                      className="form-control"
+                      id="description_field"
+                      rows="8"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    ></textarea>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="sport_field">Sport</label>
+                    <select
+                      id="sport_field"
+                      className="form-control"
+                      value={sport}
+                      onChange={(e) => setSport(e.target.value)}
+                    >
+                      {sports.map((sport) => (
+                        <option key={sport._id} value={sport.name}>
+                          {sport.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="stock_field">Stock</label>
+                    <div className="input-group">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => setStock(stock - 1 >= 0 ? stock - 1 : 0)}
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        id="stock_field"
+                        className="form-control"
+                        value={stock}
+                        onChange={(e) => setStock(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => setStock(stock + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Images</label>
+                    <div className="custom-file">
+                      <input
+                        type="file"
+                        name="images"
+                        className="custom-file-input"
+                        id="customFile"
+                        onChange={onChange}
+                        multiple
+                      />
+                      <label className="custom-file-label" htmlFor="customFile">
+                        Choose Images
+                      </label>
+                    </div>
+
+                    {oldImages &&
+                      oldImages.map((img) => (
+                        <img
+                          key={img.public_id}
+                          src={img.url}
+                          alt={img.url}
+                          className="mt-3 mr-2"
+                          width="55"
+                          height="52"
+                        />
+                      ))}
+
+                    {imagesPreview.map((img, index) => (
+                      <img
+                        src={img}
+                        key={index}
+                        alt="Images Preview"
+                        className="mt-3 mr-2"
+                        width="55"
+                        height="52"
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    id="update_button"
+                    type="submit"
+                    className="btn btn-block py-3"
+                    disabled={loading ? true : false}
+                  >
+                    UPDATE
+                  </button>
+                </form>
               </div>
-
-              <button
-                type="submit"
-                className="btn btn-block py-3"
-                disabled={loading ? true : false}
-              >
-                UPDATE
-              </button>
-            </form>
+            </Fragment>
           </div>
         </div>
       </div>

@@ -35,6 +35,12 @@ const Sidebar = () => {
               </li>
             </ul>
           </li>
+
+          <li>
+            <Link to="/admin/borrows">
+              <i className="fa fa-bullhorn"></i> Borrow Requests
+            </Link>
+          </li>
           {/* <li>
             <Link to="/admin/equipments">
               <i className="fa fa-archive"></i> Equipment

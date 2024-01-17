@@ -61,6 +61,13 @@ import {
   announcementReducer,
 } from "./reducers/announcementReducers";
 import {
+  newBorrowReducer,
+  myBorrowsReducer,
+  borrowDetailsReducer,
+  allBorrowsReducer,
+  borrowReducer,
+} from "./reducers/borrowReducers";
+import {
   newEquipmentReducer,
   myEquipmentsReducer,
   equipmentDetailsReducer,
@@ -114,11 +121,20 @@ const reducer = combineReducers({
   myAnnouncements: myAnnouncementsReducer,
   announcementDetails: announcementDetailsReducer,
   allAnnouncements: allAnnouncementsReducer,
+  newBorrow: newBorrowReducer,
+  myBorrows: myBorrowsReducer,
+  borrowDetails: borrowDetailsReducer,
+  allBorrows: allBorrowsReducer,
   newEquipment: newEquipmentReducer,
   myEquipments: myEquipmentsReducer,
   equipmentDetails: equipmentDetailsReducer,
   allEquipments: allEquipmentsReducer,
   settings: settingsReducer,
+  locationReducer: locationReducer,
+  sportReducer: sportReducer,
+  announcementReducer: announcementReducer,
+  borrowReducer: borrowReducer,
+  equipmentReducer: equipmentReducer,
 });
 
 let initialState = {

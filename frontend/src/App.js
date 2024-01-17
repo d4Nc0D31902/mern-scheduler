@@ -54,6 +54,8 @@ import EquipmentList from "./components/admin/EquipmentList";
 import NewEquipment from "./components/admin/NewEquipment";
 import UpdateEquipment from "./components/admin/UpdateEquipment";
 
+import BorrowList from "./components/admin/BorrowList.js";
+
 import Settings from "./components/admin/SettingsComponent.js";
 
 import NewAnnouncement from "./components/admin/NewAnnouncement.js";
@@ -104,6 +106,15 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true}>
               <AppointmentList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/borrows/"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <BorrowList />
             </ProtectedRoute>
           }
         />

@@ -1,18 +1,25 @@
 const Borrow = require("../models/borrowing");
+const Equipment = require("../models/equipment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
-// @desc    Create a new borrow
-// @route   POST /api/borrows
-// @access  Private (You can define your own authentication middleware)
-
 exports.createBorrow = async (req, res, next) => {
   try {
-    const { equipment, quantity, reason_borrow, date_borrow, date_return, issue, status, reason_status } = req.body;
+    const {
+      equipment,
+      quantity,
+      reason_borrow,
+      date_borrow,
+      date_return,
+      issue,
+      status,
+      reason_status,
+    } = req.body;
 
     // Create a new instance of the Borrow model
     const newBorrow = await Borrow.create({
-      user: req.user._id, // Assuming you have user information in the request
+      userId: req.user._id, // Assuming you have user information in the request
+      user: req.user.name,
       equipment,
       quantity,
       reason_borrow,
@@ -23,6 +30,19 @@ exports.createBorrow = async (req, res, next) => {
       reason_status,
     });
 
+    // Fetch the equipment details
+    const equipmentDetails = await Equipment.findOne({ name: equipment });
+
+    if (!equipmentDetails) {
+      return next(new ErrorHandler("Equipment not found", 404));
+    }
+
+    // Deduct the borrowed quantity from the equipment stock
+    equipmentDetails.stock -= quantity;
+
+    // Save the updated equipment details
+    await equipmentDetails.save();
+
     res.status(201).json({
       success: true,
       newBorrow,
@@ -32,10 +52,6 @@ exports.createBorrow = async (req, res, next) => {
     next(new ErrorHandler("Borrow creation failed", 500));
   }
 };
-
-// @desc    Get all borrows
-// @route   GET /api/borrows
-// @access  Public (you can define your own access control)
 
 exports.getBorrows = async (req, res, next) => {
   try {
@@ -48,10 +64,6 @@ exports.getBorrows = async (req, res, next) => {
     next(new ErrorHandler("Failed to retrieve borrows", 500));
   }
 };
-
-// @desc    Get a single borrow by ID
-// @route   GET /api/borrows/:id
-// @access  Public (you can define your own access control)
 
 exports.getBorrowById = async (req, res, next) => {
   try {
@@ -70,13 +82,18 @@ exports.getBorrowById = async (req, res, next) => {
   }
 };
 
-// @desc    Update a borrow by ID
-// @route   PUT /api/borrows/:id
-// @access  Private (You can define your own authentication middleware)
-
 exports.updateBorrow = async (req, res, next) => {
   try {
-    const { equipment, quantity, reason_borrow, date_borrow, date_return, issue, status, reason_status } = req.body;
+    const {
+      equipment,
+      quantity,
+      reason_borrow,
+      date_borrow,
+      date_return,
+      issue,
+      status,
+      reason_status,
+    } = req.body;
     const borrow = await Borrow.findById(req.params.id);
 
     if (!borrow) {
@@ -103,10 +120,6 @@ exports.updateBorrow = async (req, res, next) => {
     next(new ErrorHandler("Failed to update the borrow", 500));
   }
 };
-
-// @desc    Delete a borrow by ID
-// @route   DELETE /api/borrows/:id
-// @access  Private (You can define your own access control)
 
 exports.deleteBorrow = async (req, res, next) => {
   try {
@@ -138,4 +151,3 @@ exports.myBorrows = async (req, res, next) => {
     next(new ErrorHandler("Failed to retrieve user borrows", 500));
   }
 };
-

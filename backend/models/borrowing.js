@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
 const borrowingSchema = new mongoose.Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
+  },
+  user: {
+    type: String,
+    required: true,
   },
   equipment: {
     type: String,

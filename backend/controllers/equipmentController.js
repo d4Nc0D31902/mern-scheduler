@@ -3,8 +3,8 @@ const ErrorHandler = require("../utils/errorHandler");
 const User = require("../models/user");
 const cloudinary = require("cloudinary");
 
-// @desc    Create a new equipment
-// @route   POST /api/equipments
+// @desc    Create new equipment
+// @route   POST /api/equipment
 // @access  Private
 
 exports.createEquipment = async (req, res, next) => {
@@ -36,7 +36,7 @@ exports.createEquipment = async (req, res, next) => {
   try {
     for (let i = 0; i < images.length; i++) {
       const result = await cloudinary.v2.uploader.upload(images[i], {
-        folder: "equipments",
+        folder: "equipment",
       });
 
       imagesLinks.push({
@@ -66,31 +66,24 @@ exports.createEquipment = async (req, res, next) => {
   }
 };
 
-// @desc    Get all equipments
-// @route   GET /api/equipments
+// @desc    Get all equipment
+// @route   GET /api/equipment
 // @access  Public (you can define your own access control)
 
-exports.getEquipments = async (req, res, next) => {
+exports.getEquipment = async (req, res, next) => {
   try {
-    const equipments = await Equipment.find();
+    const equipmentList = await Equipment.find();
     res.status(200).json({
       success: true,
-      equipments,
+      equipmentList,
     });
   } catch (error) {
-    console.error("Error retrieving equipments:", error);
-    res.status(500).json({
-      success: false,
-      error: {
-        statusCode: 500,
-      },
-      message: "Failed to retrieve equipments",
-    });
+    next(new ErrorHandler("Failed to retrieve equipment", 500));
   }
 };
 
 // @desc    Get a single equipment by ID
-// @route   GET /api/equipments/:id
+// @route   GET /api/equipment/:id
 // @access  Public (you can define your own access control)
 
 exports.getEquipmentById = async (req, res, next) => {
@@ -110,70 +103,59 @@ exports.getEquipmentById = async (req, res, next) => {
   }
 };
 
-// @desc    Update an equipment by ID
-// @route   PUT /api/equipments/:id
+// @desc    Update equipment by ID
+// @route   PUT /api/equipment/:id
 // @access  Private (Admin only)
 
 exports.updateEquipment = async (req, res, next) => {
-  try {
-    let equipment = await Equipment.findById(req.params.id);
+  let equipment = await Equipment.findById(req.params.id);
 
-    if (!equipment) {
-      return next(new ErrorHandler("Equipment not found", 404));
-    }
-
-    let images = req.body.images;
-
-    if (images && images.length > 0) {
-      // Delete existing images associated with the equipment
-      for (let i = 0; i < equipment.images.length; i++) {
-        const result = await cloudinary.v2.uploader.destroy(
-          String(equipment.images[i].public_id)
-        );
-        console.log(result); // Add this line for debugging
-      }
-
-      // Upload new images
-      let imagesLinks = await Promise.all(
-        images.map(async (image) => {
-          const result = await cloudinary.v2.uploader.upload(image, {
-            folder: "equipments",
-          });
-          return {
-            public_id: result.public_id,
-            url: result.secure_url,
-          };
-        })
-      );
-
-      // Update new images in the request body
-      req.body.images = imagesLinks;
-    } else {
-      // If no new images provided, retain existing ones
-      req.body.images = equipment.images;
-    }
-
-    // Update the equipment
-    equipment = await Equipment.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    });
-
-    return res.status(200).json({
-      success: true,
-      equipment,
-    });
-  } catch (error) {
-    console.error("Error updating equipment:", error);
-    next(
-      new ErrorHandler(`Failed to update the equipment: ${error.message}`, 500)
-    );
+  if (!equipment) {
+    return next(new ErrorHandler("Equipment not found", 404));
   }
+
+  let images = req.body.images; // Get images from the request body
+
+  if (images) {
+    // Check if images is defined
+    if (typeof images === "string") {
+      images = [images]; // Convert to an array if it's a string
+    }
+
+    // Deleting images associated with the equipment
+    for (let i = 0; i < equipment.images.length; i++) {
+      const result = await cloudinary.v2.uploader.destroy(
+        equipment.images[i].public_id
+      );
+    }
+
+    let imagesLinks = [];
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "equipment",
+      });
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+    req.body.images = imagesLinks;
+  }
+
+  equipment = await Equipment.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  return res.status(200).json({
+    success: true,
+    equipment,
+  });
 };
 
-// @desc    Delete an equipment by ID
-// @route   DELETE /api/equipments/:id
+// @desc    Delete equipment by ID
+// @route   DELETE /api/equipment/:id
 // @access  Private (Admin only)
 
 exports.deleteEquipment = async (req, res, next) => {
@@ -187,10 +169,7 @@ exports.deleteEquipment = async (req, res, next) => {
     // Check if the user is an admin
     if (req.user.role !== "admin") {
       return next(
-        new ErrorHandler(
-          "Unauthorized. Only admins can delete equipments.",
-          403
-        )
+        new ErrorHandler("Unauthorized. Only admins can delete equipment.", 403)
       );
     }
 

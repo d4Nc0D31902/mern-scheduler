@@ -89,7 +89,7 @@ const EquipmentsList = () => {
       rows: [],
     };
 
-    if (equipments) {
+    if (equipments && equipments.length > 0) {
       equipments.forEach((equipment) => {
         const imageElements = equipment.images.map((image) => (
           <img
@@ -126,6 +126,8 @@ const EquipmentsList = () => {
           ),
         });
       });
+    } else {
+      console.log("Equipments data is empty or undefined.");
     }
 
     return data;

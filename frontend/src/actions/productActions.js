@@ -48,12 +48,12 @@ export const getProducts =
 
       dispatch({
         type: ALL_PRODUCTS_SUCCESS,
-        payload: response.data, // Assuming that your response object has a 'data' property.
+        payload: response.data, 
       });
     } catch (error) {
       dispatch({
         type: ALL_PRODUCTS_FAIL,
-        payload: error.response ? error.response.data.message : "Network error", // Handle network errors
+        payload: error.response ? error.response.data.message : "Network error", 
       });
     }
   };
