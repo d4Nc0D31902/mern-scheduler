@@ -80,7 +80,3 @@ userSchema.methods.getResetPasswordToken = function () {
 }
 
 module.exports = mongoose.model('User', userSchema);
-// // "name":"rommel",
-//     "email":"rommelmdalisay@gmail.com",
-//     "password":"password"
-//POST localhost:4000/api/v1/register
