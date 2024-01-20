@@ -281,7 +281,6 @@ const ProductDetails = () => {
                             aria-labelledby="ratingModalLabel"
                             aria-hidden="true"
                           ></div>
-                          
                         </div>
                       </div>
                     </div>

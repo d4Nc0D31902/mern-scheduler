@@ -55,6 +55,7 @@ import NewEquipment from "./components/admin/NewEquipment";
 import UpdateEquipment from "./components/admin/UpdateEquipment";
 
 import BorrowList from "./components/admin/BorrowList.js";
+import UpdateBorrow from "./components/admin/UpdateBorrow.js";
 
 import Settings from "./components/admin/SettingsComponent.js";
 
@@ -169,6 +170,15 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true}>
               <UpdateEquipment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/borrow/:id"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <UpdateBorrow />
             </ProtectedRoute>
           }
         />

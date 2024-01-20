@@ -1,6 +1,5 @@
 const Equipment = require("../models/equipment");
 const ErrorHandler = require("../utils/errorHandler");
-const User = require("../models/user");
 const cloudinary = require("cloudinary");
 
 // @desc    Create new equipment
@@ -182,3 +181,4 @@ exports.deleteEquipment = async (req, res, next) => {
     next(new ErrorHandler("Failed to delete the equipment", 500));
   }
 };
+

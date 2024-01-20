@@ -23,7 +23,7 @@ import {
   SET_BORROWS,
 } from "../constants/borrowConstants";
 
-export const newBorrowReducer = (state = {}, action) => {
+export const newBorrowReducer = (state = { loading: false }, action) => {
   switch (action.type) {
     case NEW_BORROW_REQUEST:
       return {
@@ -37,34 +37,43 @@ export const newBorrowReducer = (state = {}, action) => {
         loading: false,
         borrow: action.payload,
       };
-    case SET_BORROWS: // Add this case
+
+    case SET_BORROWS:
       return {
         ...state,
         borrows: action.payload,
       };
+
     case NEW_BORROW_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
+
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null,
       };
+
     default:
       return state;
   }
 };
 
-export const myBorrowsReducer = (state = { borrows: [] }, action) => {
+export const myBorrowsReducer = (
+  state = { borrows: [], loading: false },
+  action
+) => {
   switch (action.type) {
     case MY_BORROWS_REQUEST:
       return {
+        ...state,
         loading: true,
       };
-    case SET_BORROWS: // Add this case
+
+    case SET_BORROWS:
       return {
         ...state,
         borrows: action.payload,
@@ -72,12 +81,14 @@ export const myBorrowsReducer = (state = { borrows: [] }, action) => {
 
     case MY_BORROWS_SUCCESS:
       return {
+        ...state,
         loading: false,
         borrows: action.payload,
       };
 
     case MY_BORROWS_FAIL:
       return {
+        ...state,
         loading: false,
         error: action.payload,
       };
@@ -93,7 +104,10 @@ export const myBorrowsReducer = (state = { borrows: [] }, action) => {
   }
 };
 
-export const borrowDetailsReducer = (state = { borrow: {} }, action) => {
+export const borrowDetailsReducer = (
+  state = { borrow: {}, loading: false },
+  action
+) => {
   switch (action.type) {
     case BORROW_DETAILS_REQUEST:
       return {
@@ -126,7 +140,10 @@ export const borrowDetailsReducer = (state = { borrow: {} }, action) => {
   }
 };
 
-export const allBorrowsReducer = (state = { borrows: [] }, action) => {
+export const allBorrowsReducer = (
+  state = { borrows: [], loading: false },
+  action
+) => {
   switch (action.type) {
     case ALL_BORROWS_REQUEST:
       return {
@@ -134,7 +151,7 @@ export const allBorrowsReducer = (state = { borrows: [] }, action) => {
         loading: true,
       };
 
-    case SET_BORROWS: // Add this case
+    case SET_BORROWS:
       return {
         ...state,
         borrows: action.payload,
@@ -166,7 +183,7 @@ export const allBorrowsReducer = (state = { borrows: [] }, action) => {
   }
 };
 
-export const borrowReducer = (state = {}, action) => {
+export const borrowReducer = (state = { loading: false }, action) => {
   switch (action.type) {
     case UPDATE_BORROW_REQUEST:
     case DELETE_BORROW_REQUEST:
