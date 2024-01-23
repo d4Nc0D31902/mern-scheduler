@@ -1,64 +1,29 @@
 import React, { Fragment, useState, useEffect } from "react";
+import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import Sidebar from "./Sidebar";
 
 import { toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 
 import { useDispatch, useSelector } from "react-redux";
-
 import { newProduct, clearErrors } from "../../actions/productActions";
-
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 
 const NewProduct = () => {
   const [name, setName] = useState("");
-
   const [price, setPrice] = useState(0);
-
   const [description, setDescription] = useState("");
-
   const [category, setCategory] = useState("");
-
   const [stock, setStock] = useState(0);
-
   const [seller, setSeller] = useState("");
-
   const [images, setImages] = useState([]);
-
   const [imagesPreview, setImagesPreview] = useState([]);
-
-  const categories = [
-    "Electronics",
-
-    "Cameras",
-
-    "Laptops",
-
-    "Accessories",
-
-    "Headphones",
-
-    "Food",
-
-    "Books",
-
-    "Clothes/Shoes",
-
-    "Beauty/Health",
-
-    "Sports",
-
-    "Outdoor",
-
-    "Home",
-  ];
+  const [categories, setCategories] = useState([]);
 
   const dispatch = useDispatch();
-
   let navigate = useNavigate();
 
   const { loading, error, success } = useSelector((state) => state.newProduct);
@@ -69,15 +34,28 @@ const NewProduct = () => {
     });
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/categories`
+        );
+        setCategories(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     if (error) {
       dispatch(clearErrors());
     }
 
     if (success) {
       navigate("/admin/products");
-
       message("Product created successfully");
-
       dispatch({ type: NEW_PRODUCT_RESET });
     }
   }, [dispatch, error, success, navigate]);
@@ -86,18 +64,12 @@ const NewProduct = () => {
     e.preventDefault();
 
     const formData = new FormData();
-
-    formData.set("name", name);
-
-    formData.set("price", price);
-
-    formData.set("description", description);
-
-    formData.set("category", category);
-
-    formData.set("stock", stock);
-
-    formData.set("seller", seller);
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("stock", stock);
+    formData.append("seller", seller);
 
     images.forEach((image) => {
       formData.append("images", image);
@@ -110,7 +82,6 @@ const NewProduct = () => {
     const files = Array.from(e.target.files);
 
     setImagesPreview([]);
-
     setImages([]);
 
     files.forEach((file) => {
@@ -119,7 +90,6 @@ const NewProduct = () => {
       reader.onload = () => {
         if (reader.readyState === 2) {
           setImagesPreview((oldArray) => [...oldArray, reader.result]);
-
           setImages((oldArray) => [...oldArray, reader.result]);
         }
       };
@@ -149,7 +119,6 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label htmlFor="name_field">Name</label>
-
                   <input
                     type="text"
                     id="name_field"
@@ -161,7 +130,6 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label htmlFor="price_field">Price</label>
-
                   <input
                     type="text"
                     id="price_field"
@@ -173,7 +141,6 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description</label>
-
                   <textarea
                     className="form-control"
                     id="description_field"
@@ -184,17 +151,16 @@ const NewProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="category_field">Category</label>
-
+                  <label htmlFor="category_field">Category:</label>
                   <select
-                    className="form-control"
                     id="category_field"
+                    className="form-control"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
+                    {categories.map((cat) => (
+                      <option key={cat._id} value={cat.name}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>
@@ -202,7 +168,6 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label htmlFor="stock_field">Stock</label>
-
                   <input
                     type="number"
                     id="stock_field"
@@ -214,7 +179,6 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label htmlFor="seller_field">Seller Name</label>
-
                   <input
                     type="text"
                     id="seller_field"
@@ -226,7 +190,6 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label>Images</label>
-
                   <div className="custom-file">
                     <input
                       type="file"
@@ -236,12 +199,10 @@ const NewProduct = () => {
                       onChange={onChange}
                       multiple
                     />
-
                     <label className="custom-file-label" htmlFor="customFile">
                       Choose Images
                     </label>
                   </div>
-
                   {imagesPreview.map((img) => (
                     <img
                       src={img}

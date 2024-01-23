@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
+import axios from "axios";
 import MetaData from "./layout/MetaData";
 import { useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Slider, { Range, createSliderWithTooltip } from "rc-slider";
+import Slider, { createSliderWithTooltip, Range } from "rc-slider"; // Import Range component from rc-slider
 import "rc-slider/assets/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../actions/productActions";
@@ -25,6 +26,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([1, 1000]);
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
   let { keyword } = useParams();
 
   const notify = (error = "") =>
@@ -33,26 +35,26 @@ const Home = () => {
     });
 
   const createSliderWithTooltip = Slider.createSliderWithTooltip;
-  const Range = createSliderWithTooltip(Slider.Range);
-  const categories = [
-    "Electronics",
-    "Cameras",
-    "Laptops",
-    "Accessories",
-    "Headphones",
-    "Food",
-    "Books",
-    "Clothes/Shoes",
-    "Beauty/Health",
-    "Sports",
-    "Outdoor",
-    "Home",
-  ];
 
   useEffect(() => {
+    // Fetch categories
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/categories`
+        );
+        setCategories([{ _id: "", name: "All" }, ...response.data.categories]);
+      } catch (error) {
+        notify("Error fetching categories");
+        console.error("Error fetching categories:", error);
+      }
+    };
+
     if (error) {
       notify(error);
     }
+
+    fetchCategories();
     dispatch(getProducts(keyword, currentPage, price, category));
   }, [dispatch, error, currentPage, keyword, price, category]);
 
@@ -104,10 +106,10 @@ const Home = () => {
                             cursor: "pointer",
                             listStyleType: "none",
                           }}
-                          key={category}
-                          onClick={() => setCategory(category)}
+                          key={category._id}
+                          onClick={() => setCategory(category._id)}
                         >
-                          {category}
+                          {category.name}
                         </li>
                       ))}
                     </ul>

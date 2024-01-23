@@ -54,6 +54,13 @@ import {
   sportReducer,
 } from "./reducers/sportReducers";
 import {
+  newCategoryReducer, // Updated import
+  myCategoriesReducer, // Updated import
+  categoryDetailsReducer, // Updated import
+  allCategoriesReducer, // Updated import
+  categoryReducer, // Updated import
+} from "./reducers/categoryReducers"; // Updated import
+import {
   newAnnouncementReducer,
   myAnnouncementsReducer,
   announcementDetailsReducer,
@@ -117,6 +124,11 @@ const reducer = combineReducers({
   mySports: mySportsReducer,
   sportDetails: sportDetailsReducer,
   allSports: allSportsReducer,
+  newCategory: newCategoryReducer, // Updated key
+  myCategories: myCategoriesReducer, // Updated key
+  categoryDetails: categoryDetailsReducer, // Updated key
+  allCategories: allCategoriesReducer, // Updated key
+  categoryReducer: categoryReducer, // Updated key
   newAnnouncement: newAnnouncementReducer,
   myAnnouncements: myAnnouncementsReducer,
   announcementDetails: announcementDetailsReducer,

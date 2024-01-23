@@ -107,6 +107,11 @@ const Sidebar = () => {
                   <i className="fa fa-plus"></i> Create
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/categories">
+                  <i className="fa fa-plus"></i> Categories
+                </Link>
+              </li>
             </ul>
           </li>
           <li>

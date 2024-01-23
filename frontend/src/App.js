@@ -68,6 +68,10 @@ import EquipmentContainer from "./components/equipment/EquipmentContainer.js";
 import EquipmentBorrow from "./components/equipment/EquipmentBorrow.js";
 import MyBorrow from "./components/equipment/MyBorrow.js";
 
+import CategoryList from "./components/admin/CategoryList.js";
+import NewCategory from "./components/admin/NewCategory.js";
+import UpdateCategory from "./components/admin/UpdateCategory.js";
+
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -216,10 +220,28 @@ function App() {
         />
 
         <Route
+          path="/admin/category"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <NewCategory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/admin/sports"
           element={
             <ProtectedRoute isAdmin={true}>
               <SportList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/categories"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <CategoryList />
             </ProtectedRoute>
           }
         />
@@ -266,6 +288,15 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true}>
               <UpdateSport />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/category/:id"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <UpdateCategory />
             </ProtectedRoute>
           }
         />

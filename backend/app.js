@@ -9,6 +9,7 @@ const announcements = require("./routes/announcement");
 const equipments = require("./routes/equipment");
 const settings = require("./routes/settings");
 const sports = require("./routes/sport");
+const categories = require("./routes/category");
 const borrows = require("./routes/borrow");
 const auth = require("./routes/auth");
 const order = require("./routes/order");
@@ -33,6 +34,7 @@ app.use("/api/v1", settings);
 app.use("/api/v1", announcements);
 app.use("/api/v1", equipments);
 app.use("/api/v1", sports);
+app.use("/api/v1", categories);
 app.use("/api/v1", borrows);
 
 app.use(errorMiddleware);

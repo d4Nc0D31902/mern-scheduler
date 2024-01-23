@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import {
   updateProduct,
@@ -22,20 +23,37 @@ const UpdateProduct = () => {
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  const categories = [
-    "Electronics",
-    "Cameras",
-    "Laptops",
-    "Accessories",
-    "Headphones",
-    "Food",
-    "Books",
-    "Clothes/Shoes",
-    "Beauty/Health",
-    "Sports",
-    "Outdoor",
-    "Home",
-  ];
+  const [categories, setCategories] = useState([]);
+
+  // const categories = [
+  //   "Electronics",
+  //   "Cameras",
+  //   "Laptops",
+  //   "Accessories",
+  //   "Headphones",
+  //   "Food",
+  //   "Books",
+  //   "Clothes/Shoes",
+  //   "Beauty/Health",
+  //   "Sports",
+  //   "Outdoor",
+  //   "Home",
+  // ];
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/categories`
+        );
+        setCategories(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const dispatch = useDispatch();
   const { error, product } = useSelector((state) => state.productDetails);
@@ -163,17 +181,16 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="category_field">Category</label>
-
+                  <label htmlFor="category_field">Category:</label>
                   <select
-                    className="form-control"
                     id="category_field"
+                    className="form-control"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
-                    {categories.map((category, index) => (
-                      <option key={index} value={category}>
-                        {category}
+                    {categories.map((cat) => (
+                      <option key={cat._id} value={cat.name}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>
