@@ -3,12 +3,13 @@ import "../../App.css";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import { logout } from "../../actions/userActions";
+
 const Header = () => {
   const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
+
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -36,9 +37,9 @@ const Header = () => {
             <span id="cart" className="ml-3">
               <i className="fa fa-shopping-basket"></i>
               Cart
-            </span>
-            <span className="ml-1" id="cart_count">
-              {cartItems.length}
+              <span className="ml-1" id="cart_count">
+                {cartItems.length}
+              </span>
             </span>
           </Link>
 
@@ -109,8 +110,6 @@ const Header = () => {
                 <Link className="dropdown-item" to="/me">
                   Profile
                 </Link>
-
-                {/*<Link className="dropdown-item text-danger" to="/" onClick={logoutHandler}>*/}
 
                 <Link
                   className="dropdown-item text-danger"

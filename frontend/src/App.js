@@ -41,6 +41,7 @@ import Appointment from "./components/appointment/Appointment";
 import AppointmentList from "./components/appointment/AppointmentList";
 import UpdateAppointment from "./components/appointment/UpdateAppointment";
 import MyAppointment from "./components/appointment/MyAppointment";
+// import ProcessAppointment from "./components/admin/ProcessAppointment.js";
 
 import LocationList from "./components/location/LocationList";
 import NewLocation from "./components/admin/NewLocation";

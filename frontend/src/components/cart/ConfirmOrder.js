@@ -13,15 +13,17 @@ const ConfirmOrder = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const shippingPrice = itemsPrice > 200 ? 0 : 25;
-  const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
-  const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
+  // const shippingPrice = itemsPrice > 200 ? 0 : 25;
+  // const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
+  // const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
+  const totalPrice = (itemsPrice ).toFixed(2);
+
 
   const processToPayment = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
-      shippingPrice,
-      taxPrice,
+      // shippingPrice,
+      // taxPrice,
       totalPrice,
     };
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
@@ -33,7 +35,7 @@ const ConfirmOrder = () => {
       <CheckoutSteps shipping confirmOrder />
       <div className="row d-flex justify-content-between">
         <div className="col-12 col-lg-8 mt-5 order-confirm">
-          <h4 className="mb-3">Shipping Info</h4>
+          <h4 className="mb-3">Information</h4>
           <p>
             <b>Name:</b> {user && user.name}
           </p>
@@ -84,14 +86,14 @@ const ConfirmOrder = () => {
               <span className="order-summary-values">${itemsPrice}</span>
             </p>
 
-            <p>
+            {/* <p>
               Shipping:{" "}
               <span className="order-summary-values">${shippingPrice}</span>
-            </p>
+            </p> */}
 
-            <p>
+            {/* <p>
               Tax: <span className="order-summary-values">${taxPrice}</span>
-            </p>
+            </p> */}
 
             <hr />
 

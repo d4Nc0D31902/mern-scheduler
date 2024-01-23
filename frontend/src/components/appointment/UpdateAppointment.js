@@ -150,6 +150,7 @@ const UpdateAppointment = () => {
                   rows="8"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  disabled
                 ></textarea>
               </div>
 
@@ -161,6 +162,7 @@ const UpdateAppointment = () => {
                   className="form-control"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  disabled
                 />
               </div>
 
@@ -172,6 +174,7 @@ const UpdateAppointment = () => {
                   className="form-control"
                   value={timeStart}
                   onChange={(e) => setTimeStart(e.target.value)}
+                  disabled
                 />
               </div>
 
@@ -183,6 +186,7 @@ const UpdateAppointment = () => {
                   className="form-control"
                   value={timeEnd}
                   onChange={(e) => setTimeEnd(e.target.value)}
+                  disabled
                 />
               </div>
 
@@ -238,7 +242,7 @@ const UpdateAppointment = () => {
                 id="login_button"
                 type="submit"
                 className="btn btn-block py-3"
-                disabled={loading ? true : false}
+                // disabled={loading ? true : false}
               >
                 UPDATE
               </button>

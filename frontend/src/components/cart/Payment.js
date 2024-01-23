@@ -25,7 +25,7 @@ const Payment = () => {
   if (orderInfo) {
     order.itemsPrice = orderInfo.itemsPrice;
     order.shippingPrice = orderInfo.shippingPrice;
-    order.taxPrice = orderInfo.taxPrice;
+    // order.taxPrice = orderInfo.taxPrice;
     order.totalPrice = orderInfo.totalPrice;
   }
   const submitHandler = async (e) => {
@@ -46,7 +46,7 @@ const Payment = () => {
       <div className="row wrapper">
         <div className="col-10 col-lg-5">
           <form className="shadow-lg" onSubmit={submitHandler}>
-            <h1 className="mb-4">Card Info</h1>
+            {/* <h1 className="mb-4">Card Info</h1>
             <div className="form-group">
               <label htmlFor="card_num_field">Card Number</label>
 
@@ -63,7 +63,7 @@ const Payment = () => {
               <label htmlFor="card_cvc_field">Card CVC</label>
 
               <input type="text" id="card_cvc_field" className="form-control" />
-            </div>
+            </div> */}
 
             <button id="pay_btn" type="submit" className="btn btn-block py-3">
               Pay {` - ${orderInfo && orderInfo.totalPrice}`}
