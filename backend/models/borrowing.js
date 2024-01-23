@@ -28,14 +28,15 @@ const borrowingSchema = new mongoose.Schema({
   },
   date_return: {
     type: Date,
-    required: true,
-    default: " ",
+    // required: true,
+    default: Date.now,
   },
   issue: {
     type: String,
     required: true,
     enum: {
       values: [
+        "N/A", // Add 'N/A' to the allowed values
         "Damage",
         "Missing",
         "Incorrect Equipment",

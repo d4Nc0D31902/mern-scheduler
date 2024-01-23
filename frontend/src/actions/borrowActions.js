@@ -54,13 +54,17 @@ export const newBorrow = (borrow) => async (dispatch, getState) => {
 export const myBorrows = () => async (dispatch) => {
   try {
     dispatch({ type: MY_BORROWS_REQUEST });
+
     const { data } = await axios.get(
       `${process.env.REACT_APP_API}/api/v1/borrows/me`,
       { withCredentials: true }
     );
+
+    console.log("Data received:", data); // Log received data
+
     dispatch({
       type: MY_BORROWS_SUCCESS,
-      payload: data.borrows,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -110,32 +114,31 @@ export const allBorrows = () => async (dispatch) => {
   }
 };
 
-export const updateBorrow =
-  (id, borrowData) => async (dispatch) => {
-    try {
-      dispatch({ type: UPDATE_BORROW_REQUEST });
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      };
-      const { data } = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/admin/borrow/${id}`,
-        borrowData,
-        config
-      );
-      dispatch({
-        type: UPDATE_BORROW_SUCCESS,
-        payload: data.success,
-      });
-    } catch (error) {
-      dispatch({
-        type: UPDATE_BORROW_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+export const updateBorrow = (id, borrowData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_BORROW_REQUEST });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/borrow/${id}`,
+      borrowData,
+      config
+    );
+    dispatch({
+      type: UPDATE_BORROW_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_BORROW_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 export const deleteBorrow = (id) => async (dispatch) => {
   try {

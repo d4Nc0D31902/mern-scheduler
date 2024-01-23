@@ -64,6 +64,10 @@ import AllAnnouncement from "./components/announcement/AllAnnouncement";
 import AnnouncementCard from "./components/announcement/AnnouncementCard";
 import UpdateAnnouncement from "./components/admin/UpdateAnnouncement.js";
 
+import EquipmentContainer from "./components/equipment/EquipmentContainer.js";
+import EquipmentBorrow from "./components/equipment/EquipmentBorrow.js";
+import MyBorrow from "./components/equipment/MyBorrow.js";
+
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -75,6 +79,16 @@ function App() {
       <Routes>
         {/* <Route path="/store" element={<Home />} exact="true" /> */}
         <Route path="/product/:id" element={<ProductDetails />} exact="true" />
+        <Route
+          path="/equipmentz"
+          element={<EquipmentContainer />}
+          exact="true"
+        />
+        <Route
+          path="/equipment/borrow"
+          element={<EquipmentBorrow />}
+          exact="true"
+        />
         <Route path="/search/:keyword" element={<Home />} exact="true" />
         <Route path="/login" element={<Login />} exact="true" />
         <Route path="/register" element={<Register />} exact="true" />
@@ -98,6 +112,15 @@ function App() {
           element={
             <ProtectedRoute>
               <MyAppointment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/equipment/me"
+          element={
+            <ProtectedRoute>
+              <MyBorrow />
             </ProtectedRoute>
           }
         />

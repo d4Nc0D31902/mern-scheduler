@@ -56,6 +56,13 @@ const Header = () => {
             </span>
           </Link>
 
+          <Link to="/equipmentz" style={{ textDecoration: "none" }}>
+            <span id="cart" className="ml-3">
+              <i className="fa fa-folder-open"></i>
+              Equipment
+            </span>
+          </Link>
+
           {user ? (
             <div className="ml-4 dropdown d-inline">
               <Link
@@ -93,6 +100,10 @@ const Header = () => {
 
                 <Link className="dropdown-item" to="/appointments/me">
                   Appointments
+                </Link>
+
+                <Link className="dropdown-item" to="/equipment/me">
+                  Borrowed
                 </Link>
 
                 <Link className="dropdown-item" to="/me">

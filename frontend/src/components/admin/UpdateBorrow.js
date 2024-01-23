@@ -184,6 +184,7 @@ const UpdateBorrow = () => {
                   value={issue}
                   onChange={(e) => setIssue(e.target.value)}
                 >
+                  <option value="Damage">N/A</option>
                   <option value="Damage">Damage</option>
                   <option value="Missing">Missing</option>
                   <option value="Incorrect Equipment">

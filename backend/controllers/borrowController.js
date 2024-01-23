@@ -141,7 +141,8 @@ exports.deleteBorrow = async (req, res, next) => {
 
 exports.myBorrows = async (req, res, next) => {
   try {
-    const borrows = await Borrow.find({ user: req.user._id });
+    console.log("User ID:", req.user._id); // Add this line for debugging
+    const borrows = await Borrow.find({ userId: req.user._id });
 
     res.status(200).json({
       success: true,

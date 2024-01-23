@@ -8,6 +8,48 @@ body {
   overflow-x: hidden;
 }
 
+/* Equipment Container */
+.container {
+  margin: 30px auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: gray; /* Adjust the color based on your preference */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.col-md-4 {
+  margin-bottom: 20px;
+}
+
+/* Equipment Card */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  height: 100%;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  text-align: center;
+}
+
 /* Scroll Bar */
 
 ::-webkit-scrollbar-track {
