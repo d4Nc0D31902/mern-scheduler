@@ -64,7 +64,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link to="/admin/sports">
-                  <i className="fa fa-thumb-tack"></i> Sport
+                  <i className="fa fa-dribbble"></i> Sport
                 </Link>
               </li>
             </ul>
@@ -109,7 +109,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link to="/admin/categories">
-                  <i className="fa fa-plus"></i> Categories
+                  <i className="fa fa-list-alt"></i> Categories
                 </Link>
               </li>
             </ul>

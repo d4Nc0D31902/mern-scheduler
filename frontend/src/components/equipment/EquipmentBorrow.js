@@ -33,7 +33,7 @@ const EquipmentBorrow = () => {
 
   function formatDate(date) {
     const isoString = date.toISOString();
-    return isoString.slice(0, isoString.length - 8); // Remove seconds and milliseconds
+    return isoString.slice(0, isoString.length - 8);
   }
 
   useEffect(() => {
@@ -59,7 +59,16 @@ const EquipmentBorrow = () => {
       reason_status: "N/A", // Replace with the actual reason_status value
     };
 
-    dispatch(newBorrow(borrowData));
+    dispatch(newBorrow(borrowData))
+      .then(() => {
+        // This block will execute if the dispatch is successful
+        navigate("/equipmentz");
+        message("Borrow Request Successful");
+      })
+      .catch((error) => {
+        // Handle error if needed
+        console.error("Error creating borrow:", error);
+      });
   };
 
   return (
@@ -117,7 +126,7 @@ const EquipmentBorrow = () => {
                   className="btn btn-block py-3"
                   disabled={loading ? true : false}
                 >
-                  CREATE
+                  BORROW
                 </button>
               </form>
             </div>

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Slider, { createSliderWithTooltip, Range } from "rc-slider"; // Import Range component from rc-slider
+import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../actions/productActions";
@@ -34,10 +34,7 @@ const Home = () => {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
-  const createSliderWithTooltip = Slider.createSliderWithTooltip;
-
   useEffect(() => {
-    // Fetch categories
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
@@ -61,6 +58,12 @@ const Home = () => {
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
+
+  const handleCategoryClick = (clickedCategory) => {
+    setCategory((prevCategory) =>
+      prevCategory === clickedCategory ? "" : clickedCategory
+    );
+  };
 
   let count = productsCount;
 
@@ -100,16 +103,16 @@ const Home = () => {
                   <div className="mt-5">
                     <h4 className="mb-3">Categories</h4>
                     <ul className="pl-0">
-                      {categories.map((category) => (
+                      {categories.map((categoryItem) => (
                         <li
                           style={{
                             cursor: "pointer",
                             listStyleType: "none",
                           }}
-                          key={category._id}
-                          onClick={() => setCategory(category._id)}
+                          key={categoryItem._id}
+                          onClick={() => handleCategoryClick(categoryItem.name)}
                         >
-                          {category.name}
+                          {categoryItem.name}
                         </li>
                       ))}
                     </ul>

@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
-
-// import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from "react-redux";
 import { register, clearErrors } from "../../actions/userActions";
 
@@ -11,16 +9,20 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    department: "",
+    course: "",
+    year: "",
   });
-
-  const { name, email, password } = user;
 
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
     "/images/default_avatar.jpg"
   );
 
-  // const alert = useAlert();
+  const [errors, setErrors] = useState({});
+
+  const { name, email, password, department, course, year } = user;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,24 +36,61 @@ const Register = () => {
     }
 
     if (error) {
-      // alert.error(error);
+      setErrors({ ...errors, registerError: error });
       dispatch(clearErrors());
     }
-  }, [dispatch, isAuthenticated, error, navigate]);
+  }, [dispatch, isAuthenticated, error, navigate, errors]);
+
+  const validateForm = () => {
+    let isValid = true;
+    let newErrors = {};
+
+    // Name validation
+    if (!name.trim()) {
+      newErrors = { ...newErrors, name: "Name is required" };
+      isValid = false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email)) {
+      newErrors = { ...newErrors, email: "Valid email is required" };
+      isValid = false;
+    }
+
+    // Password validation
+    if (password.length < 6) {
+      newErrors = {
+        ...newErrors,
+        password: "Password must be at least 6 characters long",
+      };
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.set("name", name);
-    formData.set("email", email);
-    formData.set("password", password);
-    formData.set("avatar", avatar);
+    if (validateForm()) {
+      const formData = new FormData();
+      formData.set("name", name);
+      formData.set("email", email);
+      formData.set("password", password);
+      formData.set("avatar", avatar);
+      formData.set("department", department);
+      formData.set("course", course);
+      formData.set("year", year);
 
-    dispatch(register(formData));
+      dispatch(register(formData));
+    }
   };
 
   const onChange = (e) => {
+    setErrors({ ...errors, [e.target.name]: "" });
+
     if (e.target.name === "avatar") {
       const reader = new FileReader();
 
@@ -68,6 +107,37 @@ const Register = () => {
     }
   };
 
+  const departments = [
+    "BS Engineering Program",
+    "BS Degree Program",
+    "BTVTED Program",
+    "BET Program",
+  ];
+
+  const coursesByDepartment = {
+    "BS Engineering Program": ["BSCE", "BSEE", "BSEcE", "BSME"],
+    "BS Degree Program": ["BSIT", "BSES"],
+    "BTVTED Program": ["BTVTEDET", "BTVTEDELXT", "BETVTEDICT", "BTVTEDICT-CH"],
+    "BET Program": [
+      "BETAT",
+      "BETCHT",
+      "BETCT",
+      "BETET",
+      "BETELXT",
+      "BETHVAC/RT",
+      "BETMT",
+      "BETMECT",
+      "BETNDT",
+      "BETDMT",
+      "BETEMT",
+      "BETICT",
+    ],
+  };
+
+  const courses = coursesByDepartment[department] || [];
+
+  const years = ["1st Year", " 2nd Year", "3rd Year", "4th Year", "Alumni"];
+
   return (
     <Fragment>
       <MetaData title={"Register User"} />
@@ -82,15 +152,18 @@ const Register = () => {
             <h1 className="mb-3">Register</h1>
 
             <div className="form-group">
-              <label htmlFor="email_field">Name</label>
+              <label htmlFor="name_field">Full Name</label>
               <input
-                type="name"
+                type="text"
                 id="name_field"
-                className="form-control"
+                className={`form-control ${errors.name && "is-invalid"}`}
                 name="name"
                 value={name}
                 onChange={onChange}
               />
+              {errors.name && (
+                <div className="invalid-feedback">{errors.name}</div>
+              )}
             </div>
 
             <div className="form-group">
@@ -98,11 +171,14 @@ const Register = () => {
               <input
                 type="email"
                 id="email_field"
-                className="form-control"
+                className={`form-control ${errors.email && "is-invalid"}`}
                 name="email"
                 value={email}
                 onChange={onChange}
               />
+              {errors.email && (
+                <div className="invalid-feedback">{errors.email}</div>
+              )}
             </div>
 
             <div className="form-group">
@@ -110,12 +186,82 @@ const Register = () => {
               <input
                 type="password"
                 id="password_field"
-                className="form-control"
+                className={`form-control ${errors.password && "is-invalid"}`}
                 name="password"
                 value={password}
                 onChange={onChange}
               />
+              {errors.password && (
+                <div className="invalid-feedback">{errors.password}</div>
+              )}
             </div>
+
+            {/* Department Dropdown */}
+            <div className="form-group">
+              <label htmlFor="department_field">Department</label>
+              <select
+                id="department_field"
+                className={`form-control ${errors.department && "is-invalid"}`}
+                name="department"
+                value={department}
+                onChange={onChange}
+              >
+                <option value="">Select Department</option>
+                {departments.map((dep) => (
+                  <option key={dep} value={dep}>
+                    {dep}
+                  </option>
+                ))}
+              </select>
+              {errors.department && (
+                <div className="invalid-feedback">{errors.department}</div>
+              )}
+            </div>
+
+            {/* Course Dropdown */}
+            <div className="form-group">
+              <label htmlFor="course_field">Course</label>
+              <select
+                id="course_field"
+                className={`form-control ${errors.course && "is-invalid"}`}
+                name="course"
+                value={course}
+                onChange={onChange}
+              >
+                <option value="">Select Course</option>
+                {courses.map((crs) => (
+                  <option key={crs} value={crs}>
+                    {crs}
+                  </option>
+                ))}
+              </select>
+              {errors.course && (
+                <div className="invalid-feedback">{errors.course}</div>
+              )}
+            </div>
+
+            {/* Year Dropdown */}
+            <div className="form-group">
+              <label htmlFor="year_field">Year</label>
+              <select
+                id="year_field"
+                className={`form-control ${errors.year && "is-invalid"}`}
+                name="year"
+                value={year}
+                onChange={onChange}
+              >
+                <option value="">Select Year</option>
+                {years.map((yr) => (
+                  <option key={yr} value={yr}>
+                    {yr}
+                  </option>
+                ))}
+              </select>
+              {errors.year && (
+                <div className="invalid-feedback">{errors.year}</div>
+              )}
+            </div>
+            {/* End of Dropdowns */}
 
             <div className="form-group">
               <label htmlFor="avatar_upload">Avatar</label>

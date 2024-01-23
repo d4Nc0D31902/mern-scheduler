@@ -5,48 +5,56 @@ import Sidebar from "./Sidebar";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { newCategory, clearErrors } from "../../actions/categoryActions"; // Updated import
-import { NEW_CATEGORY_RESET } from "../../constants/categoryConstants"; // Updated import
+import { newCategory, clearErrors } from "../../actions/categoryActions";
+import { NEW_CATEGORY_RESET } from "../../constants/categoryConstants";
 
 const NewCategory = () => {
-  // Updated component name
   const [name, setName] = useState("");
   const dispatch = useDispatch();
 
-  const { loading, error, success } = useSelector((state) => state.newCategory); // Updated state variable name
-
+  const { loading, error, success } = useSelector((state) => state.newCategory);
   const navigate = useNavigate();
+
   const message = (message = "") =>
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
+  const errMsg = (message = "") =>
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
   useEffect(() => {
     if (error) {
+      errMsg(error);
       dispatch(clearErrors());
     }
 
     if (success) {
-      navigate("/admin/categories"); // Updated path
-      message("Category created successfully"); // Updated success message
-      dispatch({ type: NEW_CATEGORY_RESET }); // Updated reset action type
+      message("Category created successfully");
+      dispatch({ type: NEW_CATEGORY_RESET });
+      navigate("/admin/category"); // Move the navigation here
     }
   }, [dispatch, error, success, navigate]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     const categoryData = {
-      // Updated variable name
       name,
     };
 
-    dispatch(newCategory(categoryData)); // Updated action
+    try {
+      await dispatch(newCategory(categoryData));
+    } catch (error) {
+      errMsg("Category creation failed. Please try again.");
+    }
   };
 
   return (
     <Fragment>
-      <MetaData title={"New Category"} /> {/* Updated title */}
+      <MetaData title={"New Category"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -56,7 +64,7 @@ const NewCategory = () => {
           <Fragment>
             <div className="wrapper my-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h1 className="mb-4">New Category</h1> {/* Updated heading */}
+                <h1 className="mb-4">New Category</h1>
                 <div className="form-group">
                   <label htmlFor="name_field">Name</label>
                   <input
@@ -84,4 +92,4 @@ const NewCategory = () => {
   );
 };
 
-export default NewCategory; // Updated export
+export default NewCategory;

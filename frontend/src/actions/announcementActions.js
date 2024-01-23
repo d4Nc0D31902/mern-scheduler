@@ -42,7 +42,8 @@ export const newAnnouncement = (announcement) => async (dispatch, getState) => {
       payload: data,
     });
 
-    // Do not dispatch NEW_ANNOUNCEMENT_RESET here, leave it to the component
+    // Dispatch NEW_ANNOUNCEMENT_RESET after success
+    dispatch({ type: NEW_ANNOUNCEMENT_RESET });
   } catch (error) {
     dispatch({
       type: NEW_ANNOUNCEMENT_FAIL,

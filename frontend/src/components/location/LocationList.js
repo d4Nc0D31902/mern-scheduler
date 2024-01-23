@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
@@ -15,15 +15,29 @@ import { DELETE_LOCATION_RESET } from "../../constants/locationConstants";
 
 const LocationsList = () => {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
-  const { loading, error, locations } = useSelector(
+  const navigate = useNavigate();
+  const { loading, error, locations, isDeleted } = useSelector(
     (state) => state.allLocations
   );
-  const { isDeleted } = useSelector((state) => state.location) || {};
-  const errMsg = (message = "") =>
-    toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
-  const successMsg = (message = "") =>
-    toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
+
+  const errMsg = useCallback(
+    (message = "") =>
+      toast.error(message, { position: toast.POSITION.BOTTOM_CENTER }),
+    []
+  );
+
+  const successMsg = useCallback(
+    (message = "") =>
+      toast.success(message, { position: toast.POSITION.BOTTOM_CENTER }),
+    []
+  );
+
+  const handleDeleteLocation = useCallback(
+    (id) => {
+      dispatch(deleteLocation(id));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     dispatch(allLocations());
@@ -31,15 +45,30 @@ const LocationsList = () => {
       errMsg(error);
       dispatch(clearErrors());
     }
+  }, [dispatch, error, errMsg]);
+
+  useEffect(() => {
     if (isDeleted) {
       successMsg("Location deleted successfully");
-      navigate("/admin/locations");
       dispatch({ type: DELETE_LOCATION_RESET });
     }
-  }, [dispatch, error, navigate, isDeleted]);
+  }, [isDeleted, successMsg, dispatch]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      // Add a delay to give time for the success toast to show
+      setTimeout(() => {
+        // Reload the page
+        window.location.reload();
+
+        // Navigate to "/admin/locations"
+        navigate("/admin/locations");
+      }, 1000);
+    }
+  }, [isDeleted, navigate]);
 
   const deleteLocationHandler = (id) => {
-    dispatch(deleteLocation(id));
+    handleDeleteLocation(id);
   };
 
   const setLocations = () => {

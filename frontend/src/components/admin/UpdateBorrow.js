@@ -83,7 +83,7 @@ const UpdateBorrow = () => {
     }
   }, [dispatch, error, isUpdated, navigate, updateError, borrow, id]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     const updatedBorrow = {
       user,
@@ -96,7 +96,20 @@ const UpdateBorrow = () => {
       status,
       reason_status: reasonStatus,
     };
-    dispatch(updateBorrow(borrow._id, updatedBorrow));
+
+    try {
+      await dispatch(updateBorrow(borrow._id, updatedBorrow));
+
+      // Display success toast and navigate on successful update
+      successMsg("Borrow updated successfully");
+      navigate("/admin/borrows");
+
+      // Reset the update state
+      dispatch({ type: UPDATE_BORROW_RESET });
+    } catch (error) {
+      // Display error toast if update fails
+      errMsg("Borrow update failed. Please try again.");
+    }
   };
 
   return (

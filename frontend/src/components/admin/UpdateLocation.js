@@ -60,12 +60,25 @@ const UpdateLocation = () => {
     }
   }, [dispatch, error, isUpdated, navigate, updateError, location, id]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
     const updatedLocation = {
       name,
     };
-    dispatch(updateLocation(location._id, updatedLocation));
+
+    await dispatch(updateLocation(location._id, updatedLocation));
+
+    // Show toast message
+    toast.success("Location updated successfully", {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
+    // // Reload the page
+    // window.location.reload();
+
+    // Navigate to "/admin/locations"
+    navigate("/admin/locations");
   };
 
   return (

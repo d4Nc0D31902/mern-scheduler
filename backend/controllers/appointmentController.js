@@ -8,13 +8,22 @@ const mongoose = require("mongoose");
 
 exports.createAppointment = async (req, res, next) => {
   try {
-    const { attendees, location, title, description, timeStart, timeEnd, status, reason, key } =
-      req.body;
+    const {
+      attendees,
+      location,
+      title,
+      description,
+      timeStart,
+      timeEnd,
+      status,
+      reason,
+      key,
+    } = req.body;
 
     // Create a new instance of the Appointment model
     const newAppointment = await Appointment.create({
       userId: req.user._id, // Assuming you have user information in the request
-      requester: req.user.name, // Assuming user.name is available
+      requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`, // Modified requester field
       attendees,
       location,
       title,
@@ -92,8 +101,16 @@ exports.getSingleAppointment = async (req, res, next) => {
 
 exports.updateAppointment = async (req, res, next) => {
   try {
-    const { attendees, title, location, timeStart, timeEnd, status, reason, key } =
-      req.body;
+    const {
+      attendees,
+      title,
+      location,
+      timeStart,
+      timeEnd,
+      status,
+      reason,
+      key,
+    } = req.body;
     const appointment = await Appointment.findById(req.params.id);
 
     if (!appointment) {
@@ -171,6 +188,9 @@ exports.joinAppointment = async (req, res, next) => {
 
     // Add the user to the attendees list
     appointment.attendees.push(req.user.name);
+
+    // Update the requester field
+    appointment.requester = `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`;
 
     const updatedAppointment = await appointment.save();
 

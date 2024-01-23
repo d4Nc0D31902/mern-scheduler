@@ -35,6 +35,7 @@ export const newAnnouncementReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
+        success: true, // Set success to true
         announcement: action.payload,
       };
     case SET_ANNOUNCEMENTS: // Add this case

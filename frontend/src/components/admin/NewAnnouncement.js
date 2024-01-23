@@ -45,7 +45,7 @@ const NewAnnouncement = () => {
       setImagesPreview([]);
 
       // Navigate to the announcements page or perform any other necessary action
-      navigate("/admin/announcement");
+      navigate("/announcements");
 
       // Reset the success state in the Redux store
       dispatch({ type: NEW_ANNOUNCEMENT_RESET });

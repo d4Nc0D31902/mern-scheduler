@@ -6,6 +6,7 @@ import MetaData from "../layout/MetaData";
 
 const Profile = () => {
   const { user, loading } = useSelector((state) => state.auth);
+
   return (
     <Fragment>
       {loading ? (
@@ -37,15 +38,21 @@ const Profile = () => {
 
             <div className="col-12 col-md-5">
               <h4>Full Name</h4>
-
               <p>{user.name}</p>
 
               <h4>Email Address</h4>
-
               <p>{user.email}</p>
 
-              <h4>Joined On</h4>
+              <h4>Department</h4>
+              <p>{user.department}</p>
 
+              <h4>Course</h4>
+              <p>{user.course}</p>
+
+              <h4>Year</h4>
+              <p>{user.year}</p>
+
+              <h4>Joined On</h4>
               <p>{String(user.createdAt).substring(0, 10)}</p>
 
               {user.role !== "admin" && (
@@ -67,4 +74,5 @@ const Profile = () => {
     </Fragment>
   );
 };
+
 export default Profile;

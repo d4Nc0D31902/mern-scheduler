@@ -188,6 +188,7 @@ const UpdateProduct = () => {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
+                    <option value="">Select Category</option>
                     {categories.map((cat) => (
                       <option key={cat._id} value={cat.name}>
                         {cat.name}

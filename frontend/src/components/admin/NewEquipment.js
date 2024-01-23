@@ -154,6 +154,7 @@ const NewEquipment = () => {
                     value={sport}
                     onChange={(e) => setSport(e.target.value)}
                   >
+                    <option value="">Select Sport</option>
                     {sports.map((sport) => (
                       <option key={sport._id} value={sport.name}>
                         {sport.name}

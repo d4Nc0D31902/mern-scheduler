@@ -16,9 +16,9 @@ const NewLocation = () => {
 
   const navigate = useNavigate();
   const message = (message = "") =>
-  toast.success(message, {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
 
   useEffect(() => {
     if (error) {
@@ -39,7 +39,16 @@ const NewLocation = () => {
       name,
     };
 
-    dispatch(newLocation(locationData));
+    dispatch(newLocation(locationData))
+      .then(() => {
+        // This block will execute if the dispatch is successful
+        navigate("/admin/locations");
+        message("Location created successfully");
+      })
+      .catch((error) => {
+        // Handle error if needed
+        console.error("Error creating location:", error);
+      });
   };
 
   return (
