@@ -14,17 +14,37 @@ const Profile = () => {
       ) : (
         <Fragment>
           <MetaData title={"Your Profile"} />
-          <div className="profilePic" style={{ marginTop: "50px", borderStyle: "solid", borderWidth: "2px", backgroundColor: "" }}>
+          <div
+            className="profilePic"
+            style={{
+              marginTop: "50px",
+              // borderStyle: "solid",
+              // borderWidth: "2px",
+              backgroundColor: "",
+            }}
+          >
             <div className="row" style={{ marginTop: "50px" }}>
               <div className="col-lg-3 col-md-2 mb-4">
                 {/* <div className="card" style={{ boxShadow: "1px 2px 8px red", cursor: "pointer" }}> */}
                 <div className="card-body text-center">
                   <img
-                    className=" img-fluid" style={{ width: "100%", height: "250px" }}
+                    className=" img-fluid"
+                    style={{
+                      width: "100%",
+                      height: "250px",
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      color: "black",
+                    }}
                     src={user.avatar.url}
                     alt={user.name}
                   />
-                  <hr style={{ borderStyle: "solid", borderWidth: "2px",}} />
+                  <hr
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                    }}
+                  />
                   <Link
                     to="/me/update"
                     id="edit_profile"
@@ -40,54 +60,60 @@ const Profile = () => {
                     CHANGE PASSWORD
                   </Link>
                 </div>
-
               </div>
               <div className="col-lg-8 col-md-10 col-sm-12 mb-4">
                 {/* <div className="card" style={{ boxShadow: "1px 2px 8px red", cursor: "pointer" }}> */}
                 <div className="card-body ">
                   <div className="row">
                     <div className="col-lg-12">
-                      <h5 style={{ fontFamily: "cursive" }}>NAME OF THE USER:</h5>
+                      <h5 style={{ fontFamily: "calibri" }}>
+                        NAME OF THE USER:
+                      </h5>
                       <p style={{ fontSize: "18px" }}>{user.name}</p>
-                      <hr style={{ borderStyle: "solid", borderWidth: "2px" }} /> {/* Horizontal line */}
+                      <hr
+                        style={{ borderStyle: "solid", borderWidth: "2px" }}
+                      />{" "}
+                      {/* Horizontal line */}
                     </div>
                     <div className="col-lg-12">
-                      <h5 style={{ fontFamily: "cursive" }}>EMAIL ADDRESS:</h5>
+                      <h5 style={{ fontFamily: "calibri" }}>EMAIL ADDRESS:</h5>
                       <p style={{ fontSize: "18px" }}>{user.email}</p>
-                      <hr style={{ borderStyle: "solid", borderWidth: "2px" }} /> {/* Horizontal line */}
+                      <hr
+                        style={{ borderStyle: "solid", borderWidth: "2px" }}
+                      />{" "}
+                      {/* Horizontal line */}
                     </div>
                     <div className="col-lg-12">
-                      <h5 style={{ fontFamily: "cursive" }}>JOINED ON:</h5>
-                      <p style={{ fontSize: "18px" }}>{String(user.createdAt).substring(0, 10)}</p>
-                      <hr style={{ borderStyle: "solid", borderWidth: "2px" }} /> {/* Horizontal line */}
+                      <h5 style={{ fontFamily: "calibri" }}>JOINED ON:</h5>
+                      <p style={{ fontSize: "18px" }}>
+                        {String(user.createdAt).substring(0, 10)}
+                      </p>
+                      <hr
+                        style={{ borderStyle: "solid", borderWidth: "2px" }}
+                      />{" "}
+                      {/* Horizontal line */}
                     </div>
                   </div>
 
-                  <h5 style={{ fontFamily: "cursive" }}>DEPARTMENT:</h5>
+                  <h5 style={{ fontFamily: "calibri" }}>DEPARTMENT:</h5>
                   <p style={{ fontSize: "18px" }}>{user.department}</p>
                   <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
 
-                  <h5 style={{ fontFamily: "cursive" }}>COURSE:</h5>
+                  <h5 style={{ fontFamily: "calibri" }}>COURSE:</h5>
                   <p style={{ fontSize: "18px" }}>{user.course}</p>
                   <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
 
-                  <h5 style={{ fontFamily: "cursive" }}>YEAR:</h5>
+                  <h5 style={{ fontFamily: "calibri" }}>YEAR:</h5>
                   <p style={{ fontSize: "18px" }}>{user.year}</p>
                   <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
 
-
-
                   {user.role !== "admin" && (
-                    <Link to="/orders/me" className="btn btn-danger btn-block mt-5">
+                    <Link to="/orders/me" className="btn btn-primary btn-block">
                       My Orders
                     </Link>
                   )}
                 </div>
-
               </div>
-
-
-
             </div>
           </div>
           {/* <MetaData title={"Your Profile"} />

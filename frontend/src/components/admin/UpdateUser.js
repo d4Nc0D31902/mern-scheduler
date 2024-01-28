@@ -1,40 +1,31 @@
 import React, { Fragment, useState, useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
-
 import MetaData from "../layout/MetaData";
-
 import Sidebar from "./Sidebar";
-
 import { toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   updateUser,
   getUserDetails,
   clearErrors,
 } from "../../actions/userActions";
-
 import { UPDATE_USER_RESET } from "../../constants/userConstants";
 
 const UpdateUser = () => {
   const [name, setName] = useState("");
-
   const [email, setEmail] = useState("");
-
   const [role, setRole] = useState("");
+  const [department, setDepartment] = useState("");
+  const [course, setCourse] = useState("");
+  const [year, setYear] = useState("");
+  const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
-
   let navigate = useNavigate();
 
   const { error, isUpdated } = useSelector((state) => state.user);
-
   const { user } = useSelector((state) => state.userDetails);
-
   const { id } = useParams();
 
   const errMsg = (message = "") =>
@@ -48,29 +39,25 @@ const UpdateUser = () => {
     });
 
   useEffect(() => {
-    // console.log(user && user._id !== userId);
-
     if (user && user._id !== id) {
       dispatch(getUserDetails(id));
     } else {
       setName(user.name);
-
       setEmail(user.email);
-
       setRole(user.role);
+      setDepartment(user.department || "");
+      setCourse(user.course || "");
+      setYear(user.year || "");
     }
 
     if (error) {
       errMsg(error);
-
       dispatch(clearErrors());
     }
 
     if (isUpdated) {
       successMsg("User updated successfully");
-
       navigate("/admin/users");
-
       dispatch({
         type: UPDATE_USER_RESET,
       });
@@ -79,40 +66,72 @@ const UpdateUser = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     const formData = new FormData();
-
     formData.set("name", name);
-
     formData.set("email", email);
-
     formData.set("role", role);
-
+    formData.set("department", department);
+    formData.set("course", course);
+    formData.set("year", year);
     dispatch(updateUser(user._id, formData));
   };
+
+  const departments = [
+    "BS Engineering Program",
+    "BS Degree Program",
+    "BTVTED Program",
+    "BET Program",
+  ];
+
+  const coursesByDepartment = {
+    "BS Engineering Program": ["BSCE", "BSEE", "BSEcE", "BSME"],
+    "BS Degree Program": ["BSIT", "BSES"],
+    "BTVTED Program": ["BTVTEDET", "BTVTEDELXT", "BETVTEDICT", "BTVTEDICT-CH"],
+    "BET Program": [
+      "BETAT",
+      "BETCHT",
+      "BETCT",
+      "BETET",
+      "BETELXT",
+      "BETHVAC/RT",
+      "BETMT",
+      "BETMECT",
+      "BETNDT",
+      "BETDMT",
+      "BETEMT",
+      "BETICT",
+    ],
+  };
+
+  const courses = coursesByDepartment[department] || [];
+
+  const years = ["1st Year", " 2nd Year", "3rd Year", "4th Year", "Alumni"];
 
   return (
     <Fragment>
       <MetaData title={`Update User`} />
-
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
-
         <div className="col-12 col-md-10">
           <div className="wrapper my-5">
             <div className="col-10 col-lg-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
-                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
-                </h3>
-                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update User</h1>
+                <h1
+                  className="mb-4 text-center"
+                  style={{
+                    backgroundColor: "maroon",
+                    padding: "20px",
+                    borderRadius: "20px",
+                    color: "white",
+                  }}
+                >
+                  Update User
+                </h1>
 
                 <div className="form-group">
                   <label htmlFor="name_field">Name:</label>
-
                   <input
                     type="name"
                     id="name_field"
@@ -125,7 +144,6 @@ const UpdateUser = () => {
 
                 <div className="form-group">
                   <label htmlFor="email_field">Email:</label>
-
                   <input
                     type="email"
                     id="email_field"
@@ -138,7 +156,6 @@ const UpdateUser = () => {
 
                 <div className="form-group">
                   <label htmlFor="role_field">Role:</label>
-
                   <select
                     id="role_field"
                     className="form-control"
@@ -147,10 +164,115 @@ const UpdateUser = () => {
                     onChange={(e) => setRole(e.target.value)}
                   >
                     <option value="user">user</option>
-
                     <option value="admin">admin</option>
                   </select>
                 </div>
+
+                {/* <div className="form-group">
+                  <label htmlFor="department_field">Department:</label>
+                  <input
+                    type="text"
+                    id="department_field"
+                    className="form-control"
+                    name="department"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                  />
+                </div> */}
+
+                {/* Department Dropdown */}
+                <div className="form-group">
+                  <label htmlFor="department_field">Department</label>
+                  <select
+                    id="department_field"
+                    className={`form-control ${
+                      errors.department && "is-invalid"
+                    }`}
+                    name="department"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                  >
+                    <option value="">Select Department</option>
+                    {departments.map((dep) => (
+                      <option key={dep} value={dep}>
+                        {dep}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.department && (
+                    <div className="invalid-feedback">{errors.department}</div>
+                  )}
+                </div>
+
+                {/* <div className="form-group">
+                  <label htmlFor="course_field">Course:</label>
+                  <input
+                    type="text"
+                    id="course_field"
+                    className="form-control"
+                    name="course"
+                    value={course}
+                    onChange={(e) => setCourse(e.target.value)}
+                  />
+                </div> */}
+
+                {/* Course Dropdown */}
+                <div className="form-group">
+                  <label htmlFor="course_field">Course</label>
+                  <select
+                    id="course_field"
+                    className={`form-control ${errors.course && "is-invalid"}`}
+                    name="course"
+                    value={course}
+                    onChange={(e) => setCourse(e.target.value)}
+                  >
+                    <option value="">Select Course</option>
+                    {courses.map((crs) => (
+                      <option key={crs} value={crs}>
+                        {crs}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.course && (
+                    <div className="invalid-feedback">{errors.course}</div>
+                  )}
+                </div>
+                {/* 
+                <div className="form-group">
+                  <label htmlFor="year_field">Year:</label>
+                  <input
+                    type="text"
+                    id="year_field"
+                    className="form-control"
+                    name="year"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  />
+                </div>
+                 */}
+
+                {/* Year Dropdown */}
+                <div className="form-group">
+                  <label htmlFor="year_field">Year</label>
+                  <select
+                    id="year_field"
+                    className={`form-control ${errors.year && "is-invalid"}`}
+                    name="year"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="">Select Year</option>
+                    {years.map((yr) => (
+                      <option key={yr} value={yr}>
+                        {yr}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.year && (
+                    <div className="invalid-feedback">{errors.year}</div>
+                  )}
+                </div>
+                {/* End of Dropdowns */}
 
                 <button
                   type="submit"

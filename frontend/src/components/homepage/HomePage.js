@@ -235,7 +235,7 @@ const Homepage = () => {
                     marginBottom: "10px",
                   }}
                 />
-                <h5 className="card-title">OUTER COURT</h5>
+                <h5 className="card-title">OUTDOOR COURT</h5>
                 <p style={{ fontSize: "15px" }}>
                   {" "}
                   The university outer court serves as an open space for various
@@ -439,7 +439,7 @@ const Homepage = () => {
                     className="button-request"
                     style={{ padding: "5px 10px" }}
                   >
-                    Request Schedule click here..
+                    Request Schedule
                   </button>
                 </Link>
               </div>
@@ -475,7 +475,7 @@ const Homepage = () => {
                     className="button-request"
                     style={{ padding: "5px 10px" }}
                   >
-                    See available merch..
+                    Buy Merch
                   </button>
                 </Link>
               </div>
@@ -513,7 +513,7 @@ const Homepage = () => {
                     style={{ padding: "5px 10px" }}
                   >
                     {" "}
-                    See Availble Equipment
+                    Borrow Equipment
                   </button>
                 </Link>
               </div>
@@ -534,7 +534,7 @@ const Homepage = () => {
         }}
       >
         <h1 style={{ color: "black", marginBottom: "85px" }}>
-          MEET OUR COORDINATOR
+          MEET OUR COORDINATORS
         </h1>
         <h4 style={{ color: "black" }}>THE ADMIN</h4>
         <div className="col-lg-3 col-md-6 mb-4">
