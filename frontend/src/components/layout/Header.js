@@ -16,7 +16,7 @@ const Header = () => {
   };
 
   const isHomePage = location.pathname === "/";
-  const isCartPage = location.pathname === "/cart";
+  const isStore = location.pathname === "/store";
 
   return (
     <Fragment>
@@ -33,7 +33,7 @@ const Header = () => {
           </div>
         </div>
 
-        {isCartPage && (
+        {isStore && (
           <div className="col-12 col-sm-6 col-md-3">
             <Search />
           </div>
