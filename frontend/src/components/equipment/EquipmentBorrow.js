@@ -79,7 +79,37 @@ const EquipmentBorrow = () => {
           <Fragment>
             <div className="wrapper my-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h1 className="mb-4">Borrowing Form</h1>
+                <h3
+                  className="card-title"
+                  style={{
+                    fontFamily: "sans-serif",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    margin: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/tupt_logo.png"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginRight: "25px",
+                    }}
+                    alt="Logo"
+                  />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1
+                  className="mb-4 text-center"
+                  style={{
+                    backgroundColor: "maroon",
+                    padding: "20px",
+                    borderRadius: "20px",
+                    color: "white",
+                  }}
+                >
+                  Borrowing Form
+                </h1>
                 <div className="form-group">
                   <label htmlFor="equipment_field">Equipment</label>
                   <input
@@ -104,6 +134,7 @@ const EquipmentBorrow = () => {
                 <div className="form-group">
                   <label htmlFor="reason_borrow_field">Reason for Borrow</label>
                   <textarea
+                    placeholder="Put here the reason why you borrow the equipment..."
                     id="reason_borrow_field"
                     className="form-control"
                     value={reasonBorrow}

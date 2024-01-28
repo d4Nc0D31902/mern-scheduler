@@ -145,9 +145,13 @@ const UpdateEquipment = () => {
                   onSubmit={submitHandler}
                   encType="multipart/form-data"
                 >
-                  <h1 className="mb-4">Update Equipment</h1>
+                  <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                    <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                    TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                  </h3>
+                  <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Equipment</h1>
                   <div className="form-group">
-                    <label htmlFor="name_field">Name</label>
+                    <label htmlFor="name_field">Equipment:</label>
                     <input
                       type="text"
                       id="name_field"
@@ -158,7 +162,7 @@ const UpdateEquipment = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="description_field">Description</label>
+                    <label htmlFor="description_field">Description:</label>
                     <textarea
                       className="form-control"
                       id="description_field"
@@ -169,7 +173,7 @@ const UpdateEquipment = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="sport_field">Sport</label>
+                    <label htmlFor="sport_field">Category in Sport:</label>
                     <select
                       id="sport_field"
                       className="form-control"
@@ -185,15 +189,15 @@ const UpdateEquipment = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="stock_field">Stock</label>
+                    <label htmlFor="stock_field">Remaining Stocks:</label>
                     <div className="input-group">
-                      <button
+                      {/* <button
                         type="button"
                         className="btn btn-outline-secondary"
                         onClick={() => setStock(stock - 1 >= 0 ? stock - 1 : 0)}
                       >
                         -
-                      </button>
+                      </button> */}
                       <input
                         type="number"
                         id="stock_field"
@@ -201,18 +205,18 @@ const UpdateEquipment = () => {
                         value={stock}
                         onChange={(e) => setStock(e.target.value)}
                       />
-                      <button
+                      {/* <button
                         type="button"
                         className="btn btn-outline-secondary"
                         onClick={() => setStock(stock + 1)}
                       >
                         +
-                      </button>
+                      </button> */}
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label>Images</label>
+                    <label> Upload Images</label>
                     <div className="custom-file">
                       <input
                         type="file"

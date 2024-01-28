@@ -101,13 +101,17 @@ const UpdateUser = () => {
         </div>
 
         <div className="col-12 col-md-10">
-          <div className="row wrapper">
+          <div className="wrapper my-5">
             <div className="col-10 col-lg-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h1 className="mt-2 mb-5">Update User</h1>
+                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update User</h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Name</label>
+                  <label htmlFor="name_field">Name:</label>
 
                   <input
                     type="name"
@@ -120,7 +124,7 @@ const UpdateUser = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email_field">Email</label>
+                  <label htmlFor="email_field">Email:</label>
 
                   <input
                     type="email"
@@ -133,7 +137,7 @@ const UpdateUser = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="role_field">Role</label>
+                  <label htmlFor="role_field">Role:</label>
 
                   <select
                     id="role_field"

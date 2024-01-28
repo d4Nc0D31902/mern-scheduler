@@ -100,6 +100,22 @@ exports.updateBorrow = async (req, res, next) => {
       return next(new ErrorHandler("Borrow not found", 404));
     }
 
+    // Check if status is changing to "Returned"
+    if (status === "Returned" && borrow.status !== "Returned") {
+      // Fetch the equipment details
+      const equipmentDetails = await Equipment.findOne({ name: equipment });
+
+      if (!equipmentDetails) {
+        return next(new ErrorHandler("Equipment not found", 404));
+      }
+
+      // Add the returned quantity back to the equipment stock
+      equipmentDetails.stock += quantity;
+
+      // Save the updated equipment details
+      await equipmentDetails.save();
+    }
+
     // Update borrow properties
     borrow.equipment = equipment;
     borrow.quantity = quantity;

@@ -122,9 +122,13 @@ const UpdateBorrow = () => {
         <div className="col-12 col-md-10">
           <div className="wrapper my-5">
             <form className="shadow-lg" onSubmit={submitHandler}>
-              <h1 className="mb-4">Update Borrow</h1>
+              <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+              </h3>
+              <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Borrow</h1>
               <div className="form-group">
-                <label htmlFor="user_field">User</label>
+                <label htmlFor="user_field">Name:</label>
                 <input
                   type="text"
                   id="user_field"
@@ -135,7 +139,7 @@ const UpdateBorrow = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="equipment_field">Equipment</label>
+                <label htmlFor="equipment_field">Equipment:</label>
                 <input
                   type="text"
                   id="equipment_field"
@@ -146,7 +150,7 @@ const UpdateBorrow = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="quantity_field">Quantity</label>
+                <label htmlFor="quantity_field">Quantity:</label>
                 <input
                   type="number"
                   id="quantity_field"
@@ -157,7 +161,7 @@ const UpdateBorrow = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="reasonBorrow_field">Reason for Borrow</label>
+                <label htmlFor="reasonBorrow_field">Reason for Borrow:</label>
                 <input
                   type="text"
                   id="reasonBorrow_field"
@@ -168,7 +172,7 @@ const UpdateBorrow = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="dateBorrow_field">Date Borrowed</label>
+                <label htmlFor="dateBorrow_field">Date Borrowed:</label>
                 <input
                   type="datetime-local"
                   id="dateBorrow_field"
@@ -179,7 +183,7 @@ const UpdateBorrow = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="dateReturn_field">Date Return</label>
+                <label htmlFor="dateReturn_field">Date Return:</label>
                 <input
                   type="datetime-local"
                   id="dateReturn_field"
@@ -190,7 +194,7 @@ const UpdateBorrow = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="issue_field">Issue</label>
+                <label htmlFor="issue_field">Issue:</label>
                 <select
                   id="issue_field"
                   className="form-control"
@@ -228,6 +232,7 @@ const UpdateBorrow = () => {
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>
                   <option value="Denied">Denied</option>
+                  <option value="Returned">Returned</option>
                 </select>
               </div>
               <div className="form-group">

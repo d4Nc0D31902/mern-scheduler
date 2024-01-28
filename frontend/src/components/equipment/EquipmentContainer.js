@@ -1,5 +1,5 @@
 // EquipmentContainer.js
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allEquipments } from "../../actions/equipmentActions";
 import Equipment from "./Equipment";
@@ -41,53 +41,59 @@ const EquipmentContainer = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-3">
-          <div className="col-md-3">
-            <div className="sidebar">
-              <h2>Sport Categories</h2>
-              <ul>
-                <li onClick={() => handleSportClick(null)}>All Sports</li>
-                {sports.map((sport) => (
-                  <li
-                    key={sport._id}
-                    onClick={() => handleSportClick(sport.name)}
-                  >
-                    {sport.name}
-                  </li>
-                ))}
-              </ul>
+    <Fragment >
+      <div className="wrappe" style={{ display: "flex" }} >
+        <div className="sidebar">
+          <h2>Categories</h2>
+          <ul>
+            <li onClick={() => handleSportClick(null)}>All Sports</li>
+            {sports.map((sport) => (
+              <li
+                key={sport._id}
+                onClick={() => handleSportClick(sport.name)}
+              >
+                {sport.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+
+
+        <div className="container" >
+          <div className="row">
+
+
+            <div className="col-lg-12 col-md-12">
+
+              <div className="main-content" style={{ marginTop: "30px" }}>
+                <h2 style={{ fontFamily: "monospace", fontWeight: "bold" }}>Available Equipments</h2>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : error ? (
+                  <p>Error: {error}</p>
+                ) : (
+                  <div className="row">
+                    {equipments
+                      .filter((equipment) => {
+                        if (selectedSport === null) {
+                          return true;
+                        }
+                        return equipment.sport === selectedSport;
+                      })
+                      .map((equipment) => (
+                        <div key={equipment._id} className="col-md-3">
+                          <Equipment equipment={equipment} />
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        <div className="col-md-9">
-          <div className="main-content">
-            <h2>Available Equipments</h2>
-            {loading ? (
-              <p>Loading...</p>
-            ) : error ? (
-              <p>Error: {error}</p>
-            ) : (
-              <div className="row">
-                {equipments
-                  .filter((equipment) => {
-                    if (selectedSport === null) {
-                      return true;
-                    }
-                    return equipment.sport === selectedSport;
-                  })
-                  .map((equipment) => (
-                    <div key={equipment._id} className="col-md-4">
-                      <Equipment equipment={equipment} />
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
-        </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

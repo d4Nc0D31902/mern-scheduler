@@ -99,61 +99,39 @@ const ProcessOrder = () => {
             {loading ? (
               <Loader />
             ) : (
-              <div className="row d-flex justify-content-around">
+              <div className="row">
                 <div className="col-12 col-lg-7 order-details">
-                  <h2 className="my-5">Order # {order._id}</h2>
-
-                  <h4 className="mb-4">Shipping Info</h4>
-
-                  <p>
-                    <b>Name:</b> {user && user.name}
-                  </p>
-
-                  <p>
-                    <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
-                  </p>
-
-                  <p className="mb-4">
-                    <b>Address:</b>
-                    {shippingDetails}
-                  </p>
-
-                  <p>
-                    <b>Amount:</b> ${totalPrice}
-                  </p>
-
-                  <hr />
-
-                  <h4 className="my-4">Payment</h4>
-
-                  <p className={isPaid ? "greenColor" : "redColor"}>
-                    <b>{isPaid ? "PAID" : "NOT PAID"}</b>
-                  </p>
-
-                  <h4 className="my-4">Stripe ID</h4>
-
-                  <p>
-                    <b>{paymentInfo && paymentInfo.id}</b>
-                  </p>
-
-                  <h4 className="my-4">Order Status:</h4>
-
-                  <p
-                    className={
-                      order.orderStatus &&
-                      String(order.orderStatus).includes("Delivered")
-                        ? "greenColor"
-                        : "redColor"
-                    }
+                  <h3
+                    className="card-title"
+                    style={{
+                      fontFamily: "sans-serif",
+                      textAlign: "center",
+                      marginBottom: "10px",
+                      margin: "20px",
+                      backgroundColor: "maroon",
+                      color: "white",
+                      padding: "20px",
+                    }}
                   >
-                    <b>{orderStatus}</b>
-                  </p>
+                    <img
+                      src="/images/tupt_logo.png"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        marginRight: "25px",
+                      }}
+                      alt="Logo"
+                    />
+                    TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                  </h3>
 
-                  <h4 className="my-4">Order Items:</h4>
+                  {/* <h1 className="my-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>MERCHANDISE</h1> */}
 
-                  <hr />
-
-                  <div className="cart-item my-1">
+                  <h4 className="my-4 text-center">MERCH ORDERS</h4>
+                  <div
+                    className="cart-item my-1"
+                    style={{ backgroundColor: "" }}
+                  >
                     {orderItems &&
                       orderItems.map((item) => (
                         <div key={item.product} className="row my-5">
@@ -161,9 +139,10 @@ const ProcessOrder = () => {
                             <img
                               src={item.image}
                               alt={item.name}
-                              height="45"
+                              height="65"
                               width="65"
                             />
+                            <hr />
                           </div>
 
                           <div className="col-5 col-lg-5">
@@ -173,7 +152,7 @@ const ProcessOrder = () => {
                           </div>
 
                           <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                            <p>${item.price}</p>
+                            <p>₱{item.price}</p>
                           </div>
 
                           <div className="col-4 col-lg-3 mt-4 mt-lg-0">
@@ -183,30 +162,107 @@ const ProcessOrder = () => {
                       ))}
                   </div>
 
+                  <h4 className="mb-4 text-center">PAYMENT INFORMATION</h4>
+
+                  <p>
+                    <b>Customer Name:</b> {user && user.name}
+                  </p>
+
+                  <p>
+                    <b>Phone Number:</b> {shippingInfo && shippingInfo.phoneNo}
+                  </p>
+
+                  <p className="mb-4">
+                    <b>Address: </b>
+                    {shippingDetails}
+                  </p>
+
+                  <p>
+                    <b>Payment Amount:</b> ₱{totalPrice}
+                  </p>
+
+                  <p>
+                    <b>Reference #</b> {order._id}
+                  </p>
+
                   <hr />
-                </div>
+                  <p>
+                    <b>Payment Status: </b>
+                    <b className={isPaid ? "greenColor" : "redColor"}>
+                      {isPaid ? "PAID" : "NOT PAID"}
+                    </b>
+                  </p>
 
-                <div className="col-12 col-lg-3 mt-5">
-                  <h4 className="my-4">Status</h4>
+                  {/* <h4 className="my-4">Payment Status</h4>
 
-                  <div className="form-group">
+                  <p className={isPaid ? "greenColor" : "redColor"}>
+                    <b>{isPaid ? "PAID" : "NOT PAID"}</b>
+                  </p> */}
+                  <p>
+                    <b>Stripe ID</b> {paymentInfo && paymentInfo.id}
+                  </p>
+
+                  {/* <h4 className="my-4">Stripe ID</h4>
+
+                  <p>
+                    <b>{paymentInfo && paymentInfo.id}</b>
+                  </p> */}
+
+                  <p>
+                    <b>Order Status: </b>{" "}
+                    <b
+                      className={
+                        order.orderStatus &&
+                        String(order.orderStatus).includes("Delivered")
+                          ? "greenColor"
+                          : "redColor"
+                      }
+                    >
+                      {orderStatus}
+                    </b>
+                  </p>
+
+                  {/* <h4 className="my-4">Order Status:</h4>
+
+                  <p
+                    className={
+                      order.orderStatus &&
+                        String(order.orderStatus).includes("Delivered")
+                        ? "greenColor"
+                        : "redColor"
+                    }
+                  >
+                    <b>{orderStatus}</b>
+                  </p> */}
+
+                  <hr />
+
+                  <h4
+                    className="my-4 text-center"
+                    style={{ marginBottom: "200px" }}
+                  >
+                    Status
+                  </h4>
+
+                  <div className="form-group" style={{ marginBottom: "" }}>
                     <select
                       className="form-control"
                       name="status"
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
                     >
-                      <option value="Processing">Processing</option>
+                      <option value="Processing">Pending</option>
 
-                      <option value="Shipped">Shipped</option>
+                      <option value="Shipped">For Claiming</option>
 
-                      <option value="Delivered">Delivered</option>
+                      <option value="Delivered">Claimed</option>
                     </select>
                   </div>
 
                   <button
                     className="btn btn-primary btn-block"
                     onClick={() => updateOrderHandler(order._id)}
+                    style={{ marginBottom: "200px" }}
                   >
                     Update Status
                   </button>

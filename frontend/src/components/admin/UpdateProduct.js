@@ -144,9 +144,13 @@ const UpdateProduct = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h1 className="mb-4">Update Product</h1>
+                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Product</h1>
                 <div className="form-group">
-                  <label htmlFor="name_field">Name</label>
+                  <label htmlFor="name_field">Merch:</label>
                   <input
                     type="text"
                     id="name_field"
@@ -157,7 +161,7 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="price_field">Price</label>
+                  <label htmlFor="price_field">Price:</label>
 
                   <input
                     type="text"
@@ -169,7 +173,7 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="description_field">Description</label>
+                  <label htmlFor="description_field">Description:</label>
 
                   <textarea
                     className="form-control"
@@ -198,7 +202,7 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="stock_field">Stock</label>
+                  <label htmlFor="stock_field">Remaining Stocks:</label>
 
                   <input
                     type="number"
@@ -209,7 +213,7 @@ const UpdateProduct = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="seller_field">Seller Name</label>
+                  <label htmlFor="seller_field">Sellers Name: </label>
                   <input
                     type="text"
                     id="seller_field"
@@ -219,7 +223,7 @@ const UpdateProduct = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Images</label>
+                  <label>Upload Images:</label>
                   <div className="custom-file">
                     <input
                       type="file"

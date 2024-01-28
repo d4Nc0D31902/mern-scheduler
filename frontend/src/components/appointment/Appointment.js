@@ -232,14 +232,19 @@ const NewAppointment = () => {
 
   return (
     <Fragment>
-      <div className="wrapper my-5">
-        <form onSubmit={submitHandler}>
-          <h1 className="mb-4">New Appointment</h1>
+      <div className="wrapper my-5" >
+        <form onSubmit={submitHandler} style={{ borderStyle: "solid", borderWidth: "2px" }}>
+          <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+            <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+            TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+          </h3>
+          <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Appointment</h1>
 
           <div className="form-group">
             <label htmlFor="title_field">Title:</label>
             <input
               type="text"
+              placeholder="Title ex.Practice Basketball, etc..."
               id="title_field"
               className={`form-control ${errors.title && "is-invalid"}`}
               value={title}
@@ -254,7 +259,9 @@ const NewAppointment = () => {
             <label htmlFor="body_field">Description</label>
             <textarea
               className={`form-control ${errors.description && "is-invalid"}`}
+
               id="body_field"
+              placeholder="Describe the event..."
               rows="8"
               value={description}
               onChange={(e) => setDescrtiption(e.target.value)}

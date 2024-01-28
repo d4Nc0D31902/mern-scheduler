@@ -37,17 +37,17 @@ h2 {
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .card-img-top {
   width: 100%;
-  height: 200px;
+  height: 50px;
   object-fit: cover;
 }
 
 .card-body {
-  text-align: center;
+  text-align: justify;
 }
 
 /* Scroll Bar */
@@ -69,7 +69,7 @@ h2 {
 
 nav {
   background-color: maroon;
-  padding: 1rem 1rem;
+  box-shadow: red 2px 2px 5px;
 }
 
 #search_btn {
@@ -257,6 +257,7 @@ footer {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -566,7 +567,7 @@ footer {
   margin-right: 0.3rem;
 }
 
-#sidebar ul li.active > a,
+#sidebar ul li.active>a,
 a[aria-expanded="true"] {
   color: #fff;
   background: gray;
@@ -651,7 +652,7 @@ ul.CTAs a {
 
 .review_user {
   font-size: 0.8rem;
-  color: grey;
+  color: rgb(117, 116, 116);
 }
 
 .center-request {
@@ -691,19 +692,89 @@ ul.CTAs a {
 }
 
 /* Add this style to center the input and button in the form group */
-.input-group > input,
-.input-group > .input-group-append {
+.input-group>input,
+.input-group>.input-group-append {
   display: inline-block;
 }
 
 /* Add this style for responsiveness */
 @media (max-width: 576px) {
-  .input-group > input,
-  .input-group > .input-group-append {
+
+  .input-group>input,
+  .input-group>.input-group-append {
     display: block;
     width: 100%;
   }
+
   .btn-outline-secondary {
     border-radius: 0 0 5px 5px;
   }
+}
+
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* .animation-effect */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+@keyframes slideInTop {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animation-effect-top {
+  animation: slideInTop 1s ease-in-out;
+}
+
+.animation-effect-right {
+  animation: slideInRight 1s ease-in-out;
+}
+
+.animation-effect-left {
+  animation: slideInLeft 1s ease-in-out;
+}
+
+.button-request {
+  background-color: gray;
+  border-radius: 30px;
 }

@@ -134,9 +134,14 @@ const UpdateAnnouncement = () => {
                   onSubmit={submitHandler}
                   encType="multipart/form-data"
                 >
-                  <h1 className="mb-4">Update Announcement</h1>
+                  <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                    <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                    TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                  </h3>
+
+                  <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Announcement</h1>
                   <div className="form-group">
-                    <label htmlFor="title_field">Title</label>
+                    <label htmlFor="title_field">Title:</label>
                     <input
                       type="text"
                       id="title_field"
@@ -147,7 +152,7 @@ const UpdateAnnouncement = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="body_field">Body</label>
+                    <label htmlFor="body_field">Caption:</label>
                     <textarea
                       className="form-control"
                       id="body_field"
@@ -158,7 +163,7 @@ const UpdateAnnouncement = () => {
                   </div>
 
                   <div className="form-group">
-                    <label>Images</label>
+                    <label>Upload Images</label>
                     <div className="custom-file">
                       <input
                         type="file"

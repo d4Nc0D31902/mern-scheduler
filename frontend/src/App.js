@@ -73,6 +73,9 @@ import CategoryList from "./components/admin/CategoryList.js";
 import NewCategory from "./components/admin/NewCategory.js";
 import UpdateCategory from "./components/admin/UpdateCategory.js";
 
+
+import HomePage from "./components/homepage/HomePage.js";
+
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -82,7 +85,8 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        {/* <Route path="/store" element={<Home />} exact="true" /> */}
+        <Route path="/store" element={<Home />} exact="true" />
+        <Route path="/" element={<HomePage />} exact="true" />
         <Route path="/product/:id" element={<ProductDetails />} exact="true" />
         <Route
           path="/equipmentz"
@@ -463,6 +467,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+
+
       </Routes>
       {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
     </div>

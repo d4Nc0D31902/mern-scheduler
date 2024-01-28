@@ -102,11 +102,16 @@ const NewAnnouncement = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h1 className="mb-4">New Announcement</h1>
+                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1 className="mb-4 text-center " style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Announcement</h1>
 
                 <div className="form-group">
-                  <label htmlFor="title_field">Title</label>
+                  <label htmlFor="title_field">Title:</label>
                   <input
+                  placeholder="Put title ex.(ACSO WEEK HAPPENINGS) etc."
                     type="text"
                     id="title_field"
                     className="form-control"
@@ -116,8 +121,9 @@ const NewAnnouncement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="body_field">Body</label>
+                  <label htmlFor="body_field">Caption:</label>
                   <textarea
+                  placeholder="Add a caption here"
                     className="form-control"
                     id="body_field"
                     rows="8"
@@ -127,7 +133,7 @@ const NewAnnouncement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Images</label>
+                  <label>Upload Images</label>
                   <div className="custom-file">
                     <input
                       type="file"

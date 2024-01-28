@@ -24,12 +24,14 @@ const Search = () => {
           className="form-control"
           placeholder="Enter Product Name ..."
           onChange={(e) => setKeyword(e.target.value)}
+
         />
-        <div className="input-group-append">
-          <button id="search_btn" className="btn">
+        <div>
+          <button id="search_btn" className="btn" style={{ padding: "7px 14px" }}>
             <i className="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>
+
       </div>
     </form>
   );

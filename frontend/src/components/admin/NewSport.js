@@ -55,10 +55,14 @@ const NewSport = () => {
           <Fragment>
             <div className="wrapper my-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h1 className="mb-4">New Sport</h1>
+                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1 className="mb-4 text-center">New Sport</h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Name</label>
+                  <label htmlFor="name_field">Name of the sport:</label>
                   <input
                     type="text"
                     id="name_field"

@@ -46,6 +46,8 @@ const BorrowsList = () => {
     switch (status) {
       case "Approved":
         return "green";
+      case "Returned":
+        return "green";
       case "Pending":
         return "orange";
       case "Denied":
@@ -194,6 +196,7 @@ const BorrowsList = () => {
                 <option value="Approved">Approved</option>
                 <option value="Denied">Denied</option>
                 <option value="Pending">Pending</option>
+                <option value="Returned">Returned</option>
               </select>
             </div>
             {loading ? (

@@ -115,11 +115,16 @@ const NewProduct = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h1 className="mb-4">New Product</h1>
+                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Product</h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Name</label>
+                  <label htmlFor="name_field">Merch:</label>
                   <input
+                  placeholder="Put the name of the merch"
                     type="text"
                     id="name_field"
                     className="form-control"
@@ -129,7 +134,7 @@ const NewProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="price_field">Price</label>
+                  <label htmlFor="price_field">Price:</label>
                   <input
                     type="text"
                     id="price_field"
@@ -140,8 +145,10 @@ const NewProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="description_field">Description</label>
+                  <label htmlFor="description_field">Description:</label>
+
                   <textarea
+                  placeholder="Describe the merch here"
                     className="form-control"
                     id="description_field"
                     rows="8"
@@ -167,7 +174,7 @@ const NewProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="stock_field">Stock</label>
+                  <label htmlFor="stock_field">Remaining Stocks:</label>
                   <input
                     type="number"
                     id="stock_field"
@@ -178,7 +185,7 @@ const NewProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="seller_field">Seller Name</label>
+                  <label htmlFor="seller_field">Seller Name:</label>
                   <input
                     type="text"
                     id="seller_field"
@@ -189,7 +196,7 @@ const NewProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Images</label>
+                  <label>Upload Images</label>
                   <div className="custom-file">
                     <input
                       type="file"

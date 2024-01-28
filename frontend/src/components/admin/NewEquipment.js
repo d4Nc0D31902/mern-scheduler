@@ -122,11 +122,17 @@ const NewEquipment = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h1 className="mb-4">New Equipment</h1>
+                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                  TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                </h3>
+                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Equipment</h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Name</label>
+                  <label htmlFor="name_field">Equipment Name:</label>
+
                   <input
+                  placeholder="Put here the equipment name"
                     type="text"
                     id="name_field"
                     className="form-control"
@@ -136,8 +142,9 @@ const NewEquipment = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="description_field">Description</label>
+                  <label htmlFor="description_field">Description:</label>
                   <textarea
+                    placeholder="describe the equipment"
                     className="form-control"
                     id="description_field"
                     rows="8"
@@ -154,7 +161,7 @@ const NewEquipment = () => {
                     value={sport}
                     onChange={(e) => setSport(e.target.value)}
                   >
-                    <option value="">Select Sport</option>
+                    <option value="">Select Sports Category</option>
                     {sports.map((sport) => (
                       <option key={sport._id} value={sport.name}>
                         {sport.name}
@@ -164,7 +171,7 @@ const NewEquipment = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="stock_field">Stock</label>
+                  <label htmlFor="stock_field">Remaining Stocks:</label>
                   <div className="input-group">
                     <button
                       type="button"
@@ -191,7 +198,7 @@ const NewEquipment = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Images</label>
+                  <label>Upload Images:</label>
                   <div className="custom-file">
                     <input
                       type="file"

@@ -5,6 +5,7 @@ import MetaData from "../layout/MetaData";
 import CheckoutSteps from "./CheckoutSteps";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingInfo } from "../../actions/cartActions";
+
 const Shipping = () => {
   const countriesList = Object.values(countries);
   const { shippingInfo } = useSelector((state) => state.cart);
@@ -12,15 +13,23 @@ const Shipping = () => {
   const [city, setCity] = useState(shippingInfo.city);
   const [postalCode, setPostalCode] = useState(shippingInfo.postalCode);
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
-  const [country, setCountry] = useState(shippingInfo.country);
-
+  const country = "Philippines"; // Set country as constant
   const dispatch = useDispatch();
   let navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!address || !city || !postalCode || !phoneNo) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    // Additional validation can be added here, such as checking postal code format, phone number format, etc.
+
     dispatch(saveShippingInfo({ address, city, phoneNo, postalCode, country }));
     navigate("/confirm");
   };
+
   return (
     <Fragment>
       <MetaData title={"Shipping Info"} />
@@ -35,6 +44,7 @@ const Shipping = () => {
                 type="text"
                 id="address_field"
                 className="form-control"
+                placeholder="Enter your address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 required
@@ -42,11 +52,11 @@ const Shipping = () => {
             </div>
             <div className="form-group">
               <label htmlFor="city_field">City</label>
-
               <input
                 type="text"
                 id="city_field"
                 className="form-control"
+                placeholder="Enter your city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
@@ -55,11 +65,11 @@ const Shipping = () => {
 
             <div className="form-group">
               <label htmlFor="phone_field">Phone No</label>
-
               <input
-                type="phone"
+                type="tel"
                 id="phone_field"
                 className="form-control"
+                placeholder="Enter your phone number"
                 value={phoneNo}
                 onChange={(e) => setPhoneNo(e.target.value)}
                 required
@@ -68,11 +78,11 @@ const Shipping = () => {
 
             <div className="form-group">
               <label htmlFor="postal_code_field">Postal Code</label>
-
               <input
-                type="number"
+                type="text"
                 id="postal_code_field"
                 className="form-control"
+                placeholder="Enter your postal code"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
                 required
@@ -80,19 +90,13 @@ const Shipping = () => {
             </div>
             <div className="form-group">
               <label htmlFor="country_field">Country</label>
-              <select
+              <input
+                type="text"
                 id="country_field"
                 className="form-control"
                 value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                required
-              >
-                {countriesList.map((country) => (
-                  <option key={country.name} value={country.name}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
+                readOnly
+              />
             </div>
             <button
               id="shipping_btn"
@@ -107,4 +111,5 @@ const Shipping = () => {
     </Fragment>
   );
 };
+
 export default Shipping;
