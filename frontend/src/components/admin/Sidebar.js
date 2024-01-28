@@ -19,7 +19,7 @@ const Sidebar = () => {
               aria-expanded="false"
               className="dropdown-toggle"
             >
-              <i className="fa fa-calendar"></i> Appointments
+              <i className="fa fa-calendar"></i> Schedules
             </a>
 
             <ul className="collapse list-unstyled" id="appointmentSubmenu">
