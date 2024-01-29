@@ -53,7 +53,109 @@ const OrderDetails = () => {
         <Loader />
       ) : (
         <Fragment>
-          <div className="row d-flex justify-content-between">
+         <div className="row"  style={{marginTop:"30px"}}>
+                <div className="col-12 col-lg-7 order-details">
+              <h3
+                className="card-title"
+                style={{
+                  fontFamily: "sans-serif",
+                  textAlign: "center",
+                  marginBottom: "10px",
+                  margin: "20px",
+                  backgroundColor: "maroon",
+                  color: "white",
+                  padding: "20px",
+                }}
+              >
+                <img
+                  src="/images/tupt_logo.png"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    marginRight: "25px",
+                  }}
+                  alt="Logo"
+                />
+                TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+              </h3>
+              <h4 className="my-4 text-center">SHIPPING INFORMATION</h4>
+
+              <div className="cart-item my-1">
+                {orderItems &&
+                  orderItems.map((item) => (
+                    <div key={item.product} className="row my-5">
+                      <div className="col-4 col-lg-2">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          height="45"
+                          width="65"
+                        />
+                      </div>
+
+                      <div className="col-5 col-lg-5">
+                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      </div>
+
+                      <div className="col-4 col-lg-2 mt-4 mt-lg-0">
+                        <p>₱{item.price}</p>
+                      </div>
+
+                      <div className="col-4 col-lg-3 mt-4 mt-lg-0">
+                        <p>{item.quantity} Piece(s)</p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <h4 className="mb-4 text-center">TRANSACTION DETAILS</h4>
+              
+              <p>
+                    <b>Customer Name:</b> {user && user.name}
+                  </p>
+
+                  <p>
+                    <b>Phone Number:</b> {shippingInfo && shippingInfo.phoneNo}
+                  </p>
+
+                  <p className="mb-4">
+                    <b>Address: </b>
+                    {shippingDetails}
+                  </p>
+
+                  <p>
+                    <b>Payment Amount:</b> ₱{totalPrice}
+                  </p>
+
+                  <p>
+                    <b>Reference #</b> {order._id}
+                  </p>
+
+                  <hr />
+                  <p>
+                    <b>Payment Status: </b>
+                    <b className={isPaid ? "greenColor" : "redColor"}>
+                      {isPaid ? "PAID" : "NOT PAID"}
+                    </b>
+                  </p>
+                  <p style={{marginBottom:"100px"}}>
+                    <b>Order Status: </b>{" "}
+                    <b
+                      className={
+                        order.orderStatus &&
+                        String(order.orderStatus).includes("Delivered")
+                          ? "greenColor"
+                          : "redColor"
+                      }
+                    >
+                      {orderStatus}
+                    </b>
+                  </p>
+         
+         </div>
+         </div>
+          
+
+          {/* <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8 mt-5 order-details">
               <h1 className="my-5">Order # {order._id}</h1>
 
@@ -99,9 +201,9 @@ const OrderDetails = () => {
 
               <h4 className="my-4">Order Items:</h4>
 
-              <hr />
+              <hr /> */}
 
-              <div className="cart-item my-1">
+              {/* <div className="cart-item my-1">
                 {orderItems &&
                   orderItems.map((item) => (
                     <div key={item.product} className="row my-5">
@@ -127,11 +229,11 @@ const OrderDetails = () => {
                       </div>
                     </div>
                   ))}
-              </div>
+              </div> */}
 
-              <hr />
+              {/* <hr />
             </div>
-          </div>
+          </div> */}
         </Fragment>
       )}
     </Fragment>

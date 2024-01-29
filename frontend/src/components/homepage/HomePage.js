@@ -500,7 +500,7 @@ const Homepage = () => {
                 <h5 className="card-title">Borrow Equipment</h5>
                 <p
                   className="card-text"
-                  style={{ fontSize: "14px", textAlign: "justify" }}
+                  style={{ fontSize: "13px", textAlign: "justify" }}
                 >
                   Explore our equipment borrowing service, designed to provide
                   you with the tools you need for your activities. From
