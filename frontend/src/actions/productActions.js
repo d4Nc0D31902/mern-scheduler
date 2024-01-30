@@ -29,6 +29,12 @@ import {
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAIL,
   CLEAR_ERRORS,
+  DEACTIVATE_PRODUCT_REQUEST,
+  DEACTIVATE_PRODUCT_SUCCESS,
+  DEACTIVATE_PRODUCT_FAIL,
+  REACTIVATE_PRODUCT_REQUEST,
+  REACTIVATE_PRODUCT_SUCCESS,
+  REACTIVATE_PRODUCT_FAIL,
 } from "../constants/productConstants";
 
 export const getProducts =
@@ -235,6 +241,46 @@ export const deleteReview = (id, productId) => async (dispatch) => {
     console.log(error.response);
     dispatch({
       type: DELETE_REVIEW_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deactivateProduct = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DEACTIVATE_PRODUCT_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/product/deactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: DEACTIVATE_PRODUCT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const reactivateProduct = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: REACTIVATE_PRODUCT_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/product/reactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: REACTIVATE_PRODUCT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACTIVATE_PRODUCT_FAIL,
       payload: error.response.data.message,
     });
   }

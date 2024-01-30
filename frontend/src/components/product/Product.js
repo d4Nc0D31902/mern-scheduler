@@ -2,6 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Product = ({ product }) => {
+  // Check if the product status is "inactive"
+  if (product.status === "inactive") {
+    return null; // Don't render the product if it's inactive
+  }
+
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-3">
       <div className="card p-3 rounded">

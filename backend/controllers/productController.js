@@ -275,3 +275,37 @@ exports.productSales = async (req, res, next) => {
     totalPercentage,
   });
 };
+
+exports.deactivateProduct = async (req, res, next) => {
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    { status: "inactive" },
+    { new: true, runValidators: true }
+  );
+
+  if (!product) {
+    return next(new ErrorHandler("Product not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Product deactivated",
+  });
+};
+
+exports.reactivateProduct = async (req, res, next) => {
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    { status: "active" },
+    { new: true, runValidators: true }
+  );
+
+  if (!product) {
+    return next(new ErrorHandler("Product not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Product reactivated",
+  });
+};

@@ -13,6 +13,8 @@ const {
   getAdminProducts,
   deleteReview,
   productSales,
+  reactivateProduct,
+  deactivateProduct,
 } = require("../controllers/productController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -54,3 +56,16 @@ router.delete(
 );
 router.get("/admin/products/sales", productSales);
 module.exports = router;
+
+router.put(
+  "/admin/product/deactivate/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  deactivateProduct
+);
+router.put(
+  "/admin/product/reactivate/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  reactivateProduct
+);

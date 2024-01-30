@@ -53,8 +53,15 @@ const Register = () => {
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email.trim() || !emailRegex.test(email)) {
-      newErrors = { ...newErrors, email: "Valid email is required" };
+    if (
+      !email.trim() ||
+      !emailRegex.test(email) ||
+      !email.endsWith("@tup.email.com")
+    ) {
+      newErrors = {
+        ...newErrors,
+        email: "Valid email is required and must be firstname.lastname@tup.email.com",
+      };
       isValid = false;
     }
 
