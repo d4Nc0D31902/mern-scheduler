@@ -53,8 +53,8 @@ const OrderDetails = () => {
         <Loader />
       ) : (
         <Fragment>
-         <div className="row"  style={{marginTop:"30px"}}>
-                <div className="col-12 col-lg-7 order-details">
+          <div className="row" style={{ marginTop: "30px" }}>
+            <div className="col-12 col-lg-7 order-details">
               <h3
                 className="card-title"
                 style={{
@@ -108,52 +108,50 @@ const OrderDetails = () => {
                   ))}
               </div>
               <h4 className="mb-4 text-center">TRANSACTION DETAILS</h4>
-              
+
               <p>
-                    <b>Customer Name:</b> {user && user.name}
-                  </p>
+                <b>Customer Name:</b> {user && user.name}
+              </p>
 
-                  <p>
-                    <b>Phone Number:</b> {shippingInfo && shippingInfo.phoneNo}
-                  </p>
+              <p>
+                <b>Phone Number:</b> {shippingInfo && shippingInfo.phoneNo}
+              </p>
 
-                  <p className="mb-4">
-                    <b>Address: </b>
-                    {shippingDetails}
-                  </p>
+              <p className="mb-4">
+                <b>Address: </b>
+                {shippingDetails}
+              </p>
 
-                  <p>
-                    <b>Payment Amount:</b> ₱{totalPrice}
-                  </p>
+              <p>
+                <b>Payment Amount:</b> ₱{totalPrice}
+              </p>
 
-                  <p>
-                    <b>Reference #</b> {order._id}
-                  </p>
+              <p>
+                <b>Reference #</b> {order._id}
+              </p>
 
-                  <hr />
-                  <p>
-                    <b>Payment Status: </b>
-                    <b className={isPaid ? "greenColor" : "redColor"}>
-                      {isPaid ? "PAID" : "NOT PAID"}
-                    </b>
-                  </p>
-                  <p style={{marginBottom:"100px"}}>
-                    <b>Order Status: </b>{" "}
-                    <b
-                      className={
-                        order.orderStatus &&
-                        String(order.orderStatus).includes("Delivered")
-                          ? "greenColor"
-                          : "redColor"
-                      }
-                    >
-                      {orderStatus}
-                    </b>
-                  </p>
-         
-         </div>
-         </div>
-          
+              <hr />
+              <p>
+                <b>Payment Status: </b>
+                <b className={isPaid ? "greenColor" : "redColor"}>
+                  {isPaid ? "PAID" : "NOT PAID"}
+                </b>
+              </p>
+              <p style={{ marginBottom: "100px" }}>
+                <b>Order Status: </b>{" "}
+                <b
+                  className={
+                    order.orderStatus &&
+                    String(order.orderStatus).includes("Delivered")
+                      ? "greenColor"
+                      : "redColor"
+                  }
+                >
+                  {orderStatus}
+                </b>
+              </p>
+            </div>
+          </div>
 
           {/* <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8 mt-5 order-details">
@@ -203,7 +201,7 @@ const OrderDetails = () => {
 
               <hr /> */}
 
-              {/* <div className="cart-item my-1">
+          {/* <div className="cart-item my-1">
                 {orderItems &&
                   orderItems.map((item) => (
                     <div key={item.product} className="row my-5">
@@ -231,7 +229,7 @@ const OrderDetails = () => {
                   ))}
               </div> */}
 
-              {/* <hr />
+          {/* <hr />
             </div>
           </div> */}
         </Fragment>

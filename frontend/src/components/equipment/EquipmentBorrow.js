@@ -227,7 +227,17 @@ const EquipmentBorrow = () => {
           <Modal.Title>Terms and Conditions</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>This is the content of the Terms and Conditions.</p>
+          <p>
+            By borrowing equipment from our facility, you agree to adhere to the
+            following terms and conditions. In the event that borrowed equipment
+            is returned damaged or lost, the borrower is subject to a penalty
+            equivalent to the cost of replacing the item at its current market
+            value. This penalty applies even if a similar item of higher value
+            is substituted. It is the responsibility of the borrower to ensure
+            the safekeeping and proper use of all borrowed equipment. Failure to
+            comply with these terms may result in additional penalties or
+            restrictions on future borrowing privileges.
+          </p>
           <Form.Check
             type="checkbox"
             label="I agree to the Terms and Conditions"
