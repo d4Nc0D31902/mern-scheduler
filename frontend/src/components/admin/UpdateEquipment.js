@@ -204,6 +204,7 @@ const UpdateEquipment = () => {
                         className="form-control"
                         value={stock}
                         onChange={(e) => setStock(e.target.value)}
+                        disabled
                       />
                       {/* <button
                         type="button"
