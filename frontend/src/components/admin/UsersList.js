@@ -125,12 +125,12 @@ const UsersList = () => {
               <i className="fa fa-pencil"></i>
             </Link>
 
-            <button
+            {/* <button
               className="btn btn-danger py-1 px-2 ml-2"
               onClick={() => deleteUserHandler(user._id)}
             >
               <i className="fa fa-trash"></i>
-            </button>
+            </button> */}
 
             {/* <button className="btn btn-danger py-1 px-2 ml-2">
 

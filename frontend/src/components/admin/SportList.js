@@ -75,12 +75,12 @@ const SportsList = () => {
               >
                 <i className="fa fa-pencil"></i>
               </Link>
-              <button
+              {/* <button
                 className="btn btn-danger py-1 px-2 ml-2"
                 onClick={() => deleteSportHandler(sport._id)}
               >
                 <i className="fa fa-trash"></i>
-              </button>
+              </button> */}
             </Fragment>
           ),
         });
