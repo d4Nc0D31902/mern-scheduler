@@ -46,33 +46,41 @@ const Equipment = ({ equipment }) => {
               Available Stock: {equipment.stock}
             </small>
           </p>
-          <p className="card-stock">
-            <small className="text-muted">Quantity</small>
-          </p>
-          <div className="quantity-control">
+          {equipment.stock > 0 && (
+            <>
+              <p className="card-stock">
+                <small className="text-muted">Quantity</small>
+              </p>
+              <div className="quantity-control">
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={decreaseQuantity}
+                  disabled={quantity === 1 || equipment.stock === 0}
+                >
+                  -
+                </button>
+                <span className="quantity">{quantity}</span>
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={increaseQuantity}
+                  disabled={
+                    quantity === equipment.stock || equipment.stock === 0
+                  }
+                >
+                  +
+                </button>
+              </div>
+            </>
+          )}
+          {equipment.stock > 0 && (
             <button
-              className="btn btn-outline-secondary"
-              onClick={decreaseQuantity}
-              disabled={quantity === 1 || equipment.stock === 0}
+              className="btn btn-primary"
+              onClick={handleBorrowClick}
+              disabled={equipment.stock === 0}
             >
-              -
+              Borrow
             </button>
-            <span className="quantity">{quantity}</span>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={increaseQuantity}
-              disabled={quantity === equipment.stock || equipment.stock === 0}
-            >
-              +
-            </button>
-          </div>
-          <button
-            className="btn btn-primary"
-            onClick={handleBorrowClick}
-            disabled={equipment.stock === 0}
-          >
-            Borrow
-          </button>
+          )}
         </div>
       </div>
     );
