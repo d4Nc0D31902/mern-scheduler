@@ -68,13 +68,13 @@ const OrdersList = () => {
   const setOrders = () => {
     const data = {
       columns: [
-        {
-          label: "Order ID",
+        // {
+        //   label: "Order ID",
 
-          field: "id",
+        //   field: "id",
 
-          sort: "asc",
-        },
+        //   sort: "asc",
+        // },
 
         {
           label: "No of Items",
@@ -112,7 +112,7 @@ const OrdersList = () => {
 
     orders.forEach((order) => {
       data.rows.push({
-        id: order._id,
+        // id: order._id,
 
         numofItems: order.orderItems.length,
 

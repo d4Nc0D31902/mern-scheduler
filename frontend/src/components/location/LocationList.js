@@ -74,11 +74,11 @@ const LocationsList = () => {
   const setLocations = () => {
     const data = {
       columns: [
-        {
-          label: "Location ID",
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "Location ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "Name",
           field: "name",
@@ -96,7 +96,7 @@ const LocationsList = () => {
     if (locations) {
       locations.forEach((location) => {
         data.rows.push({
-          id: location._id,
+          // id: location._id,
           name: location.name,
           actions: (
             <Fragment>

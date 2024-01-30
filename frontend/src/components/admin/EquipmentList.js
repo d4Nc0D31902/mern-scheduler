@@ -45,11 +45,11 @@ const EquipmentsList = () => {
   const setEquipments = () => {
     const data = {
       columns: [
-        {
-          label: "Equipment ID",
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "Equipment ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "Name",
           field: "name",
@@ -70,16 +70,16 @@ const EquipmentsList = () => {
           field: "stock",
           sort: "asc",
         },
-        {
-          label: "Images",
-          field: "images",
-          sort: "asc",
-        },
-        {
-          label: "Created At",
-          field: "createdAt",
-          sort: "asc",
-        },
+        // {
+        //   label: "Images",
+        //   field: "images",
+        //   sort: "asc",
+        // },
+        // {
+        //   label: "Created At",
+        //   field: "createdAt",
+        //   sort: "asc",
+        // },
         {
           label: "Actions",
           field: "actions",
@@ -101,13 +101,13 @@ const EquipmentsList = () => {
         ));
 
         data.rows.push({
-          id: equipment._id,
+          // id: equipment._id,
           name: equipment.name,
           description: equipment.description,
           sport: equipment.sport,
           stock: equipment.stock,
-          images: imageElements,
-          createdAt: new Date(equipment.createdAt).toLocaleString(),
+          // images: imageElements,
+          // createdAt: new Date(equipment.createdAt).toLocaleString(),
           actions: (
             <Fragment>
               <Link

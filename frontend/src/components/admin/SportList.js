@@ -43,11 +43,11 @@ const SportsList = () => {
   const setSports = () => {
     const data = {
       columns: [
-        {
-          label: "Sport ID",
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "Sport ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "Name",
           field: "name",
@@ -65,7 +65,7 @@ const SportsList = () => {
     if (sports) {
       sports.forEach((sport) => {
         data.rows.push({
-          id: sport._id,
+          // id: sport._id,
           name: sport.name,
           actions: (
             <Fragment>

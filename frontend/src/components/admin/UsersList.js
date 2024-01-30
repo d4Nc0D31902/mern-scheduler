@@ -64,13 +64,13 @@ const UsersList = () => {
   const setUsers = () => {
     const data = {
       columns: [
-        {
-          label: "User ID",
+        // {
+        //   label: "User ID",
 
-          field: "id",
+        //   field: "id",
 
-          sort: "asc",
-        },
+        //   sort: "asc",
+        // },
 
         {
           label: "Name",
@@ -108,7 +108,7 @@ const UsersList = () => {
 
     users.forEach((user) => {
       data.rows.push({
-        id: user._id,
+        // id: user._id,
 
         name: user.name,
 

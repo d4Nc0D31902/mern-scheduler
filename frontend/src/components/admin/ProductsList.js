@@ -41,11 +41,11 @@ const ProductsList = () => {
   const setProducts = () => {
     const data = {
       columns: [
-        {
-          label: "ID",
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "Name",
           field: "name",
@@ -70,7 +70,7 @@ const ProductsList = () => {
     };
     products.forEach((product) => {
       data.rows.push({
-        id: product._id,
+        // id: product._id,
         name: product.name,
         price: `₱${product.price}`,
         stock: product.stock,

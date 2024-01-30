@@ -46,11 +46,11 @@ const CategoriesList = () => {
   const setCategories = () => {
     const data = {
       columns: [
-        {
-          label: "Category ID", // Updated label
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "Category ID", // Updated label
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "Name", // Updated label
           field: "name",
@@ -69,7 +69,7 @@ const CategoriesList = () => {
       categories.forEach((category) => {
         // Updated variable name
         data.rows.push({
-          id: category._id, // Updated variable name
+          // id: category._id, // Updated variable name
           name: category.name, // Updated variable name
           actions: (
             <Fragment>
