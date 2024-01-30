@@ -1,27 +1,35 @@
 import {
-  NEW_CATEGORY_REQUEST, // Updated constant
-  NEW_CATEGORY_SUCCESS, // Updated constant
-  NEW_CATEGORY_FAIL, // Updated constant
-  MY_CATEGORIES_REQUEST, // Updated constant
-  MY_CATEGORIES_SUCCESS, // Updated constant
-  MY_CATEGORIES_FAIL, // Updated constant
-  CATEGORY_DETAILS_REQUEST, // Updated constant
-  CATEGORY_DETAILS_SUCCESS, // Updated constant
-  CATEGORY_DETAILS_FAIL, // Updated constant
-  ALL_CATEGORIES_REQUEST, // Updated constant
-  ALL_CATEGORIES_SUCCESS, // Updated constant
-  ALL_CATEGORIES_FAIL, // Updated constant
-  UPDATE_CATEGORY_REQUEST, // Updated constant
-  UPDATE_CATEGORY_SUCCESS, // Updated constant
-  UPDATE_CATEGORY_RESET, // Updated constant
-  UPDATE_CATEGORY_FAIL, // Updated constant
-  DELETE_CATEGORY_REQUEST, // Updated constant
-  DELETE_CATEGORY_SUCCESS, // Updated constant
-  DELETE_CATEGORY_RESET, // Updated constant
-  DELETE_CATEGORY_FAIL, // Updated constant
+  NEW_CATEGORY_REQUEST,
+  NEW_CATEGORY_SUCCESS,
+  NEW_CATEGORY_FAIL,
+  MY_CATEGORIES_REQUEST,
+  MY_CATEGORIES_SUCCESS,
+  MY_CATEGORIES_FAIL,
+  CATEGORY_DETAILS_REQUEST,
+  CATEGORY_DETAILS_SUCCESS,
+  CATEGORY_DETAILS_FAIL,
+  ALL_CATEGORIES_REQUEST,
+  ALL_CATEGORIES_SUCCESS,
+  ALL_CATEGORIES_FAIL,
+  UPDATE_CATEGORY_REQUEST,
+  UPDATE_CATEGORY_SUCCESS,
+  UPDATE_CATEGORY_RESET,
+  UPDATE_CATEGORY_FAIL,
+  DELETE_CATEGORY_REQUEST,
+  DELETE_CATEGORY_SUCCESS,
+  DELETE_CATEGORY_RESET,
+  DELETE_CATEGORY_FAIL,
   CLEAR_ERRORS,
-  SET_CATEGORIES, // Updated constant
-} from "../constants/categoryConstants"; // Updated import
+  SET_CATEGORIES,
+  DEACTIVATE_CATEGORY_REQUEST,
+  DEACTIVATE_CATEGORY_SUCCESS,
+  DEACTIVATE_CATEGORY_FAIL,
+  DEACTIVATE_CATEGORY_RESET,
+  REACTIVATE_CATEGORY_REQUEST,
+  REACTIVATE_CATEGORY_SUCCESS,
+  REACTIVATE_CATEGORY_FAIL,
+  REACTIVATE_CATEGORY_RESET,
+} from "../constants/categoryConstants";
 
 export const newCategoryReducer = (state = {}, action) => {
   switch (action.type) {
@@ -43,6 +51,37 @@ export const newCategoryReducer = (state = {}, action) => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+
+    case DEACTIVATE_CATEGORY_REQUEST:
+    case REACTIVATE_CATEGORY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case DEACTIVATE_CATEGORY_SUCCESS:
+    case REACTIVATE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
+
+    case DEACTIVATE_CATEGORY_FAIL:
+    case REACTIVATE_CATEGORY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case DEACTIVATE_CATEGORY_RESET:
+    case REACTIVATE_CATEGORY_RESET:
+      return {
+        ...state,
+        message: null,
+        error: null,
       };
 
     case CLEAR_ERRORS:

@@ -7,57 +7,77 @@ import Sidebar from "../admin/Sidebar";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  allCategories, // Updated import
+  allCategories,
   clearErrors,
-  deleteCategory, // Updated import
-} from "../../actions/categoryActions"; // Updated import
-import { DELETE_CATEGORY_RESET } from "../../constants/categoryConstants"; // Updated import
+  deleteCategory,
+  deactivateCategory,
+  reactivateCategory,
+} from "../../actions/categoryActions";
+import {
+  DELETE_CATEGORY_RESET,
+  DEACTIVATE_CATEGORY_RESET,
+  REACTIVATE_CATEGORY_RESET,
+} from "../../constants/categoryConstants";
 
 const CategoriesList = () => {
-  // Updated component name
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { loading, error, categories } = useSelector(
     (state) => state.allCategories
-  ); // Updated state variable names
-  const { isDeleted } = useSelector((state) => state.category) || {}; // Updated state variable name
+  );
+  const { isDeleted, isDeactivated, isReactivated } =
+    useSelector((state) => state.category) || {};
   const errMsg = (message = "") =>
     toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
   const successMsg = (message = "") =>
     toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
 
   useEffect(() => {
-    dispatch(allCategories()); // Updated action
+    dispatch(allCategories());
     if (error) {
       errMsg(error);
       dispatch(clearErrors());
     }
     if (isDeleted) {
-      successMsg("Category deleted successfully"); // Updated success message
-      navigate("/admin/categories"); // Updated navigation path
-      dispatch({ type: DELETE_CATEGORY_RESET }); // Updated reset action type
+      successMsg("Category deleted successfully");
+      navigate("/admin/categories");
+      dispatch({ type: DELETE_CATEGORY_RESET });
     }
-  }, [dispatch, error, navigate, isDeleted]);
+    if (isDeactivated) {
+      successMsg("Category deactivated successfully");
+      dispatch({ type: DEACTIVATE_CATEGORY_RESET });
+    }
+    if (isReactivated) {
+      successMsg("Category reactivated successfully");
+      dispatch({ type: REACTIVATE_CATEGORY_RESET });
+    }
+  }, [dispatch, error, navigate, isDeleted, isDeactivated, isReactivated]);
+
+  const toggleCategoryActivation = async (id, isDeactivated) => {
+    if (isDeactivated) {
+      await dispatch(reactivateCategory(id));
+      console.log("Category reactivated:", id);
+    } else {
+      await dispatch(deactivateCategory(id));
+      console.log("Category deactivated:", id);
+    }
+    window.location.reload(); // Reload the page
+  };
 
   const deleteCategoryHandler = (id) => {
-    dispatch(deleteCategory(id)); // Updated action
+    dispatch(deleteCategory(id));
   };
 
   const setCategories = () => {
     const data = {
       columns: [
-        // {
-        //   label: "Category ID", // Updated label
-        //   field: "id",
-        //   sort: "asc",
-        // },
         {
-          label: "Name", // Updated label
+          label: "Name",
           field: "name",
           sort: "asc",
         },
         {
-          label: "Actions", // Updated label
+          label: "Actions",
           field: "actions",
           sort: "asc",
         },
@@ -67,23 +87,36 @@ const CategoriesList = () => {
 
     if (categories) {
       categories.forEach((category) => {
-        // Updated variable name
         data.rows.push({
-          // id: category._id, // Updated variable name
-          name: category.name, // Updated variable name
+          name: category.name,
           actions: (
             <Fragment>
-              <Link
-                to={`/admin/category/${category._id}`} // Updated path
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
+              {category.status === "active" && (
+                <Link
+                  to={`/admin/category/${category._id}`}
+                  className="btn btn-primary py-1 px-2"
+                >
+                  <i className="fa fa-pencil"></i>
+                </Link>
+              )}
               <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteCategoryHandler(category._id)} // Updated variable name
+                className={`btn ${
+                  category.status === "inactive" ? "btn-success" : "btn-danger"
+                } py-1 px-2 ml-2`}
+                onClick={() =>
+                  toggleCategoryActivation(
+                    category._id,
+                    category.status === "inactive"
+                  )
+                }
               >
-                <i className="fa fa-trash"></i>
+                <i
+                  className={`fa ${
+                    category.status === "inactive"
+                      ? "fa-check-circle"
+                      : "fa-times-circle"
+                  }`}
+                ></i>
               </button>
             </Fragment>
           ),
@@ -104,10 +137,8 @@ const CategoriesList = () => {
         <div className="col-12 col-md-10">
           <Fragment>
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h1 className="my-5">All Categories</h1> {/* Updated heading */}
+              <h1 className="my-5">All Categories</h1>
               <Link to="/admin/category" className="btn btn-primary">
-                {" "}
-                {/* Updated path and label */}
                 Create Category
               </Link>
             </div>
@@ -115,7 +146,7 @@ const CategoriesList = () => {
               <Loader />
             ) : (
               <MDBDataTable
-                data={setCategories()} // Updated function name
+                data={setCategories()}
                 className="px-3"
                 bordered
                 striped
@@ -129,4 +160,4 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList; // Updated export
+export default CategoriesList;

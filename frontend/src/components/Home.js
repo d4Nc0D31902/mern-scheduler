@@ -40,7 +40,11 @@ const Home = () => {
         const response = await axios.get(
           `${process.env.REACT_APP_API}/api/v1/categories`
         );
-        setCategories([{ _id: "", name: "All" }, ...response.data.categories]);
+        const allCategory = { _id: "", name: "All" }; // Manually include the "All" category
+        const filteredCategories = response.data.categories.filter(
+          (category) => category.status === "active"
+        );
+        setCategories([allCategory, ...filteredCategories]); // Add "All" category to the beginning of the array
       } catch (error) {
         notify("Error fetching categories");
         console.error("Error fetching categories:", error);

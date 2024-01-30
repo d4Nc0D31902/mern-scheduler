@@ -7,6 +7,8 @@ const {
   getLocationById,
   updateLocation,
   deleteLocation,
+  deactivateLocation,
+  reactivateLocation,
 } = require("../controllers/locationController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -26,5 +28,19 @@ router
   .route("/admin/location/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateLocation)
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteLocation);
+
+router.put(
+  "/admin/location/deactivate/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  deactivateLocation
+);
+
+router.put(
+  "/admin/location/reactivate/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  reactivateLocation
+);
 
 module.exports = router;

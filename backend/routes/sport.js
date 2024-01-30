@@ -7,6 +7,8 @@ const {
   getSportById,
   updateSport,
   deleteSport,
+  deactivateSport,
+  reactivateSport,
 } = require("../controllers/sportController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -26,5 +28,19 @@ router
   .route("/admin/sport/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateSport)
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteSport);
+
+router.put(
+  "/admin/sport/deactivate/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  deactivateSport
+);
+
+router.put(
+  "/admin/sport/reactivate/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  reactivateSport
+);
 
 module.exports = router;

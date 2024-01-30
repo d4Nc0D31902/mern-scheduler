@@ -109,3 +109,53 @@ exports.deleteLocation = async (req, res, next) => {
     next(new ErrorHandler("Failed to delete the location", 500));
   }
 };
+
+// @desc    Deactivate a location by ID
+// @route   PUT /api/locations/deactivate/:id
+// @access  Private (You can define your own authentication middleware)
+
+exports.deactivateLocation = async (req, res, next) => {
+  try {
+    const location = await Location.findById(req.params.id);
+
+    if (!location) {
+      return next(new ErrorHandler("Location not found", 404));
+    }
+
+    location.status = "inactive";
+
+    const deactivatedLocation = await location.save();
+
+    res.status(200).json({
+      success: true,
+      location: deactivatedLocation,
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to deactivate the location", 500));
+  }
+};
+
+// @desc    Reactivate a location by ID
+// @route   PUT /api/locations/reactivate/:id
+// @access  Private (You can define your own authentication middleware)
+
+exports.reactivateLocation = async (req, res, next) => {
+  try {
+    const location = await Location.findById(req.params.id);
+
+    if (!location) {
+      return next(new ErrorHandler("Location not found", 404));
+    }
+
+    location.status = "active";
+
+    const reactivatedLocation = await location.save();
+
+    res.status(200).json({
+      success: true,
+      location: reactivatedLocation,
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to reactivate the location", 500));
+  }
+};

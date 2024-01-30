@@ -89,19 +89,6 @@ const NewAppointment = () => {
 
   const [errors, setErrors] = useState({});
 
-  // useEffect(() => {
-  //   if (error) {
-  //     setErrors({ ...errors, createAppointmentError: error });
-  //     dispatch(clearErrors());
-  //   }
-
-  //   if (success) {
-  //     navigate("/calendar");
-  //     message("Appointment created successfully");
-  //     dispatch({ type: NEW_APPOINTMENT_RESET });
-  //   }
-  // }, [dispatch, error, success, navigate, errors]);
-
   const validateForm = () => {
     let isValid = true;
     let newErrors = {};
@@ -169,7 +156,6 @@ const NewAppointment = () => {
         navigate("/calendar");
         toast.success("Appointment requested successfully");
       } catch (error) {
-        // Handle error if needed
         console.error("Error creating appointment:", error);
       }
     }
@@ -304,13 +290,19 @@ const NewAppointment = () => {
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="" disabled selected>
-                Select a Reason
+                Select a Location
               </option>
-              {locations.map((loc) => (
-                <option key={loc._id} value={loc.name}>
-                  {loc.name}
-                </option>
-              ))}
+              {locations.map((loc) => {
+                if (loc.status !== "inactive") {
+                  return (
+                    <option key={loc._id} value={loc.name}>
+                      {loc.name}
+                    </option>
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </select>
             {errors.location && (
               <div className="invalid-feedback">{errors.location}</div>

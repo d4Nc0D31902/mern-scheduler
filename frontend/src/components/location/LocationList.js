@@ -10,15 +10,20 @@ import {
   allLocations,
   clearErrors,
   deleteLocation,
+  deactivateLocation,
+  reactivateLocation,
 } from "../../actions/locationActions";
-import { DELETE_LOCATION_RESET } from "../../constants/locationConstants";
+import {
+  DELETE_LOCATION_RESET,
+  DEACTIVATE_LOCATION_RESET,
+  REACTIVATE_LOCATION_RESET,
+} from "../../constants/locationConstants";
 
 const LocationsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, locations, isDeleted } = useSelector(
-    (state) => state.allLocations
-  );
+  const { loading, error, locations, isDeleted, isDeactivated, isReactivated } =
+    useSelector((state) => state.allLocations);
 
   const errMsg = useCallback(
     (message = "") =>
@@ -39,6 +44,20 @@ const LocationsList = () => {
     [dispatch]
   );
 
+  const handleDeactivateLocation = useCallback(
+    (id) => {
+      dispatch(deactivateLocation(id));
+    },
+    [dispatch]
+  );
+
+  const handleReactivateLocation = useCallback(
+    (id) => {
+      dispatch(reactivateLocation(id));
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch(allLocations());
     if (error) {
@@ -55,7 +74,21 @@ const LocationsList = () => {
   }, [isDeleted, successMsg, dispatch]);
 
   useEffect(() => {
-    if (isDeleted) {
+    if (isDeactivated) {
+      successMsg("Location deactivated successfully");
+      dispatch({ type: DEACTIVATE_LOCATION_RESET });
+    }
+  }, [isDeactivated, successMsg, dispatch]);
+
+  useEffect(() => {
+    if (isReactivated) {
+      successMsg("Location reactivated successfully");
+      dispatch({ type: REACTIVATE_LOCATION_RESET });
+    }
+  }, [isReactivated, successMsg, dispatch]);
+
+  useEffect(() => {
+    if (isDeleted || isDeactivated || isReactivated) {
       // Add a delay to give time for the success toast to show
       setTimeout(() => {
         // Reload the page
@@ -65,20 +98,26 @@ const LocationsList = () => {
         navigate("/admin/locations");
       }, 1000);
     }
-  }, [isDeleted, navigate]);
+  }, [isDeleted, isDeactivated, isReactivated, navigate]);
 
   const deleteLocationHandler = (id) => {
     handleDeleteLocation(id);
   };
 
+  const toggleLocationActivation = async (id, isDeactivated) => {
+    if (isDeactivated) {
+      await dispatch(reactivateLocation(id));
+      console.log("Location reactivated:", id);
+    } else {
+      await dispatch(deactivateLocation(id));
+      console.log("Location deactivated:", id);
+    }
+    window.location.reload(); // Reload the page
+  };
+
   const setLocations = () => {
     const data = {
       columns: [
-        // {
-        //   label: "Location ID",
-        //   field: "id",
-        //   sort: "asc",
-        // },
         {
           label: "Name",
           field: "name",
@@ -96,22 +135,36 @@ const LocationsList = () => {
     if (locations) {
       locations.forEach((location) => {
         data.rows.push({
-          // id: location._id,
           name: location.name,
           actions: (
             <Fragment>
-              <Link
-                to={`/admin/location/${location._id}`}
-                className="btn btn-primary py-1 px-2"
+              {location.status === "active" && (
+                <Link
+                  to={`/admin/location/${location._id}`}
+                  className="btn btn-primary py-1 px-2"
+                >
+                  <i className="fa fa-pencil"></i>
+                </Link>
+              )}
+              <button
+                className={`btn ${
+                  location.status === "inactive" ? "btn-success" : "btn-danger"
+                } py-1 px-2 ml-2`}
+                onClick={() =>
+                  toggleLocationActivation(
+                    location._id,
+                    location.status === "inactive"
+                  )
+                }
               >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              {/* <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteLocationHandler(location._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button> */}
+                <i
+                  className={`fa ${
+                    location.status === "inactive"
+                      ? "fa-check-circle"
+                      : "fa-times-circle"
+                  }`}
+                ></i>
+              </button>
             </Fragment>
           ),
         });

@@ -134,13 +134,13 @@ const OrdersList = () => {
             >
               <i className="fa fa-eye"></i>
             </Link>
-
+            {/* 
             <button
               className="btn btn-danger py-1 px-2 ml-2"
               onClick={() => deleteOrderHandler(order._id)}
             >
               <i className="fa fa-trash"></i>
-            </button>
+            </button> */}
           </Fragment>
         ),
       });

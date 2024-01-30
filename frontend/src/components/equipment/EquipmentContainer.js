@@ -41,33 +41,31 @@ const EquipmentContainer = () => {
   };
 
   return (
-    <Fragment >
-      <div className="wrappe" style={{ display: "flex" }} >
+    <Fragment>
+      <div className="wrappe" style={{ display: "flex" }}>
         <div className="sidebar">
           <h2>Categories</h2>
           <ul>
             <li onClick={() => handleSportClick(null)}>All Sports</li>
             {sports.map((sport) => (
-              <li
-                key={sport._id}
-                onClick={() => handleSportClick(sport.name)}
-              >
-                {sport.name}
-              </li>
+              <Fragment key={sport._id}>
+                {sport.status === "active" && (
+                  <li onClick={() => handleSportClick(sport.name)}>
+                    {sport.name}
+                  </li>
+                )}
+              </Fragment>
             ))}
           </ul>
         </div>
 
-
-
-        <div className="container" >
+        <div className="container">
           <div className="row">
-
-
             <div className="col-lg-12 col-md-12">
-
               <div className="main-content" style={{ marginTop: "30px" }}>
-                <h2 style={{ fontFamily: "monospace", fontWeight: "bold" }}>Available Equipments</h2>
+                <h2 style={{ fontFamily: "monospace", fontWeight: "bold" }}>
+                  Available Equipments
+                </h2>
                 {loading ? (
                   <p>Loading...</p>
                 ) : error ? (

@@ -19,6 +19,12 @@ import {
   DELETE_SPORT_REQUEST,
   DELETE_SPORT_SUCCESS,
   DELETE_SPORT_FAIL,
+  DEACTIVATE_SPORT_REQUEST,
+  DEACTIVATE_SPORT_SUCCESS,
+  DEACTIVATE_SPORT_FAIL,
+  REACTIVATE_SPORT_REQUEST,
+  REACTIVATE_SPORT_SUCCESS,
+  REACTIVATE_SPORT_FAIL,
   CLEAR_ERRORS,
   SET_SPORTS,
 } from "../constants/sportConstants";
@@ -41,8 +47,6 @@ export const newSport = (sport) => async (dispatch, getState) => {
       type: NEW_SPORT_SUCCESS,
       payload: data,
     });
-
-    // Do not dispatch NEW_SPORT_RESET here, leave it to the component
   } catch (error) {
     dispatch({
       type: NEW_SPORT_FAIL,
@@ -131,6 +135,46 @@ export const updateSport = (id, sportData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_SPORT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deactivateSport = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DEACTIVATE_SPORT_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/sport/deactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: DEACTIVATE_SPORT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_SPORT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const reactivateSport = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: REACTIVATE_SPORT_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/sport/reactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: REACTIVATE_SPORT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACTIVATE_SPORT_FAIL,
       payload: error.response.data.message,
     });
   }

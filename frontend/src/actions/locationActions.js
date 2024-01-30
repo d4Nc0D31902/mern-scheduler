@@ -19,6 +19,12 @@ import {
   DELETE_LOCATION_REQUEST,
   DELETE_LOCATION_SUCCESS,
   DELETE_LOCATION_FAIL,
+  DEACTIVATE_LOCATION_REQUEST,
+  DEACTIVATE_LOCATION_SUCCESS,
+  DEACTIVATE_LOCATION_FAIL,
+  REACTIVATE_LOCATION_REQUEST,
+  REACTIVATE_LOCATION_SUCCESS,
+  REACTIVATE_LOCATION_FAIL,
   CLEAR_ERRORS,
   SET_LOCATIONS,
 } from "../constants/locationConstants";
@@ -150,6 +156,46 @@ export const deleteLocation = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_LOCATION_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deactivateLocation = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DEACTIVATE_LOCATION_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/location/deactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: DEACTIVATE_LOCATION_SUCCESS,
+      payload: data.location,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_LOCATION_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const reactivateLocation = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: REACTIVATE_LOCATION_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/location/reactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: REACTIVATE_LOCATION_SUCCESS,
+      payload: data.location,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACTIVATE_LOCATION_FAIL,
       payload: error.response.data.message,
     });
   }

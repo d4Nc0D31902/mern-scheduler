@@ -21,6 +21,14 @@ import {
   DELETE_SPORT_FAIL,
   CLEAR_ERRORS,
   SET_SPORTS,
+  DEACTIVATE_SPORT_REQUEST,
+  DEACTIVATE_SPORT_SUCCESS,
+  DEACTIVATE_SPORT_FAIL,
+  DEACTIVATE_SPORT_RESET,
+  REACTIVATE_SPORT_REQUEST,
+  REACTIVATE_SPORT_SUCCESS,
+  REACTIVATE_SPORT_FAIL,
+  REACTIVATE_SPORT_RESET,
 } from "../constants/sportConstants";
 
 export const newSportReducer = (state = {}, action) => {
@@ -172,6 +180,8 @@ export const sportReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_SPORT_REQUEST:
     case DELETE_SPORT_REQUEST:
+    case DEACTIVATE_SPORT_REQUEST:
+    case REACTIVATE_SPORT_REQUEST:
       return {
         ...state,
         loading: true,
@@ -191,8 +201,24 @@ export const sportReducer = (state = {}, action) => {
         isDeleted: action.payload,
       };
 
+    case DEACTIVATE_SPORT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeactivated: action.payload,
+      };
+
+    case REACTIVATE_SPORT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isReactivated: action.payload,
+      };
+
     case UPDATE_SPORT_FAIL:
     case DELETE_SPORT_FAIL:
+    case DEACTIVATE_SPORT_FAIL:
+    case REACTIVATE_SPORT_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -208,6 +234,18 @@ export const sportReducer = (state = {}, action) => {
       return {
         ...state,
         isDeleted: false,
+      };
+
+    case DEACTIVATE_SPORT_RESET:
+      return {
+        ...state,
+        isDeactivated: false,
+      };
+
+    case REACTIVATE_SPORT_RESET:
+      return {
+        ...state,
+        isReactivated: false,
       };
 
     case CLEAR_ERRORS:

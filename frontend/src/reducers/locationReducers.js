@@ -19,6 +19,12 @@ import {
   DELETE_LOCATION_SUCCESS,
   DELETE_LOCATION_RESET,
   DELETE_LOCATION_FAIL,
+  DEACTIVATE_LOCATION_REQUEST,
+  DEACTIVATE_LOCATION_SUCCESS,
+  DEACTIVATE_LOCATION_FAIL,
+  REACTIVATE_LOCATION_REQUEST,
+  REACTIVATE_LOCATION_SUCCESS,
+  REACTIVATE_LOCATION_FAIL,
   CLEAR_ERRORS,
   SET_LOCATIONS,
 } from "../constants/locationConstants";
@@ -37,22 +43,20 @@ export const newLocationReducer = (state = {}, action) => {
         loading: false,
         location: action.payload,
       };
-    case SET_LOCATIONS: // Add this case
-      return {
-        ...state,
-        locations: action.payload,
-      };
+
     case NEW_LOCATION_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
+
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null,
       };
+
     default:
       return state;
   }
@@ -63,11 +67,6 @@ export const myLocationsReducer = (state = { locations: [] }, action) => {
     case MY_LOCATIONS_REQUEST:
       return {
         loading: true,
-      };
-    case SET_LOCATIONS: // Add this case
-      return {
-        ...state,
-        locations: action.payload,
       };
 
     case MY_LOCATIONS_SUCCESS:
@@ -134,12 +133,6 @@ export const allLocationsReducer = (state = { locations: [] }, action) => {
         loading: true,
       };
 
-    case SET_LOCATIONS: // Add this case
-      return {
-        ...state,
-        locations: action.payload,
-      };
-
     case ALL_LOCATIONS_SUCCESS:
       return {
         ...state,
@@ -170,6 +163,8 @@ export const locationReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_LOCATION_REQUEST:
     case DELETE_LOCATION_REQUEST:
+    case DEACTIVATE_LOCATION_REQUEST: // Add this case
+    case REACTIVATE_LOCATION_REQUEST: // Add this case
       return {
         ...state,
         loading: true,
@@ -189,8 +184,18 @@ export const locationReducer = (state = {}, action) => {
         isDeleted: action.payload,
       };
 
+    case DEACTIVATE_LOCATION_SUCCESS: // Add this case
+    case REACTIVATE_LOCATION_SUCCESS: // Add this case
+      return {
+        ...state,
+        loading: false,
+        location: action.payload,
+      };
+
     case UPDATE_LOCATION_FAIL:
     case DELETE_LOCATION_FAIL:
+    case DEACTIVATE_LOCATION_FAIL: // Add this case
+    case REACTIVATE_LOCATION_FAIL: // Add this case
       return {
         ...state,
         error: action.payload,

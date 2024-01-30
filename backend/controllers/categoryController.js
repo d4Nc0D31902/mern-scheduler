@@ -115,3 +115,55 @@ exports.deleteCategory = async (req, res, next) => {
     next(new ErrorHandler("Failed to delete the category", 500)); // Updated error message
   }
 };
+
+// @desc    Deactivate a category by ID
+// @route   PUT /api/categories/:id/deactivate
+// @access  Private (You can define your own authentication middleware)
+
+exports.deactivateCategory = async (req, res, next) => {
+  // Updated function name
+  try {
+    const category = await Category.findById(req.params.id); // Updated model name
+
+    if (!category) {
+      return next(new ErrorHandler("Category not found", 404)); // Updated error message
+    }
+
+    category.status = "inactive";
+
+    const deactivatedCategory = await category.save();
+
+    res.status(200).json({
+      success: true,
+      category: deactivatedCategory,
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to deactivate the category", 500)); // Updated error message
+  }
+};
+
+// @desc    Reactivate a category by ID
+// @route   PUT /api/categories/:id/reactivate
+// @access  Private (You can define your own authentication middleware)
+
+exports.reactivateCategory = async (req, res, next) => {
+  // Updated function name
+  try {
+    const category = await Category.findById(req.params.id); // Updated model name
+
+    if (!category) {
+      return next(new ErrorHandler("Category not found", 404)); // Updated error message
+    }
+
+    category.status = "active";
+
+    const reactivatedCategory = await category.save();
+
+    res.status(200).json({
+      success: true,
+      category: reactivatedCategory,
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to reactivate the category", 500)); // Updated error message
+  }
+};

@@ -109,3 +109,47 @@ exports.deleteSport = async (req, res, next) => {
     next(new ErrorHandler("Failed to delete the sport", 500));
   }
 };
+
+exports.deactivateSport = async (req, res, next) => {
+  try {
+    const sport = await Sport.findById(req.params.id);
+
+    if (!sport) {
+      return next(new ErrorHandler("Sport not found", 404));
+    }
+
+    sport.status = "inactive";
+    await sport.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Sport deactivated",
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to deactivate the sport", 500));
+  }
+};
+
+// @desc    Reactivate a sport by ID
+// @route   PUT /api/sports/:id/reactivate
+// @access  Private (You can define your own authentication middleware)
+
+exports.reactivateSport = async (req, res, next) => {
+  try {
+    const sport = await Sport.findById(req.params.id);
+
+    if (!sport) {
+      return next(new ErrorHandler("Sport not found", 404));
+    }
+
+    sport.status = "active";
+    await sport.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Sport reactivated",
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to reactivate the sport", 500));
+  }
+};

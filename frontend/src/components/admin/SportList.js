@@ -10,14 +10,21 @@ import {
   allSports,
   clearErrors,
   deleteSport,
+  deactivateSport,
+  reactivateSport,
 } from "../../actions/sportActions";
-import { DELETE_SPORT_RESET } from "../../constants/sportConstants";
+import {
+  DELETE_SPORT_RESET,
+  DEACTIVATE_SPORT_RESET,
+  REACTIVATE_SPORT_RESET,
+} from "../../constants/sportConstants";
 
 const SportsList = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { loading, error, sports } = useSelector((state) => state.allSports);
-  const { isDeleted } = useSelector((state) => state.sport) || {};
+  const { isDeleted, isDeactivated, isReactivated } =
+    useSelector((state) => state.sport) || {};
   const errMsg = (message = "") =>
     toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
   const successMsg = (message = "") =>
@@ -34,20 +41,34 @@ const SportsList = () => {
       navigate("/admin/sports");
       dispatch({ type: DELETE_SPORT_RESET });
     }
-  }, [dispatch, error, navigate, isDeleted]);
+    if (isDeactivated) {
+      successMsg("Sport deactivated successfully");
+      dispatch({ type: DEACTIVATE_SPORT_RESET });
+    }
+    if (isReactivated) {
+      successMsg("Sport reactivated successfully");
+      dispatch({ type: REACTIVATE_SPORT_RESET });
+    }
+  }, [dispatch, error, navigate, isDeleted, isDeactivated, isReactivated]);
 
   const deleteSportHandler = (id) => {
     dispatch(deleteSport(id));
   };
 
+  const toggleSportActivation = async (id, isDeactivated) => {
+    if (isDeactivated) {
+      await dispatch(reactivateSport(id));
+      console.log("Sport reactivated:", id);
+    } else {
+      await dispatch(deactivateSport(id));
+      console.log("Sport deactivated:", id);
+    }
+    window.location.reload(); // Reload the page
+  };
+
   const setSports = () => {
     const data = {
       columns: [
-        // {
-        //   label: "Sport ID",
-        //   field: "id",
-        //   sort: "asc",
-        // },
         {
           label: "Name",
           field: "name",
@@ -65,22 +86,36 @@ const SportsList = () => {
     if (sports) {
       sports.forEach((sport) => {
         data.rows.push({
-          // id: sport._id,
           name: sport.name,
           actions: (
             <Fragment>
-              <Link
-                to={`/admin/sport/${sport._id}`}
-                className="btn btn-primary py-1 px-2"
+              {sport.status === "active" && (
+                <Link
+                  to={`/admin/sport/${sport._id}`}
+                  className="btn btn-primary py-1 px-2"
+                >
+                  <i className="fa fa-pencil"></i>
+                </Link>
+              )}
+              <button
+                className={`btn ${
+                  sport.status === "inactive" ? "btn-success" : "btn-danger"
+                } py-1 px-2 ml-2`}
+                onClick={() =>
+                  toggleSportActivation(
+                    sport._id,
+                    sport.status === "inactive"
+                  )
+                }
               >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              {/* <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteSportHandler(sport._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button> */}
+                <i
+                  className={`fa ${
+                    sport.status === "inactive"
+                      ? "fa-check-circle"
+                      : "fa-times-circle"
+                  }`}
+                ></i>
+              </button>
             </Fragment>
           ),
         });
