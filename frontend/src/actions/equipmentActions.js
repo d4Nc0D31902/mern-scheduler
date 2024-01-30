@@ -16,9 +16,19 @@ import {
   UPDATE_EQUIPMENT_SUCCESS,
   UPDATE_EQUIPMENT_REQUEST,
   UPDATE_EQUIPMENT_FAIL,
+  UPDATE_EQUIPMENT_RESET,
   DELETE_EQUIPMENT_REQUEST,
   DELETE_EQUIPMENT_SUCCESS,
   DELETE_EQUIPMENT_FAIL,
+  DELETE_EQUIPMENT_RESET,
+  DEACTIVATE_EQUIPMENT_REQUEST,
+  DEACTIVATE_EQUIPMENT_SUCCESS,
+  DEACTIVATE_EQUIPMENT_FAIL,
+  DEACTIVATE_EQUIPMENT_RESET,
+  REACTIVATE_EQUIPMENT_REQUEST,
+  REACTIVATE_EQUIPMENT_SUCCESS,
+  REACTIVATE_EQUIPMENT_FAIL,
+  REACTIVATE_EQUIPMENT_RESET,
   CLEAR_ERRORS,
   SET_EQUIPMENTS,
 } from "../constants/equipmentConstants.js";
@@ -152,6 +162,46 @@ export const deleteEquipment = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_EQUIPMENT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deactivateEquipment = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DEACTIVATE_EQUIPMENT_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/equipment/deactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: DEACTIVATE_EQUIPMENT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_EQUIPMENT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const reactivateEquipment = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: REACTIVATE_EQUIPMENT_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/equipment/reactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: REACTIVATE_EQUIPMENT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACTIVATE_EQUIPMENT_FAIL,
       payload: error.response.data.message,
     });
   }

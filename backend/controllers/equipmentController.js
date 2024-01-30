@@ -2,10 +2,6 @@ const Equipment = require("../models/equipment");
 const ErrorHandler = require("../utils/errorHandler");
 const cloudinary = require("cloudinary");
 
-// @desc    Create new equipment
-// @route   POST /api/equipment
-// @access  Private
-
 exports.createEquipment = async (req, res, next) => {
   let images = Array.isArray(req.body.images)
     ? req.body.images
@@ -15,12 +11,10 @@ exports.createEquipment = async (req, res, next) => {
     if (typeof image === "string") {
       return image;
     } else {
-      // Handle invalid image format (optional)
       return null;
     }
   });
 
-  // Remove any null values from the array
   images = images.filter((image) => image !== null);
 
   if (images.length === 0) {
@@ -65,10 +59,6 @@ exports.createEquipment = async (req, res, next) => {
   }
 };
 
-// @desc    Get all equipment
-// @route   GET /api/equipment
-// @access  Public (you can define your own access control)
-
 exports.getEquipment = async (req, res, next) => {
   try {
     const equipmentList = await Equipment.find();
@@ -80,10 +70,6 @@ exports.getEquipment = async (req, res, next) => {
     next(new ErrorHandler("Failed to retrieve equipment", 500));
   }
 };
-
-// @desc    Get a single equipment by ID
-// @route   GET /api/equipment/:id
-// @access  Public (you can define your own access control)
 
 exports.getEquipmentById = async (req, res, next) => {
   try {
@@ -102,10 +88,6 @@ exports.getEquipmentById = async (req, res, next) => {
   }
 };
 
-// @desc    Update equipment by ID
-// @route   PUT /api/equipment/:id
-// @access  Private (Admin only)
-
 exports.updateEquipment = async (req, res, next) => {
   let equipment = await Equipment.findById(req.params.id);
 
@@ -113,15 +95,13 @@ exports.updateEquipment = async (req, res, next) => {
     return next(new ErrorHandler("Equipment not found", 404));
   }
 
-  let images = req.body.images; // Get images from the request body
+  let images = req.body.images;
 
   if (images) {
-    // Check if images is defined
     if (typeof images === "string") {
-      images = [images]; // Convert to an array if it's a string
+      images = [images];
     }
 
-    // Deleting images associated with the equipment
     for (let i = 0; i < equipment.images.length; i++) {
       const result = await cloudinary.v2.uploader.destroy(
         equipment.images[i].public_id
@@ -141,6 +121,10 @@ exports.updateEquipment = async (req, res, next) => {
     req.body.images = imagesLinks;
   }
 
+  if (req.body.status) {
+    equipment.status = req.body.status;
+  }
+
   equipment = await Equipment.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -153,10 +137,6 @@ exports.updateEquipment = async (req, res, next) => {
   });
 };
 
-// @desc    Delete equipment by ID
-// @route   DELETE /api/equipment/:id
-// @access  Private (Admin only)
-
 exports.deleteEquipment = async (req, res, next) => {
   try {
     const equipment = await Equipment.findById(req.params.id);
@@ -165,7 +145,6 @@ exports.deleteEquipment = async (req, res, next) => {
       return next(new ErrorHandler("Equipment not found", 404));
     }
 
-    // Check if the user is an admin
     if (req.user.role !== "admin") {
       return next(
         new ErrorHandler("Unauthorized. Only admins can delete equipment.", 403)
@@ -182,3 +161,44 @@ exports.deleteEquipment = async (req, res, next) => {
   }
 };
 
+exports.deactivateEquipment = async (req, res, next) => {
+  try {
+    let equipment = await Equipment.findById(req.params.id);
+
+    if (!equipment) {
+      return next(new ErrorHandler("Equipment not found", 404));
+    }
+
+    equipment.status = "inactive";
+
+    await equipment.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Equipment deactivated",
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to deactivate the equipment", 500));
+  }
+};
+
+exports.reactivateEquipment = async (req, res, next) => {
+  try {
+    let equipment = await Equipment.findById(req.params.id);
+
+    if (!equipment) {
+      return next(new ErrorHandler("Equipment not found", 404));
+    }
+
+    equipment.status = "active";
+
+    await equipment.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Equipment reactivated",
+    });
+  } catch (error) {
+    next(new ErrorHandler("Failed to reactivate the equipment", 500));
+  }
+};

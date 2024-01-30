@@ -9,9 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   allEquipments,
   clearErrors,
-  deleteEquipment,
+  deactivateEquipment,
+  reactivateEquipment,
 } from "../../actions/equipmentActions";
-import { DELETE_EQUIPMENT_RESET } from "../../constants/equipmentConstants";
+import {
+  DEACTIVATE_EQUIPMENT_RESET,
+  REACTIVATE_EQUIPMENT_RESET,
+} from "../../constants/equipmentConstants";
 
 const EquipmentsList = () => {
   const dispatch = useDispatch();
@@ -19,7 +23,8 @@ const EquipmentsList = () => {
   const { loading, error, equipments } = useSelector(
     (state) => state.allEquipments
   );
-  const { isDeleted } = useSelector((state) => state.equipment) || {};
+  const { isDeactivated, isReactivated } =
+    useSelector((state) => state.equipment) || {};
   const errMsg = (message = "") =>
     toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
   const successMsg = (message = "") =>
@@ -31,25 +36,32 @@ const EquipmentsList = () => {
       errMsg(error);
       dispatch(clearErrors());
     }
-    if (isDeleted) {
-      successMsg("Equipment deleted successfully");
-      navigate("/admin/equipments");
-      dispatch({ type: DELETE_EQUIPMENT_RESET });
+    if (isDeactivated) {
+      successMsg("Equipment deactivated successfully");
+      console.log("Equipment deactivated:", isDeactivated);
+      dispatch({ type: DEACTIVATE_EQUIPMENT_RESET });
     }
-  }, [dispatch, error, navigate, isDeleted]);
+    if (isReactivated) {
+      successMsg("Equipment reactivated successfully");
+      console.log("Equipment reactivated:", isReactivated);
+      dispatch({ type: REACTIVATE_EQUIPMENT_RESET });
+    }
+  }, [dispatch, error, isDeactivated, isReactivated]);
 
-  const deleteEquipmentHandler = (id) => {
-    dispatch(deleteEquipment(id));
+  const toggleEquipmentActivation = async (id, isDeactivated) => {
+    if (isDeactivated) {
+      await dispatch(reactivateEquipment(id));
+      console.log("Equipment reactivated:", id);
+    } else {
+      await dispatch(deactivateEquipment(id));
+      console.log("Equipment deactivated:", id);
+    }
+    window.location.reload(); // Reload the page
   };
 
   const setEquipments = () => {
     const data = {
       columns: [
-        // {
-        //   label: "Equipment ID",
-        //   field: "id",
-        //   sort: "asc",
-        // },
         {
           label: "Name",
           field: "name",
@@ -70,16 +82,6 @@ const EquipmentsList = () => {
           field: "stock",
           sort: "asc",
         },
-        // {
-        //   label: "Images",
-        //   field: "images",
-        //   sort: "asc",
-        // },
-        // {
-        //   label: "Created At",
-        //   field: "createdAt",
-        //   sort: "asc",
-        // },
         {
           label: "Actions",
           field: "actions",
@@ -91,36 +93,39 @@ const EquipmentsList = () => {
 
     if (equipments && equipments.length > 0) {
       equipments.forEach((equipment) => {
-        const imageElements = equipment.images.map((image) => (
-          <img
-            key={image.public_id}
-            src={image.url}
-            alt={`Equipment ${equipment._id}`}
-            style={{ width: "50px", height: "50px" }}
-          />
-        ));
-
         data.rows.push({
-          // id: equipment._id,
           name: equipment.name,
           description: equipment.description,
           sport: equipment.sport,
           stock: equipment.stock,
-          // images: imageElements,
-          // createdAt: new Date(equipment.createdAt).toLocaleString(),
           actions: (
             <Fragment>
-              <Link
-                to={`/admin/equipment/${equipment._id}`}
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
+              {equipment.status === "active" && (
+                <Link
+                  to={`/admin/equipment/${equipment._id}`}
+                  className="btn btn-primary py-1 px-2"
+                >
+                  <i className="fa fa-pencil"></i>
+                </Link>
+              )}
               <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteEquipmentHandler(equipment._id)}
+                className={`btn ${
+                  equipment.status === "inactive" ? "btn-success" : "btn-danger"
+                } py-1 px-2 ml-2`}
+                onClick={() =>
+                  toggleEquipmentActivation(
+                    equipment._id,
+                    equipment.status === "inactive"
+                  )
+                }
               >
-                <i className="fa fa-trash"></i>
+                <i
+                  className={`fa ${
+                    equipment.status === "inactive"
+                      ? "fa-check-circle"
+                      : "fa-times-circle"
+                  }`}
+                ></i>
               </button>
             </Fragment>
           ),

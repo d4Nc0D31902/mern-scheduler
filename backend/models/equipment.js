@@ -1,3 +1,5 @@
+// models/equipment.js
+
 const mongoose = require("mongoose");
 
 const equipmentSchema = new mongoose.Schema({
@@ -19,19 +21,14 @@ const equipmentSchema = new mongoose.Schema({
   },
   images: [
     {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
+      public_id: String,
+      url: String,
     },
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  status: {
+    type: String,
+    enum: ["active", "inactive"],
+    default: "active",
   },
 });
 

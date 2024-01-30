@@ -2,6 +2,7 @@ import {
   NEW_EQUIPMENT_REQUEST,
   NEW_EQUIPMENT_SUCCESS,
   NEW_EQUIPMENT_FAIL,
+  NEW_EQUIPMENT_RESET,
   MY_EQUIPMENTS_REQUEST,
   MY_EQUIPMENTS_SUCCESS,
   MY_EQUIPMENTS_FAIL,
@@ -19,6 +20,14 @@ import {
   DELETE_EQUIPMENT_SUCCESS,
   DELETE_EQUIPMENT_RESET,
   DELETE_EQUIPMENT_FAIL,
+  DEACTIVATE_EQUIPMENT_REQUEST,
+  DEACTIVATE_EQUIPMENT_SUCCESS,
+  DEACTIVATE_EQUIPMENT_FAIL,
+  DEACTIVATE_EQUIPMENT_RESET,
+  REACTIVATE_EQUIPMENT_REQUEST,
+  REACTIVATE_EQUIPMENT_SUCCESS,
+  REACTIVATE_EQUIPMENT_FAIL,
+  REACTIVATE_EQUIPMENT_RESET,
   CLEAR_ERRORS,
   SET_EQUIPMENTS,
 } from "../constants/equipmentConstants";
@@ -37,22 +46,29 @@ export const newEquipmentReducer = (state = {}, action) => {
         loading: false,
         equipment: action.payload,
       };
-    case SET_EQUIPMENTS: // Add this case
+
+    case SET_EQUIPMENTS:
       return {
         ...state,
         equipments: action.payload,
       };
+
     case NEW_EQUIPMENT_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
+
+    case NEW_EQUIPMENT_RESET:
+      return {};
+
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null,
       };
+
     default:
       return state;
   }
@@ -64,7 +80,8 @@ export const myEquipmentsReducer = (state = { equipments: [] }, action) => {
       return {
         loading: true,
       };
-    case SET_EQUIPMENTS: // Add this case
+
+    case SET_EQUIPMENTS:
       return {
         ...state,
         equipments: action.payload,
@@ -169,6 +186,8 @@ export const equipmentReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_EQUIPMENT_REQUEST:
     case DELETE_EQUIPMENT_REQUEST:
+    case DEACTIVATE_EQUIPMENT_REQUEST:
+    case REACTIVATE_EQUIPMENT_REQUEST:
       return {
         ...state,
         loading: true,
@@ -188,8 +207,24 @@ export const equipmentReducer = (state = {}, action) => {
         isDeleted: action.payload,
       };
 
+    case DEACTIVATE_EQUIPMENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeactivated: action.payload,
+      };
+
+    case REACTIVATE_EQUIPMENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isReactivated: action.payload,
+      };
+
     case UPDATE_EQUIPMENT_FAIL:
     case DELETE_EQUIPMENT_FAIL:
+    case DEACTIVATE_EQUIPMENT_FAIL:
+    case REACTIVATE_EQUIPMENT_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -205,6 +240,18 @@ export const equipmentReducer = (state = {}, action) => {
       return {
         ...state,
         isDeleted: false,
+      };
+
+    case DEACTIVATE_EQUIPMENT_RESET:
+      return {
+        ...state,
+        isDeactivated: false,
+      };
+
+    case REACTIVATE_EQUIPMENT_RESET:
+      return {
+        ...state,
+        isReactivated: false,
       };
 
     case CLEAR_ERRORS:
