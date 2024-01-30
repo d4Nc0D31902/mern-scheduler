@@ -29,21 +29,27 @@ const Equipment = ({ equipment }) => {
   };
 
   return (
-
-
-    <div className="card col-lg-12 col-md-12  " style={{ maxWidth: "450px", marginBottom: "125px" }}  >
+    <div
+      className="card col-lg-12 col-md-12"
+      style={{ maxWidth: "450px", marginBottom: "125px" }}
+    >
       <img
         src={equipment.images[0].url}
-        className="card-img-top "
+        className="card-img-top"
         alt={equipment.name}
       />
       <div className="card-body text-center">
         <h5 className="card-title">{equipment.name}</h5>
         <p className="card-text">{equipment.description}</p>
         <p className="card-stock">
+          <small className="text-muted">
+            Available Stock: {equipment.stock}
+          </small>
+        </p>
+        <p className="card-stock">
           <small className="text-muted">Quantity</small>
         </p>
-        <div className="quantity-control" >
+        <div className="quantity-control">
           <button
             className="btn btn-outline-secondary"
             onClick={decreaseQuantity}

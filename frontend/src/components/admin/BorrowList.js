@@ -71,11 +71,11 @@ const BorrowsList = () => {
   const setBorrows = () => {
     const data = {
       columns: [
-        {
-          label: "Borrow ID",
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "Borrow ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "User",
           field: "user",
@@ -141,7 +141,7 @@ const BorrowsList = () => {
         const statusColor = getStatusColor(borrow.status);
 
         data.rows.push({
-          id: borrow._id,
+          // id: borrow._id,
           user: borrow.user,
           equipment: borrow.equipment,
           quantity: borrow.quantity,

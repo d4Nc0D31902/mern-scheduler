@@ -4,53 +4,34 @@ const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
 exports.createBorrow = async (req, res, next) => {
-  try {
-    const {
-      equipment,
-      quantity,
-      reason_borrow,
-      date_borrow,
-      date_return,
-      issue,
-      status,
-      reason_status,
-    } = req.body;
+  const {
+    equipment,
+    quantity,
+    reason_borrow,
+    date_borrow,
+    date_return,
+    issue,
+    status,
+    reason_status,
+  } = req.body;
 
-    // Create a new instance of the Borrow model
-    const newBorrow = await Borrow.create({
-      userId: req.user._id, // Assuming you have user information in the request
-      user: req.user.name,
-      equipment,
-      quantity,
-      reason_borrow,
-      date_borrow,
-      date_return,
-      issue,
-      status,
-      reason_status,
-    });
+  const borrowing = await Borrow.create({
+    userId: req.user._id,
+    user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    equipment,
+    quantity,
+    reason_borrow,
+    date_borrow,
+    date_return,
+    issue,
+    status,
+    reason_status,
+  });
 
-    // Fetch the equipment details
-    const equipmentDetails = await Equipment.findOne({ name: equipment });
-
-    if (!equipmentDetails) {
-      return next(new ErrorHandler("Equipment not found", 404));
-    }
-
-    // Deduct the borrowed quantity from the equipment stock
-    equipmentDetails.stock -= quantity;
-
-    // Save the updated equipment details
-    await equipmentDetails.save();
-
-    res.status(201).json({
-      success: true,
-      newBorrow,
-    });
-  } catch (error) {
-    console.error(error); // Log the error
-    next(new ErrorHandler("Borrow creation failed", 500));
-  }
+  res.status(200).json({
+    success: true,
+    borrowing,
+  });
 };
 
 exports.getBorrows = async (req, res, next) => {
@@ -100,23 +81,34 @@ exports.updateBorrow = async (req, res, next) => {
       return next(new ErrorHandler("Borrow not found", 404));
     }
 
-    // Check if status is changing to "Returned"
-    if (status === "Returned" && borrow.status !== "Returned") {
-      // Fetch the equipment details
+    // If the status changes to "Approved", decrease the stock
+    if (status === "Approved" && borrow.status !== "Approved") {
       const equipmentDetails = await Equipment.findOne({ name: equipment });
 
       if (!equipmentDetails) {
         return next(new ErrorHandler("Equipment not found", 404));
       }
 
-      // Add the returned quantity back to the equipment stock
-      equipmentDetails.stock += quantity;
+      // Decrease the stock of the equipment based on the quantity
+      equipmentDetails.stock -= quantity;
 
-      // Save the updated equipment details
       await equipmentDetails.save();
     }
 
-    // Update borrow properties
+    // If the status changes to "Returned", increase the stock
+    if (status === "Returned" && borrow.status !== "Returned") {
+      const equipmentDetails = await Equipment.findOne({ name: equipment });
+
+      if (!equipmentDetails) {
+        return next(new ErrorHandler("Equipment not found", 404));
+      }
+
+      // Increase the stock of the equipment based on the quantity
+      equipmentDetails.stock += quantity;
+
+      await equipmentDetails.save();
+    }
+
     borrow.equipment = equipment;
     borrow.quantity = quantity;
     borrow.reason_borrow = reason_borrow;

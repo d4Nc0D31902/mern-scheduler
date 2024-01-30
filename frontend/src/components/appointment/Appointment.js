@@ -232,13 +232,38 @@ const NewAppointment = () => {
 
   return (
     <Fragment>
-      <div className="wrapper my-5" >
-        <form onSubmit={submitHandler} style={{ borderStyle: "solid", borderWidth: "2px" }}>
-          <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-            <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+      <div className="wrapper my-5">
+        <form
+          onSubmit={submitHandler}
+          style={{ borderStyle: "solid", borderWidth: "2px" }}
+        >
+          <h3
+            className="card-title"
+            style={{
+              fontFamily: "sans-serif",
+              textAlign: "center",
+              marginBottom: "10px",
+              margin: "20px",
+            }}
+          >
+            <img
+              src="/images/tupt_logo.png"
+              style={{ width: "100px", height: "100px", marginRight: "25px" }}
+              alt="Logo"
+            />
             TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
           </h3>
-          <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Appointment</h1>
+          <h1
+            className="mb-4 text-center"
+            style={{
+              backgroundColor: "maroon",
+              padding: "20px",
+              borderRadius: "20px",
+              color: "white",
+            }}
+          >
+            New Appointment
+          </h1>
 
           <div className="form-group">
             <label htmlFor="title_field">Title:</label>
@@ -259,7 +284,6 @@ const NewAppointment = () => {
             <label htmlFor="body_field">Description</label>
             <textarea
               className={`form-control ${errors.description && "is-invalid"}`}
-
               id="body_field"
               placeholder="Describe the event..."
               rows="8"
@@ -279,7 +303,9 @@ const NewAppointment = () => {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             >
-              <option value="">Select Location</option>
+              <option value="" disabled selected>
+                Select a Reason
+              </option>
               {locations.map((loc) => (
                 <option key={loc._id} value={loc.name}>
                   {loc.name}

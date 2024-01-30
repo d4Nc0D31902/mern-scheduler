@@ -73,11 +73,11 @@ const AppointmentsList = () => {
   const setAppointments = () => {
     const data = {
       columns: [
-        {
-          label: "Appointment ID",
-          field: "id",
-          sort: "asc",
-        },
+        // {
+        //   label: "Appointment ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
           label: "Requester",
           field: "requester",
@@ -154,7 +154,7 @@ const AppointmentsList = () => {
         const statusColor = getStatusColor(appointment.status);
 
         data.rows.push({
-          id: appointment._id,
+          // id: appointment._id,
           requester: appointment.requester,
           attendees: <ul>{attendeesList}</ul>,
           title: appointment.title,

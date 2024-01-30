@@ -23,9 +23,14 @@ const MyAppointment = () => {
   const setAppointmentsData = () => {
     const data = {
       columns: [
+        // {
+        //   label: "Appointment ID",
+        //   field: "id",
+        //   sort: "asc",
+        // },
         {
-          label: "Appointment ID",
-          field: "id",
+          label: "Requester",
+          field: "requester",
           sort: "asc",
         },
         {
@@ -93,7 +98,8 @@ const MyAppointment = () => {
       ));
 
       data.rows.push({
-        id: appointment._id,
+        // id: appointment._id,
+        requester: appointment.requester,
         attendees: <ul>{attendeesList}</ul>,
         title: appointment.title,
         location: appointment.location,
