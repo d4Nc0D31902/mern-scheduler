@@ -210,6 +210,7 @@ const UpdateProduct = () => {
                     className="form-control"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
+                    disabled
                   />
                 </div>
                 <div className="form-group">

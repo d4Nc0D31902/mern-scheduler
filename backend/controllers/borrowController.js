@@ -3,6 +3,30 @@ const Equipment = require("../models/equipment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
+const checkAndHandleExpiredBorrows = async () => {
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+  try {
+    const expiredBorrows = await Borrow.find({
+      status: "Pending",
+      date_borrow: { $lte: threeDaysAgo },
+    });
+
+    await Borrow.updateMany(
+      { _id: { $in: expiredBorrows.map((borrow) => borrow._id) } },
+      { status: "Denied" }
+    );
+  } catch (error) {
+    console.error(
+      "Error occurred while checking for expired borrow requests:",
+      error
+    );
+  }
+};
+
+setInterval(checkAndHandleExpiredBorrows, 24 * 60 * 60 * 1000);
+
 exports.createBorrow = async (req, res, next) => {
   const {
     equipment,
@@ -15,23 +39,30 @@ exports.createBorrow = async (req, res, next) => {
     reason_status,
   } = req.body;
 
-  const borrowing = await Borrow.create({
-    userId: req.user._id,
-    user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
-    equipment,
-    quantity,
-    reason_borrow,
-    date_borrow,
-    date_return,
-    issue,
-    status,
-    reason_status,
-  });
+  try {
+    const defaultStatus = "Pending";
 
-  res.status(200).json({
-    success: true,
-    borrowing,
-  });
+    const borrowing = await Borrow.create({
+      userId: req.user._id,
+      user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      equipment,
+      quantity,
+      reason_borrow,
+      date_borrow,
+      date_return,
+      issue,
+      status: defaultStatus,
+      reason_status,
+    });
+
+    res.status(200).json({
+      success: true,
+      borrowing,
+    });
+  } catch (error) {
+    console.error(error);
+    next(new ErrorHandler("Failed to create borrow request", 500));
+  }
 };
 
 exports.getBorrows = async (req, res, next) => {
@@ -81,7 +112,6 @@ exports.updateBorrow = async (req, res, next) => {
       return next(new ErrorHandler("Borrow not found", 404));
     }
 
-    // If the status changes to "Approved", decrease the stock
     if (status === "Approved" && borrow.status !== "Approved") {
       const equipmentDetails = await Equipment.findOne({ name: equipment });
 
@@ -89,13 +119,11 @@ exports.updateBorrow = async (req, res, next) => {
         return next(new ErrorHandler("Equipment not found", 404));
       }
 
-      // Decrease the stock of the equipment based on the quantity
       equipmentDetails.stock -= quantity;
 
       await equipmentDetails.save();
     }
 
-    // If the status changes to "Returned", increase the stock
     if (status === "Returned" && borrow.status !== "Returned") {
       const equipmentDetails = await Equipment.findOne({ name: equipment });
 
@@ -103,7 +131,6 @@ exports.updateBorrow = async (req, res, next) => {
         return next(new ErrorHandler("Equipment not found", 404));
       }
 
-      // Increase the stock of the equipment based on the quantity
       equipmentDetails.stock += quantity;
 
       await equipmentDetails.save();
@@ -149,7 +176,7 @@ exports.deleteBorrow = async (req, res, next) => {
 
 exports.myBorrows = async (req, res, next) => {
   try {
-    console.log("User ID:", req.user._id); // Add this line for debugging
+    console.log("User ID:", req.user._id);
     const borrows = await Borrow.find({ userId: req.user._id });
 
     res.status(200).json({
