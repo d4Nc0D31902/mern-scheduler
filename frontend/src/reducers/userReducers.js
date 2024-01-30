@@ -45,6 +45,12 @@ import {
   LOGIN_WITH_GOOGLE_SUCCESS,
   LOGIN_WITH_GOOGLE_FAIL,
   CLEAR_ERRORS,
+  DEACTIVATE_USER_REQUEST,
+  DEACTIVATE_USER_SUCCESS,
+  DEACTIVATE_USER_FAIL,
+  REACTIVATE_USER_REQUEST,
+  REACTIVATE_USER_SUCCESS,
+  REACTIVATE_USER_FAIL,
 } from "../constants/userConstants";
 
 export const authReducer = (state = { user: {} }, action) => {
@@ -104,6 +110,8 @@ export const userReducer = (state = {}, action) => {
     case UPDATE_PASSWORD_REQUEST:
     case UPDATE_USER_REQUEST:
     case DELETE_USER_REQUEST:
+    case DEACTIVATE_USER_REQUEST:
+    case REACTIVATE_USER_REQUEST:
       return {
         ...state,
         loading: true,
@@ -123,10 +131,19 @@ export const userReducer = (state = {}, action) => {
         ...state,
         isUpdated: false,
       };
+    case DEACTIVATE_USER_SUCCESS:
+    case REACTIVATE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: action.payload,
+      };
     case UPDATE_PROFILE_FAIL:
     case UPDATE_PASSWORD_FAIL:
     case UPDATE_USER_FAIL:
     case DELETE_USER_FAIL:
+    case DEACTIVATE_USER_FAIL:
+    case REACTIVATE_USER_FAIL:
       return {
         ...state,
         loading: false,

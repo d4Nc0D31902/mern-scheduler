@@ -42,16 +42,15 @@ import {
   LOGIN_WITH_GOOGLE_SUCCESS,
   LOGIN_WITH_GOOGLE_FAIL,
   CLEAR_ERRORS,
+  DEACTIVATE_USER_REQUEST,
+  DEACTIVATE_USER_SUCCESS,
+  DEACTIVATE_USER_FAIL,
+  REACTIVATE_USER_REQUEST,
+  REACTIVATE_USER_SUCCESS,
+  REACTIVATE_USER_FAIL,
 } from "../constants/userConstants";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 export const login = (email, password) => async (dispatch) => {
-  const notify = (error) =>
-    toast.error(error, {
-      position: toast.POSITION.BOTTOM_CENTER,
-    });
   try {
     dispatch({ type: LOGIN_REQUEST });
     const config = {
@@ -60,7 +59,6 @@ export const login = (email, password) => async (dispatch) => {
       },
       withCredentials: true,
     };
-
     const { data } = await axios.post(
       `${process.env.REACT_APP_API}/api/v1/login`,
       { email, password },
@@ -72,7 +70,6 @@ export const login = (email, password) => async (dispatch) => {
     });
   } catch (error) {
     console.log(error.response);
-    notify(error);
     dispatch({
       type: LOGIN_FAIL,
       payload: error.response.data.message,
@@ -247,14 +244,14 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
     });
   }
 };
+
 export const allUsers = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_USERS_REQUEST });
     const { data } = await axios.get(
       `${process.env.REACT_APP_API}/api/v1/admin/users`,
       {
-        //AxiosRequestConfig parameter
-        withCredentials: true, //correct
+        withCredentials: true,
       }
     );
     dispatch({
@@ -319,6 +316,7 @@ export const getUserDetails = (id) => async (dispatch) => {
     });
   }
 };
+
 export const deleteUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USER_REQUEST });
@@ -333,6 +331,46 @@ export const deleteUser = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deactivateUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DEACTIVATE_USER_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/user/deactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: DEACTIVATE_USER_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const reactivateUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: REACTIVATE_USER_REQUEST });
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/admin/user/reactivate/${id}`,
+      null,
+      { withCredentials: true }
+    );
+    dispatch({
+      type: REACTIVATE_USER_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACTIVATE_USER_FAIL,
       payload: error.response.data.message,
     });
   }

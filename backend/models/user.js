@@ -1,3 +1,4 @@
+// Model/User.js
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
@@ -10,15 +11,15 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter your name"],
     maxLength: [30, "Your name cannot exceed 30 characters"],
   },
-  department:{
+  department: {
     type: String,
     required: true,
   },
-  course:{
+  course: {
     type: String,
     required: true,
   },
-  year:{
+  year: {
     type: String,
     required: true,
   },
@@ -47,6 +48,11 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "user",
+  },
+  status: {
+    type: String,
+    enum: ["active", "inactive"],
+    default: "active",
   },
   createdAt: {
     type: Date,
