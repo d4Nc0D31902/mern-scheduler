@@ -19,7 +19,7 @@ router.get("/appointments", getAppointments);
 router.get(
   "/admin/appointments",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   getAppointments
 );
 
@@ -31,7 +31,7 @@ router.post("/appointment/join/:id", isAuthenticatedUser, joinAppointment); // A
 router.get("/admin/appointment/:id", isAuthenticatedUser, getAppointmentById);
 router
   .route("/admin/appointment/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateAppointment)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteAppointment);
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateAppointment)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteAppointment);
 
 module.exports = router;

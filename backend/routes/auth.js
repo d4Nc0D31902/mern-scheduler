@@ -37,23 +37,23 @@ router.put(
 
 router
   .route("/admin/users")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), allUsers);
+  .get(isAuthenticatedUser, authorizeRoles("admin","officer"), allUsers);
 router
   .route("/admin/user/:id")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getUserDetails)
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateUser)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteUser);
+  .get(isAuthenticatedUser, authorizeRoles("admin","officer"), getUserDetails)
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateUser)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteUser);
 
 router.put(
   "/admin/user/deactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   deactivateUser
 );
 router.put(
   "/admin/user/reactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   reactivateUser
 );
 

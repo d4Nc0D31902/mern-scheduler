@@ -18,7 +18,7 @@ router.get("/locations", getLocations);
 router.get(
   "/admin/locations",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   getLocations
 );
 
@@ -26,20 +26,20 @@ router.post("/location/new", isAuthenticatedUser, createLocation);
 router.get("/location/:id", getLocationById);
 router
   .route("/admin/location/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateLocation)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteLocation);
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateLocation)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteLocation);
 
 router.put(
   "/admin/location/deactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   deactivateLocation
 );
 
 router.put(
   "/admin/location/reactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   reactivateLocation
 );
 

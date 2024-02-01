@@ -73,6 +73,11 @@ const MyAppointment = () => {
           field: "key",
           sort: "asc",
         },
+        {
+          label: "Actions",
+          field: "actions",
+          sort: "asc",
+        },
       ],
       rows: [],
     };
@@ -108,6 +113,16 @@ const MyAppointment = () => {
         status: <p style={{ color: statusColor }}>{appointment.status}</p>,
         reason: appointment.reason,
         key: appointment.key,
+        actions: (
+          <Fragment>
+            <Link
+              to={`/appointment/${appointment._id}`}
+              className="btn btn-primary py-1 px-2"
+            >
+              <i className="fa fa-eye"></i>
+            </Link>
+          </Fragment>
+        ),
       });
     });
 

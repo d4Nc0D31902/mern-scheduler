@@ -12,7 +12,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 router.put(
   "/settings/6581a5b1466cfcabab4cc84f",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   updateSettingsById
 );
 

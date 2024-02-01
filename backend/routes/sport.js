@@ -18,7 +18,7 @@ router.get("/sports", getSports);
 router.get(
   "/admin/sports",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   getSports
 );
 
@@ -26,20 +26,20 @@ router.post("/sport/new", isAuthenticatedUser, createSport);
 router.get("/sport/:id", getSportById);
 router
   .route("/admin/sport/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateSport)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteSport);
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateSport)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteSport);
 
 router.put(
   "/admin/sport/deactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   deactivateSport
 );
 
 router.put(
   "/admin/sport/reactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   reactivateSport
 );
 

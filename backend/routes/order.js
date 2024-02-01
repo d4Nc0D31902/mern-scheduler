@@ -20,11 +20,11 @@ router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
 router.get("/orders/me", isAuthenticatedUser, myOrders);
 router
   .route("/admin/orders/")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), allOrders);
+  .get(isAuthenticatedUser, authorizeRoles("admin","officer"), allOrders);
 router
   .route("/admin/order/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateOrder)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteOrder);
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateOrder)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteOrder);
 
 router.get("/orders/total-orders", totalOrders);
 router.get("/orders/total-sales", totalSales);

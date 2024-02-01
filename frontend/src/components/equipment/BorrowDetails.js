@@ -1,9 +1,11 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getBorrowDetails, clearErrors } from "../../actions/borrowActions";
+import ReactToPrint from "react-to-print"; // Import ReactToPrint
+import PrintableBorrowDetails from "./PrintableBorrowDetails"; // Import PrintableBorrowDetails
 
 const BorrowDetails = () => {
   const dispatch = useDispatch();
@@ -54,7 +56,7 @@ const BorrowDetails = () => {
       borrowingInfo.reason_borrow
     }`;
 
-  console.log("Borrowing Info:", borrowingInfo); // Log borrowingInfo to check its value
+  const componentRef = useRef(); // Create a ref for the component to be printed
 
   return (
     <Fragment>
@@ -139,11 +141,36 @@ const BorrowDetails = () => {
             <p>
               <b>Reason Status:</b> {reason_status}
             </p>
+
+            <div style={{ textAlign: "center", margin: "20px 0" }}>
+              <ReactToPrint
+                trigger={() => (
+                  <button className="btn btn-primary">Print</button>
+                )} // Button to trigger printing
+                content={() => componentRef.current} // Content to be printed
+              />
+            </div>
           </div>
         </div>
       ) : (
         <p>No borrow details available.</p>
       )}
+
+      {/* Printable component */}
+      <div style={{ display: "none" }}>
+        <PrintableBorrowDetails
+          ref={componentRef} // Assign the ref to the printable component
+          borrow={borrow}
+          borrowingInfo={borrowingInfo}
+          borrowItems={borrowItems}
+          user={user}
+          date_return={date_return}
+          issue={issue}
+          status={status}
+          reason_status={reason_status}
+          borrowingDetails={borrowingDetails}
+        />
+      </div>
     </Fragment>
   );
 };

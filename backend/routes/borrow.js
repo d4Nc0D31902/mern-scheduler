@@ -17,12 +17,12 @@ router.get("/borrows/me", isAuthenticatedUser, myBorrowings);
 router.get(
   "/admin/borrows",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   allBorrowings
 );
 router
   .route("/admin/borrow/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateBorrowing)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteBorrowing);
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateBorrowing)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteBorrowing);
 
 module.exports = router;

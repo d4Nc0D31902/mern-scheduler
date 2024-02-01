@@ -17,7 +17,7 @@ router.get("/categories", getCategories);
 router.get(
   "/admin/categories",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   getCategories
 );
 
@@ -27,26 +27,26 @@ router.get("/category/:id", getCategoryById);
 router.put(
   "/admin/category/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   updateCategory
 );
 router.delete(
   "/admin/category/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   deleteCategory
 );
 
 router.put(
   "/admin/category/deactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   deactivateCategory
 );
 router.put(
   "/admin/category/reactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   reactivateCategory
 );
 

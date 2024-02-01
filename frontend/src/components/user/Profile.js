@@ -107,11 +107,17 @@ const Profile = () => {
                   <p style={{ fontSize: "18px" }}>{user.year}</p>
                   <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
 
-                  {user.role !== "admin" && (
+                  <div className="col-lg-12">
+                    <h5 style={{ fontFamily: "calibri" }}>ROLE:</h5>
+                    <p style={{ fontSize: "18px" }}>{user.role}</p>
+                    <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
+                  </div>
+
+                  {/* {user.role !== "admin" && (
                     <Link to="/orders/me" className="btn btn-primary btn-block">
                       My Orders
                     </Link>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

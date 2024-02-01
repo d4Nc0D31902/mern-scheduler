@@ -16,7 +16,7 @@ router.get("/announcements", getAnnouncements);
 router.get(
   "/admin/announcements",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   getAnnouncements
 );
 
@@ -24,7 +24,7 @@ router.post("/announcement/new", isAuthenticatedUser, createAnnouncement);
 router.get("/announcement/:id", getAnnouncementById);
 router
   .route("/admin/announcement/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateAnnouncement)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteAnnouncement);
+  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateAnnouncement)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteAnnouncement);
 
 module.exports = router;  

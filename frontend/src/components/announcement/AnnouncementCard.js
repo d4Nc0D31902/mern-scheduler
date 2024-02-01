@@ -9,6 +9,7 @@ const AnnouncementCard = ({ announcement, onDelete }) => {
 
   const user = useSelector((state) => state.auth.user);
   const isAdmin = user && user.role === "admin";
+  const isOfficer = user && user.role === "officer";
 
   const deleteAnnouncementHandler = async () => {
     try {
@@ -65,22 +66,23 @@ const AnnouncementCard = ({ announcement, onDelete }) => {
       </div>
 
       <div className="announcement-buttons">
-        {isAdmin && (
-          <>
-            <Link
-              to={`/admin/announcement/${announcement._id}`}
-              className="btn btn-primary py-1 px-2"
-            >
-              Edit
-            </Link>
-            <button
-              onClick={deleteAnnouncementHandler}
-              className="btn btn-danger py-1 px-2 ml-2"
-            >
-              Delete
-            </button>
-          </>
-        )}
+        {isAdmin ||
+          (user && user.role === "officer" && (
+            <>
+              <Link
+                to={`/admin/announcement/${announcement._id}`}
+                className="btn btn-primary py-1 px-2"
+              >
+                Edit
+              </Link>
+              <button
+                onClick={deleteAnnouncementHandler}
+                className="btn btn-danger py-1 px-2 ml-2"
+              >
+                Delete
+              </button>
+            </>
+          ))}
       </div>
     </div>
   );

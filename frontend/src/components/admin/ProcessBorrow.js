@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
@@ -13,6 +13,8 @@ import {
   clearErrors,
 } from "../../actions/borrowActions";
 import { UPDATE_BORROW_RESET } from "../../constants/borrowConstants";
+import ReactToPrint from "react-to-print"; // Import ReactToPrint
+import PrintableBorrowDetails from "../equipment/PrintableBorrowDetails"; // Import PrintableBorrowDetails
 
 const BorrowDetails = () => {
   const [status, setStatus] = useState("");
@@ -52,6 +54,8 @@ const BorrowDetails = () => {
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
+
+  const componentRef = useRef(); // Create a ref for the component to be printed
 
   useEffect(() => {
     dispatch(getBorrowDetails(borrowId));
@@ -238,6 +242,14 @@ const BorrowDetails = () => {
                         {/* Add other reason options */}
                       </select>
                     </div>
+                    <div style={{ textAlign: "center", margin: "20px 0" }}>
+                      <ReactToPrint
+                        trigger={() => (
+                          <button className="btn btn-primary">Print</button>
+                        )} // Button to trigger printing
+                        content={() => componentRef.current} // Content to be printed
+                      />
+                    </div>
                   </div>
                   <hr />
                   <h4
@@ -272,6 +284,20 @@ const BorrowDetails = () => {
             )}
           </Fragment>
         </div>
+      </div>
+      <div style={{ display: "none" }}>
+        <PrintableBorrowDetails
+          ref={componentRef} // Assign the ref to the printable component
+          borrow={borrow}
+          borrowingInfo={borrowingInfo}
+          borrowItems={borrowItems}
+          user={user}
+          date_return={date_return}
+          issue={issue}
+          status={status}
+          reasonStatus={reasonStatus}
+          borrowingDetails={borrowingDetails}
+        />
       </div>
     </Fragment>
   );

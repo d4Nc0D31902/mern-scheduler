@@ -48,6 +48,7 @@ import Appointment from "./components/appointment/Appointment";
 import AppointmentList from "./components/appointment/AppointmentList";
 import UpdateAppointment from "./components/appointment/UpdateAppointment";
 import MyAppointment from "./components/appointment/MyAppointment";
+import AppointmentView from "./components/appointment/AppointmentView.js";
 // import ProcessAppointment from "./components/admin/ProcessAppointment.js";
 
 import LocationList from "./components/location/LocationList";
@@ -144,7 +145,7 @@ function App() {
         <Route
           path="/admin/appointments/"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <AppointmentList />
             </ProtectedRoute>
           }
@@ -153,7 +154,7 @@ function App() {
         <Route
           path="/admin/borrows/"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <BorrowList />
             </ProtectedRoute>
           }
@@ -162,7 +163,7 @@ function App() {
         <Route
           path="/admin/equipments/"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <EquipmentList />
             </ProtectedRoute>
           }
@@ -171,7 +172,7 @@ function App() {
         <Route
           path="/settings/6581a5b1466cfcabab4cc84f"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <Settings />
             </ProtectedRoute>
           }
@@ -180,7 +181,7 @@ function App() {
         <Route
           path="/admin/locations/"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <LocationList />
             </ProtectedRoute>
           }
@@ -189,7 +190,7 @@ function App() {
         <Route
           path="/admin/location"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewLocation />
             </ProtectedRoute>
           }
@@ -198,7 +199,7 @@ function App() {
         <Route
           path="/admin/equipment"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewEquipment />
             </ProtectedRoute>
           }
@@ -207,7 +208,7 @@ function App() {
         <Route
           path="/admin/equipment/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateEquipment />
             </ProtectedRoute>
           }
@@ -225,7 +226,7 @@ function App() {
         <Route
           path="/admin/sport"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewSport />
             </ProtectedRoute>
           }
@@ -234,7 +235,7 @@ function App() {
         <Route
           path="/admin/category"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewCategory />
             </ProtectedRoute>
           }
@@ -243,7 +244,7 @@ function App() {
         <Route
           path="/admin/sports"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <SportList />
             </ProtectedRoute>
           }
@@ -252,7 +253,7 @@ function App() {
         <Route
           path="/admin/categories"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <CategoryList />
             </ProtectedRoute>
           }
@@ -261,7 +262,7 @@ function App() {
         <Route
           path="/admin/announcement"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewAnnouncement />
             </ProtectedRoute>
           }
@@ -271,8 +272,17 @@ function App() {
         <Route
           path="/admin/appointment/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateAppointment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/appointment/:id"
+          element={
+            <ProtectedRoute isAdmin={false} isOfficer={false}>
+              <AppointmentView />
             </ProtectedRoute>
           }
         />
@@ -280,7 +290,7 @@ function App() {
         <Route
           path="/admin/announcement/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateAnnouncement />
             </ProtectedRoute>
           }
@@ -289,7 +299,7 @@ function App() {
         <Route
           path="/admin/location/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateLocation />
             </ProtectedRoute>
           }
@@ -298,7 +308,7 @@ function App() {
         <Route
           path="/admin/sport/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateSport />
             </ProtectedRoute>
           }
@@ -307,7 +317,7 @@ function App() {
         <Route
           path="/admin/category/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateCategory />
             </ProtectedRoute>
           }
@@ -316,7 +326,7 @@ function App() {
         <Route
           path="/admin/location"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewLocation />
             </ProtectedRoute>
           }
@@ -441,15 +451,16 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <Dashboard />
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/admin/products"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <ProductsList />
             </ProtectedRoute>
           }
@@ -457,7 +468,7 @@ function App() {
         <Route
           path="/admin/product"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <NewProduct />
             </ProtectedRoute>
           }
@@ -465,7 +476,7 @@ function App() {
         <Route
           path="/admin/product/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateProduct />
             </ProtectedRoute>
           }
@@ -473,7 +484,7 @@ function App() {
         <Route
           path="/admin/orders"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <OrdersList />
             </ProtectedRoute>
           }
@@ -481,7 +492,7 @@ function App() {
         <Route
           path="/admin/order/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <ProcessOrder />
             </ProtectedRoute>
           }
@@ -490,7 +501,7 @@ function App() {
         <Route
           path="/admin/borrow/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <ProcessBorrow />
             </ProtectedRoute>
           }
@@ -498,7 +509,7 @@ function App() {
         <Route
           path="/admin/users"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UsersList />
             </ProtectedRoute>
           }
@@ -506,7 +517,7 @@ function App() {
         <Route
           path="/admin/user/:id"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateUser />
             </ProtectedRoute>
           }
@@ -515,7 +526,7 @@ function App() {
         <Route
           path="/admin/reviews"
           element={
-            <ProtectedRoute isAdmin={true}>
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
               <ProductReviews />
             </ProtectedRoute>
           }

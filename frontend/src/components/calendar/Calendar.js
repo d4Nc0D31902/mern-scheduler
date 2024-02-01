@@ -18,6 +18,7 @@ function MyCalendar() {
   const user = useSelector((state) => state.auth.user);
   const isAuthenticated = !!user;
   const isAdmin = isAuthenticated && user.role === "admin";
+  const isOfficer = isAuthenticated && user.role === "officer";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,12 +123,19 @@ function MyCalendar() {
     }
   };
 
+  const handlePrintCalendar = () => {
+    window.print();
+  };
+
   return (
     <div>
       <div className="center-request">
         <Link to="/request">
           <button className="btn btn-primary request">Request Schedule</button>
         </Link>
+        <button className="btn btn-primary" onClick={handlePrintCalendar}>
+          Print Calendar
+        </button>
       </div>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}

@@ -28,23 +28,23 @@ router
   .route("/admin/product/:id")
   .put(
     isAuthenticatedUser,
-    authorizeRoles("admin"),
+    authorizeRoles("admin","officer"),
     upload.array("images", 10),
     updateProduct
   )
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
+  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteProduct);
 router.put("/review", isAuthenticatedUser, createProductReview);
 router.get("/reviews", isAuthenticatedUser, getProductReviews);
 router.get(
   "/admin/products",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   getAdminProducts
 );
 router.post(
   "/admin/product/new",
   isAuthenticatedUser,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","officer"),
   upload.array("images", 10),
   newProduct
 );
