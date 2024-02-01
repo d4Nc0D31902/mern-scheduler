@@ -10,6 +10,8 @@ import { NEW_SPORT_RESET } from "../../constants/sportConstants";
 
 const NewSport = () => {
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState({});
+
   const dispatch = useDispatch();
 
   const { loading, error, success } = useSelector((state) => state.newSport);
@@ -32,8 +34,25 @@ const NewSport = () => {
     }
   }, [dispatch, error, success, navigate]);
 
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!name.trim()) {
+      errors.name = "Name is required";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const sportData = {
       name,
@@ -55,21 +74,42 @@ const NewSport = () => {
           <Fragment>
             <div className="wrapper my-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                <h3
+                  className="card-title"
+                  style={{
+                    fontFamily: "sans-serif",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    margin: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/tupt_logo.png"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginRight: "25px",
+                    }}
+                    alt="Logo"
+                  />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
                 <h1 className="mb-4 text-center">New Sport</h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Name of the sport:</label>
+                  <label htmlFor="name_field">Name of the Sport:</label>
                   <input
                     type="text"
                     id="name_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
+                  {errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
                 </div>
 
                 <button

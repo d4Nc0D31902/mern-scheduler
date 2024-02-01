@@ -17,16 +17,21 @@ const NewEquipment = () => {
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [sports, setSports] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
-  let navigate = useNavigate();
-
   const { loading, error, success } = useSelector(
     (state) => state.newEquipment
   );
+  const navigate = useNavigate();
 
   const message = (message = "") =>
     toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
+  const errMsg = (message = "") =>
+    toast.error(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
@@ -51,27 +56,49 @@ const NewEquipment = () => {
     }
 
     if (success) {
-      // Display a success notification
       message("Equipment Posted");
-
-      // Reset the component state
       setName("");
       setDescription("");
       setSport("");
       setStock(0);
       setImages([]);
       setImagesPreview([]);
-
-      // Navigate to the equipment page or perform any other necessary action
       navigate("/admin/equipment");
-
-      // Reset the success state in the Redux store
       dispatch({ type: NEW_EQUIPMENT_RESET });
     }
   }, [dispatch, error, success, navigate]);
 
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!name.trim()) {
+      errors.name = "Equipment name is required";
+      isValid = false;
+    }
+    if (!description.trim()) {
+      errors.description = "Description is required";
+      isValid = false;
+    }
+    if (!sport.trim()) {
+      errors.sport = "Sport is required";
+      isValid = false;
+    }
+    if (!stock || stock <= 0) {
+      errors.stock = "Stock must be greater than 0";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const formData = new FormData();
     formData.set("name", name);
@@ -122,42 +149,79 @@ const NewEquipment = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                <h3
+                  className="card-title"
+                  style={{
+                    fontFamily: "sans-serif",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    margin: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/tupt_logo.png"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginRight: "25px",
+                    }}
+                    alt="Logo"
+                  />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
-                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Equipment</h1>
+                <h1
+                  className="mb-4 text-center"
+                  style={{
+                    backgroundColor: "maroon",
+                    padding: "20px",
+                    borderRadius: "20px",
+                    color: "white",
+                  }}
+                >
+                  New Equipment
+                </h1>
 
                 <div className="form-group">
                   <label htmlFor="name_field">Equipment Name:</label>
-
                   <input
-                  placeholder="Put here the equipment name"
+                    placeholder="Put here the equipment name"
                     type="text"
                     id="name_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
+                  {errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description:</label>
                   <textarea
                     placeholder="describe the equipment"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.description ? "is-invalid" : ""
+                    }`}
                     id="description_field"
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
+                  {errors.description && (
+                    <div className="invalid-feedback">{errors.description}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="sport_field">Sport</label>
                   <select
                     id="sport_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.sport ? "is-invalid" : ""
+                    }`}
                     value={sport}
                     onChange={(e) => setSport(e.target.value)}
                   >
@@ -168,6 +232,9 @@ const NewEquipment = () => {
                       </option>
                     ))}
                   </select>
+                  {errors.sport && (
+                    <div className="invalid-feedback">{errors.sport}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -176,25 +243,34 @@ const NewEquipment = () => {
                     <button
                       type="button"
                       className="btn btn-outline-secondary"
-                      onClick={() => setStock(stock - 1 >= 0 ? stock - 1 : 0)}
+                      onClick={() =>
+                        setStock((prevStock) =>
+                          prevStock > 0 ? prevStock - 1 : 0
+                        )
+                      }
                     >
                       -
                     </button>
                     <input
                       type="number"
                       id="stock_field"
-                      className="form-control"
+                      className={`form-control ${
+                        errors.stock ? "is-invalid" : ""
+                      }`}
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
                     />
                     <button
                       type="button"
                       className="btn btn-outline-secondary"
-                      onClick={() => setStock(stock + 1)}
+                      onClick={() => setStock((prevStock) => prevStock + 1)}
                     >
                       +
                     </button>
                   </div>
+                  {errors.stock && (
+                    <div className="invalid-feedback">{errors.stock}</div>
+                  )}
                 </div>
 
                 <div className="form-group">

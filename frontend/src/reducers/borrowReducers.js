@@ -1,7 +1,7 @@
 import {
-  NEW_BORROW_REQUEST,
-  NEW_BORROW_SUCCESS,
-  NEW_BORROW_FAIL,
+  CREATE_BORROW_REQUEST,
+  CREATE_BORROW_SUCCESS,
+  CREATE_BORROW_FAIL,
   MY_BORROWS_REQUEST,
   MY_BORROWS_SUCCESS,
   MY_BORROWS_FAIL,
@@ -20,50 +20,42 @@ import {
   DELETE_BORROW_RESET,
   DELETE_BORROW_FAIL,
   CLEAR_ERRORS,
-  SET_BORROWS,
 } from "../constants/borrowConstants";
 
-export const newBorrowReducer = (state = { loading: false }, action) => {
+export const newBorrowReducer = (state = {}, action) => {
   switch (action.type) {
-    case NEW_BORROW_REQUEST:
+    case CREATE_BORROW_REQUEST:
       return {
         ...state,
         loading: true,
       };
 
-    case NEW_BORROW_SUCCESS:
+    case CREATE_BORROW_SUCCESS:
       return {
         ...state,
         loading: false,
         borrow: action.payload,
       };
-
-    case SET_BORROWS:
-      return {
-        ...state,
-        borrows: action.payload,
-      };
-
-    case NEW_BORROW_FAIL:
+    case CREATE_BORROW_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null,
       };
-
     default:
       return state;
   }
 };
 
+// borrowReducers.js
+
 export const myBorrowsReducer = (
-  state = { borrows: [], loading: false },
+  state = { loading: false, borrowings: [], error: null },
   action
 ) => {
   switch (action.type) {
@@ -71,41 +63,36 @@ export const myBorrowsReducer = (
       return {
         ...state,
         loading: true,
+        error: null,
       };
-
-    case SET_BORROWS:
-      return {
-        ...state,
-        borrows: action.payload,
-      };
-
     case MY_BORROWS_SUCCESS:
+      console.log("Borrows Success Payload:", action.payload); // Add this line to log the success payload
       return {
         ...state,
         loading: false,
-        borrows: action.payload,
+        borrowings: action.payload,
+        error: null,
       };
-
     case MY_BORROWS_FAIL:
+      console.log("Borrows Fail Payload:", action.payload); // Add this line to log the fail payload
       return {
         ...state,
         loading: false,
+        borrowings: [],
         error: action.payload,
       };
-
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null,
       };
-
     default:
       return state;
   }
 };
 
 export const borrowDetailsReducer = (
-  state = { borrow: {}, loading: false },
+  state = { loading: false, borrow: {} },
   action
 ) => {
   switch (action.type) {
@@ -114,34 +101,29 @@ export const borrowDetailsReducer = (
         ...state,
         loading: true,
       };
-
     case BORROW_DETAILS_SUCCESS:
       return {
         ...state,
         loading: false,
-        borrow: action.payload,
+        borrow: action.payload.borrowing, // Update to action.payload.borrowing
       };
-
     case BORROW_DETAILS_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-
     case CLEAR_ERRORS:
       return {
         ...state,
         error: null,
       };
-
     default:
       return state;
   }
 };
-
 export const allBorrowsReducer = (
-  state = { borrows: [], loading: false },
+  state = { loading: false, borrows: [] },
   action
 ) => {
   switch (action.type) {
@@ -151,18 +133,11 @@ export const allBorrowsReducer = (
         loading: true,
       };
 
-    case SET_BORROWS:
-      return {
-        ...state,
-        borrows: action.payload,
-      };
-
     case ALL_BORROWS_SUCCESS:
       return {
         ...state,
         loading: false,
-        borrows: action.payload.borrows,
-        totalAmount: action.payload.totalAmount,
+        borrows: action.payload, // Update to action.payload
       };
 
     case ALL_BORROWS_FAIL:

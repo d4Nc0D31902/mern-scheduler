@@ -206,13 +206,17 @@ const UpdateAppointment = () => {
 
               <div className="form-group">
                 <label htmlFor="reason_field">Reason of Status</label>
-                <input
-                  type="text"
+                <select
                   id="reason_field"
                   className="form-control"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                />
+                >
+                  <option value="">Select a reason</option>
+                  <option value="Reason 1">Reason 1</option>
+                  <option value="Reason 2">Reason 2</option>
+                  <option value="Reason 3">Reason 3</option>
+                </select>
               </div>
 
               <div className="form-group">

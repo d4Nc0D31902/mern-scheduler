@@ -154,14 +154,25 @@ const AppointmentsList = () => {
         const statusColor = getStatusColor(appointment.status);
 
         data.rows.push({
-          // id: appointment._id,
           requester: appointment.requester,
           attendees: <ul>{attendeesList}</ul>,
           title: appointment.title,
           description: appointment.description,
           location: appointment.location,
-          timeStart: new Date(appointment.timeStart).toLocaleString(),
-          timeEnd: new Date(appointment.timeEnd).toLocaleString(),
+          timeStart: new Date(appointment.timeStart).toLocaleString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          timeEnd: new Date(appointment.timeEnd).toLocaleString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
           status: (
             <span style={{ color: statusColor }}>{appointment.status}</span>
           ),
@@ -175,12 +186,6 @@ const AppointmentsList = () => {
               >
                 <i className="fa fa-pencil"></i>
               </Link>
-              {/* <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteAppointmentHandler(appointment._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button> */}
             </Fragment>
           ),
         });

@@ -1,33 +1,28 @@
 const express = require("express");
 const router = express.Router();
-
 const {
-  getBorrows, // Change function names
-  createBorrow,
-  getBorrowById,
-  updateBorrow,
-  deleteBorrow,
-  myBorrows,
-} = require("../controllers/borrowController"); // Change controller import
+  newBorrowing,
+  getSingleBorrowing,
+  myBorrowings,
+  allBorrowings,
+  updateBorrowing,
+  deleteBorrowing,
+} = require("../controllers/borrowController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
-router.get("/borrows", getBorrows); // Change route names
-
+router.post("/borrow/new", isAuthenticatedUser, newBorrowing);
+router.route("/borrow/:id").get(isAuthenticatedUser, getSingleBorrowing);
+router.get("/borrows/me", isAuthenticatedUser, myBorrowings);
 router.get(
   "/admin/borrows",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  getBorrows
+  allBorrowings
 );
-
-router.get("/borrows/me", isAuthenticatedUser, myBorrows);
-
-router.post("/borrow/new", isAuthenticatedUser, createBorrow); // Change route name
-router.get("/borrow/:id", getBorrowById); // Change route name
 router
-  .route("/admin/borrow/:id") // Change route name
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateBorrow)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteBorrow);
+  .route("/admin/borrow/:id")
+  .put(isAuthenticatedUser, authorizeRoles("admin"), updateBorrowing)
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteBorrowing);
 
 module.exports = router;

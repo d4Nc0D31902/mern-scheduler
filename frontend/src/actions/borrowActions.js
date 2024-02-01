@@ -1,9 +1,8 @@
 import axios from "axios";
 import {
-  NEW_BORROW_REQUEST,
-  NEW_BORROW_SUCCESS,
-  NEW_BORROW_FAIL,
-  NEW_BORROW_RESET,
+  CREATE_BORROW_REQUEST,
+  CREATE_BORROW_SUCCESS,
+  CREATE_BORROW_FAIL,
   MY_BORROWS_REQUEST,
   MY_BORROWS_SUCCESS,
   MY_BORROWS_FAIL,
@@ -19,13 +18,15 @@ import {
   DELETE_BORROW_REQUEST,
   DELETE_BORROW_SUCCESS,
   DELETE_BORROW_FAIL,
+  USER_SALES_REQUEST,
+  USER_SALES_SUCCESS,
+  USER_SALES_FAIL,
   CLEAR_ERRORS,
-  SET_BORROWS,
-} from "../constants/borrowConstants.js";
+} from "../constants/borrowConstants";
 
-export const newBorrow = (borrow) => async (dispatch, getState) => {
+export const createBorrow = (borrow) => async (dispatch, getState) => {
   try {
-    dispatch({ type: NEW_BORROW_REQUEST });
+    dispatch({ type: CREATE_BORROW_REQUEST });
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -38,14 +39,12 @@ export const newBorrow = (borrow) => async (dispatch, getState) => {
       config
     );
     dispatch({
-      type: NEW_BORROW_SUCCESS,
+      type: CREATE_BORROW_SUCCESS,
       payload: data,
     });
-
-    // Do not dispatch NEW_BORROW_RESET here, leave it to the component
   } catch (error) {
     dispatch({
-      type: NEW_BORROW_FAIL,
+      type: CREATE_BORROW_FAIL,
       payload: error.response.data.message,
     });
   }
@@ -54,17 +53,14 @@ export const newBorrow = (borrow) => async (dispatch, getState) => {
 export const myBorrows = () => async (dispatch) => {
   try {
     dispatch({ type: MY_BORROWS_REQUEST });
-
     const { data } = await axios.get(
       `${process.env.REACT_APP_API}/api/v1/borrows/me`,
       { withCredentials: true }
     );
-
-    console.log("Data received:", data); // Log received data
-
+    console.log("Response:", data); // Add this line to log the response
     dispatch({
       type: MY_BORROWS_SUCCESS,
-      payload: data,
+      payload: data.borrowings, // Make sure to extract borrowings from data
     });
   } catch (error) {
     dispatch({
@@ -83,7 +79,7 @@ export const getBorrowDetails = (id) => async (dispatch) => {
     );
     dispatch({
       type: BORROW_DETAILS_SUCCESS,
-      payload: data.borrow,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -97,9 +93,10 @@ export const allBorrows = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_BORROWS_REQUEST });
     const { data } = await axios.get(
-      `${process.env.REACT_APP_API}/api/v1/borrows`,
+      `${process.env.REACT_APP_API}/api/v1/admin/borrows`,
       {
-        withCredentials: true,
+        //AxiosRequestConfig parameter
+        withCredentials: true, //correct
       }
     );
     dispatch({
@@ -139,7 +136,6 @@ export const updateBorrow = (id, borrowData) => async (dispatch) => {
     });
   }
 };
-
 export const deleteBorrow = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_BORROW_REQUEST });
@@ -158,11 +154,6 @@ export const deleteBorrow = (id) => async (dispatch) => {
     });
   }
 };
-
-export const setBorrows = (borrows) => ({
-  type: SET_BORROWS,
-  payload: borrows,
-});
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({

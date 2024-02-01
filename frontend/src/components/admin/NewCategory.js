@@ -10,8 +10,8 @@ import { NEW_CATEGORY_RESET } from "../../constants/categoryConstants";
 
 const NewCategory = () => {
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState({}); // State for errors
   const dispatch = useDispatch();
-
   const { loading, error, success } = useSelector((state) => state.newCategory);
   const navigate = useNavigate();
 
@@ -38,8 +38,27 @@ const NewCategory = () => {
     }
   }, [dispatch, error, success, navigate]);
 
+  // Validation function
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!name.trim()) {
+      errors.name = "Category name is required";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    // Validate the form before submitting
+    if (!validateForm()) {
+      return;
+    }
 
     const categoryData = {
       name,
@@ -64,21 +83,42 @@ const NewCategory = () => {
           <Fragment>
             <div className="wrapper my-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                <h3
+                  className="card-title"
+                  style={{
+                    fontFamily: "sans-serif",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    margin: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/tupt_logo.png"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginRight: "25px",
+                    }}
+                    alt="Logo"
+                  />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
                 <h1 className="mb-4 text-center">New Category</h1>
                 <div className="form-group">
                   <label htmlFor="name_field">Category Name:</label>
                   <input
-                  placeholder="ex.(sportswear etc..)"
+                    placeholder="ex.(sportswear etc..)"
                     type="text"
                     id="name_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
+                  {errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
                 </div>
                 <button
                   id="login_button"

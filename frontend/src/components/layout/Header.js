@@ -9,6 +9,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
+  const { borrowCartItems } = useSelector((state) => state.borrowCart);
   const location = useLocation();
 
   const logoutHandler = () => {
@@ -54,6 +55,18 @@ const Header = () => {
                     <i className="fa fa-shopping-basket"></i> Cart
                     <span className="ml-1" id="cart_count">
                       {cartItems.length}
+                    </span>
+                  </span>
+                </Link>
+
+                <Link
+                  to="/borrowCart"
+                  style={{ textDecoration: "none", marginLeft: "10px" }}
+                >
+                  <span id="cart">
+                    <i className="fa fa-shopping-basket"></i> Borrowed
+                    <span className="ml-1" id="cart_count">
+                      {borrowCartItems.length}
                     </span>
                   </span>
                 </Link>
@@ -129,6 +142,10 @@ const Header = () => {
 
                   <Link className="dropdown-item" to="/orders/me">
                     Orders
+                  </Link>
+
+                  <Link className="dropdown-item" to="/equipment/me">
+                    My Borrows
                   </Link>
 
                   <Link className="dropdown-item" to="/appointments/me">

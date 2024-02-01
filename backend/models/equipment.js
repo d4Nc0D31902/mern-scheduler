@@ -1,5 +1,3 @@
-// models/equipment.js
-
 const mongoose = require("mongoose");
 
 const equipmentSchema = new mongoose.Schema({

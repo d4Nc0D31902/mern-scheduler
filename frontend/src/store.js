@@ -25,6 +25,7 @@ import {
   googleLoginReducer,
 } from "./reducers/userReducers";
 import { cartReducer } from "./reducers/cartReducers";
+import { borrowCartReducer } from "./reducers/borrowCartReducers";
 import {
   newOrderReducer,
   myOrdersReducer,
@@ -95,6 +96,7 @@ const reducer = combineReducers({
   user: userReducer,
   forgotPassword: forgotPasswordReducer,
   cart: cartReducer,
+  borrowCart: borrowCartReducer,
   newOrder: newOrderReducer,
   myOrders: myOrdersReducer,
   orderDetails: orderDetailsReducer,
@@ -156,6 +158,14 @@ let initialState = {
       : [],
     shippingInfo: localStorage.getItem("shippingInfo")
       ? JSON.parse(localStorage.getItem("shippingInfo"))
+      : {},
+  },
+  borrowCart: {
+    borrowCartItems: localStorage.getItem("borrowCartItems")
+      ? JSON.parse(localStorage.getItem("borrowCartItems"))
+      : [],
+    borrowingInfo: localStorage.getItem("borrowingInfo")
+      ? JSON.parse(localStorage.getItem("borrowingInfo"))
       : {},
   },
 };

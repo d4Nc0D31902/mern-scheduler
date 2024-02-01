@@ -1,10 +1,15 @@
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import "../../Equipment.css";
+import { addItemToBorrowCart } from "../../actions/borrowCartActions";
 
 const Equipment = ({ equipment }) => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
-  const navigate = useNavigate();
 
   const decreaseQuantity = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
@@ -18,13 +23,16 @@ const Equipment = ({ equipment }) => {
     );
   };
 
-  const handleBorrowClick = () => {
-    navigate("/equipment/borrow", {
-      state: {
-        equipment: equipment,
-        stock: quantity,
-      },
-    });
+  const addToBorrowCart = () => {
+    dispatch(addItemToBorrowCart(equipment._id, quantity))
+      .then(() => {
+        // Display success toast message
+        toast.success("Item Added");
+      })
+      .catch((error) => {
+        // Display error toast message
+        toast.error(error.message || "Failed to Add Item");
+      });
   };
 
   if (equipment.status === "active") {
@@ -74,9 +82,10 @@ const Equipment = ({ equipment }) => {
           )}
           {equipment.stock > 0 && (
             <button
-              className="btn btn-primary"
-              onClick={handleBorrowClick}
-              disabled={equipment.stock === 0}
+              type="button"
+              id="cart_btn"
+              className="btn btn-primary d-inline ml-4"
+              onClick={addToBorrowCart}
             >
               Borrow
             </button>

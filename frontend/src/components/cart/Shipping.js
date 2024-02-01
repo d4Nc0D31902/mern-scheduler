@@ -25,6 +25,11 @@ const Shipping = () => {
     }
 
     // Additional validation can be added here, such as checking postal code format, phone number format, etc.
+    // For example:
+    // if (!/^\d{5}$/.test(postalCode)) {
+    //   alert("Please enter a valid postal code.");
+    //   return;
+    // }
 
     dispatch(saveShippingInfo({ address, city, phoneNo, postalCode, country }));
     navigate("/confirm");

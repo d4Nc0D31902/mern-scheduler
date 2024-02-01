@@ -125,8 +125,6 @@ const ProcessOrder = () => {
                     TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                   </h3>
 
-                  {/* <h1 className="my-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>MERCHANDISE</h1> */}
-
                   <h4 className="my-4 text-center">MERCH ORDERS</h4>
                   <div
                     className="cart-item my-1"
@@ -186,21 +184,21 @@ const ProcessOrder = () => {
                   </p>
 
                   <hr />
-                  <p>
+                  {/* <p>
                     <b>Payment Status: </b>
                     <b className={isPaid ? "greenColor" : "redColor"}>
                       {isPaid ? "PAID" : "NOT PAID"}
                     </b>
-                  </p>
+                  </p> */}
 
                   {/* <h4 className="my-4">Payment Status</h4>
 
                   <p className={isPaid ? "greenColor" : "redColor"}>
                     <b>{isPaid ? "PAID" : "NOT PAID"}</b>
                   </p> */}
-                  <p>
+                  {/* <p>
                     <b>Stripe ID</b> {paymentInfo && paymentInfo.id}
-                  </p>
+                  </p> */}
 
                   {/* <h4 className="my-4">Stripe ID</h4>
 

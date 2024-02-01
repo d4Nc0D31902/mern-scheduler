@@ -14,14 +14,15 @@ import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 
 const NewProduct = () => {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState("");
   const [seller, setSeller] = useState("");
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
   let navigate = useNavigate();
@@ -60,8 +61,50 @@ const NewProduct = () => {
     }
   }, [dispatch, error, success, navigate]);
 
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!name.trim()) {
+      errors.name = "Name is required";
+      isValid = false;
+    }
+
+    if (!price.trim()) {
+      errors.price = "Price is required";
+      isValid = false;
+    }
+
+    if (!description.trim()) {
+      errors.description = "Description is required";
+      isValid = false;
+    }
+
+    if (!category.trim()) {
+      errors.category = "Category is required";
+      isValid = false;
+    }
+
+    if (!stock.trim()) {
+      errors.stock = "Stock is required";
+      isValid = false;
+    }
+
+    if (!seller.trim()) {
+      errors.seller = "Seller name is required";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -115,84 +158,143 @@ const NewProduct = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                <h3
+                  className="card-title"
+                  style={{
+                    fontFamily: "sans-serif",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    margin: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/tupt_logo.png"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginRight: "25px",
+                    }}
+                    alt="Logo"
+                  />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
-                <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>New Product</h1>
+                <h1
+                  className="mb-4 text-center"
+                  style={{
+                    backgroundColor: "maroon",
+                    padding: "20px",
+                    borderRadius: "20px",
+                    color: "white",
+                  }}
+                >
+                  New Product
+                </h1>
 
                 <div className="form-group">
                   <label htmlFor="name_field">Merch:</label>
                   <input
-                  placeholder="Put the name of the merch"
+                    placeholder="Put the name of the merch"
                     type="text"
                     id="name_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
+                  {errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="price_field">Price:</label>
                   <input
+                    placeholder="Enter the price"
                     type="text"
                     id="price_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.price ? "is-invalid" : ""
+                    }`}
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                   />
+                  {errors.price && (
+                    <div className="invalid-feedback">{errors.price}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description:</label>
-
                   <textarea
-                  placeholder="Describe the merch here"
-                    className="form-control"
+                    placeholder="Describe the merch here"
+                    className={`form-control ${
+                      errors.description ? "is-invalid" : ""
+                    }`}
                     id="description_field"
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
+                  {errors.description && (
+                    <div className="invalid-feedback">{errors.description}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="category_field">Category:</label>
                   <select
                     id="category_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.category ? "is-invalid" : ""
+                    }`}
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
+                    <option value="">Select Category</option>
                     {categories.map((cat) => (
-                      <option key={cat._id} value={cat.name}>
+                      <option key={cat._id} value={cat._id}>
                         {cat.name}
                       </option>
                     ))}
                   </select>
+                  {errors.category && (
+                    <div className="invalid-feedback">{errors.category}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="stock_field">Remaining Stocks:</label>
                   <input
+                    placeholder="Enter remaining stocks"
                     type="number"
                     id="stock_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.stock ? "is-invalid" : ""
+                    }`}
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                   />
+                  {errors.stock && (
+                    <div className="invalid-feedback">{errors.stock}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="seller_field">Seller Name:</label>
                   <input
+                    placeholder="Enter seller name"
                     type="text"
                     id="seller_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.seller ? "is-invalid" : ""
+                    }`}
                     value={seller}
                     onChange={(e) => setSeller(e.target.value)}
                   />
+                  {errors.seller && (
+                    <div className="invalid-feedback">{errors.seller}</div>
+                  )}
                 </div>
 
                 <div className="form-group">

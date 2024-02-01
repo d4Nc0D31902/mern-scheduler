@@ -3,112 +3,87 @@ import { Link, useNavigate } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
-import Sidebar from "../admin/Sidebar";
+import Sidebar from "./Sidebar";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  allBorrows,
-  clearErrors,
-  deleteBorrow,
-} from "../../actions/borrowActions";
-import { DELETE_BORROW_RESET } from "../../constants/borrowConstants";
+import { allBorrows, clearErrors } from "../../actions/borrowActions";
+import axios from "axios";
 
-const BorrowsList = () => {
+const BorrowList = () => {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { loading, error, borrows } = useSelector((state) => state.allBorrows);
-  const { isDeleted } = useSelector((state) => state.borrow || {});
+  const [selectedStatus, setSelectedStatus] = useState("All");
+
   const errMsg = (message = "") =>
     toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
   const successMsg = (message = "") =>
     toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
 
-  const [selectedStatus, setSelectedStatus] = useState("All");
-
   useEffect(() => {
+    console.log("Fetching borrows...");
     dispatch(allBorrows());
+
     if (error) {
       errMsg(error);
       dispatch(clearErrors());
     }
-    if (isDeleted) {
-      successMsg("Borrow deleted successfully");
-      navigate("/admin/borrows");
-      dispatch({ type: DELETE_BORROW_RESET });
-    }
-  }, [dispatch, error, navigate, isDeleted]);
+  }, [dispatch, error]);
 
-  const deleteBorrowHandler = (id) => {
-    dispatch(deleteBorrow(id));
-  };
+  useEffect(() => {
+    console.log("Borrows updated:", borrows);
+  }, [borrows]);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Approved":
-        return "green";
-      case "Returned":
-        return "green";
-      case "Pending":
-        return "orange";
-      case "Denied":
-        return "red";
-      default:
-        return "";
+  console.log("Loading:", loading);
+  console.log("Error:", error);
+
+  const filteredBorrows = () => {
+    if (selectedStatus === "All") {
+      return borrows.borrowings;
     }
+    return borrows.borrowings.filter(
+      (borrow) => borrow.status === selectedStatus
+    );
   };
 
   const handleStatusChange = (event) => {
     setSelectedStatus(event.target.value);
   };
 
-  const filteredBorrows = () => {
-    if (selectedStatus === "All") {
-      return borrows;
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Approved":
+        return "green";
+      case "Pending":
+        return "orange";
+      case "Denied":
+        return "red";
+      case "Borrowed":
+        return "orange";
+      case "Returned":
+        return "green";
+      default:
+        return "";
     }
-    return borrows.filter((borrow) => borrow.status === selectedStatus);
   };
 
   const setBorrows = () => {
     const data = {
       columns: [
-        // {
-        //   label: "Borrow ID",
-        //   field: "id",
-        //   sort: "asc",
-        // },
         {
           label: "User",
           field: "user",
           sort: "asc",
         },
         {
-          label: "Equipment",
-          field: "equipment",
+          label: "No of Items",
+          field: "numofItems",
           sort: "asc",
         },
         {
-          label: "Quantity",
-          field: "quantity",
-          sort: "asc",
-        },
-        {
-          label: "Reason of Borrow",
-          field: "reason_borrow",
-          sort: "asc",
-        },
-        {
-          label: "Date Borrowed",
-          field: "date_borrow",
-          sort: "asc",
-        },
-        {
-          label: "Date Returned",
-          field: "date_return",
-          sort: "asc",
-        },
-        {
-          label: "Issue",
-          field: "issue",
+          label: "Borrow Date",
+          field: "borrowDate",
           sort: "asc",
         },
         {
@@ -117,54 +92,41 @@ const BorrowsList = () => {
           sort: "asc",
         },
         {
-          label: "Reason of Status",
-          field: "reason_status",
-          sort: "asc",
-        },
-        {
           label: "Actions",
           field: "actions",
-          sort: "asc",
         },
       ],
       rows: [],
     };
 
-    const filteredData = filteredBorrows();
-
-    if (filteredData) {
-      filteredData.forEach((borrow) => {
-        const dataReturned = borrow.date_return
-          ? new Date(borrow.date_return).toLocaleString()
-          : "N/A";
-
-        const statusColor = getStatusColor(borrow.status);
-
+    if (borrows && borrows.borrowings && borrows.borrowings.length > 0) {
+      filteredBorrows().forEach((borrow) => {
         data.rows.push({
-          // id: borrow._id,
-          user: borrow.user,
-          equipment: borrow.equipment,
-          quantity: borrow.quantity,
-          reason_borrow: borrow.reason_borrow,
-          date_borrow: new Date(borrow.date_borrow).toLocaleString(),
-          date_return: dataReturned,
-          issue: borrow.issue,
-          status: <span style={{ color: statusColor }}>{borrow.status}</span>,
-          reason_status: borrow.reason_status,
+          numofItems: borrow.borrowItems.length,
+          borrowDate: new Date(borrow.borrowingInfo.date_borrow).toLocaleString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            }
+          ),
+          user: borrow.user, // Include user's name in the data
+          status: (
+            <span style={{ color: getStatusColor(borrow.status) }}>
+              {borrow.status}
+            </span>
+          ),
           actions: (
             <Fragment>
               <Link
                 to={`/admin/borrow/${borrow._id}`}
                 className="btn btn-primary py-1 px-2"
               >
-                <i className="fa fa-pencil"></i>
+                <i className="fa fa-eye"></i>
               </Link>
-              {/* <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteBorrowHandler(borrow._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button> */}
             </Fragment>
           ),
         });
@@ -176,14 +138,14 @@ const BorrowsList = () => {
 
   return (
     <Fragment>
-      <MetaData title={"All Borrows"} />
+      <MetaData title={"All Borrowings"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
         <div className="col-12 col-md-10">
           <Fragment>
-            <h1 className="my-5">All Borrows</h1>
+            <h1 className="my-5">All Borrowings</h1>
             <div className="mb-3">
               <label htmlFor="statusFilter">Filter by Status:</label>
               <select
@@ -196,6 +158,7 @@ const BorrowsList = () => {
                 <option value="Approved">Approved</option>
                 <option value="Denied">Denied</option>
                 <option value="Pending">Pending</option>
+                <option value="Borrowed">Borrowed</option>
                 <option value="Returned">Returned</option>
               </select>
             </div>
@@ -217,4 +180,4 @@ const BorrowsList = () => {
   );
 };
 
-export default BorrowsList;
+export default BorrowList;

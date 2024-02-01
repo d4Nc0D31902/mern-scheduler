@@ -157,6 +157,7 @@ const NewAppointment = () => {
         toast.success("Appointment requested successfully");
       } catch (error) {
         console.error("Error creating appointment:", error);
+        toast.error("Failed to request appointment");
       }
     }
   };

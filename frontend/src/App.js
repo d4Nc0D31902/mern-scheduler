@@ -22,6 +22,13 @@ import OrderSuccess from "./components/cart/OrderSuccess";
 import ListOrders from "./components/order/ListOrders";
 import OrderDetails from "./components/order/OrderDetails";
 
+import ConfirmBorrow from "./components/equipment/ConfirmBorrow.js";
+import Borrow from "./components/equipment/Borrow.js";
+import BorrowingInfo from "./components/equipment/BorrowingInfo.js";
+import ProcessBorrow from "./components/admin/ProcessBorrow.js";
+import BorrowDetails from "./components/equipment/BorrowDetails.js";
+import BorrowCart from "./components/equipment/BorrowCart.js";
+
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
 import NewProduct from "./components/admin/NewProduct";
@@ -56,7 +63,7 @@ import NewEquipment from "./components/admin/NewEquipment";
 import UpdateEquipment from "./components/admin/UpdateEquipment";
 
 import BorrowList from "./components/admin/BorrowList.js";
-import UpdateBorrow from "./components/admin/UpdateBorrow.js";
+// import UpdateBorrow from "./components/admin/UpdateBorrow.js";
 
 import Settings from "./components/admin/SettingsComponent.js";
 
@@ -66,13 +73,12 @@ import AnnouncementCard from "./components/announcement/AnnouncementCard";
 import UpdateAnnouncement from "./components/admin/UpdateAnnouncement.js";
 
 import EquipmentContainer from "./components/equipment/EquipmentContainer.js";
-import EquipmentBorrow from "./components/equipment/EquipmentBorrow.js";
+// import EquipmentBorrow from "./components/equipment/EquipmentBorrow.js";
 import MyBorrow from "./components/equipment/MyBorrow.js";
 
 import CategoryList from "./components/admin/CategoryList.js";
 import NewCategory from "./components/admin/NewCategory.js";
 import UpdateCategory from "./components/admin/UpdateCategory.js";
-
 
 import HomePage from "./components/homepage/HomePage.js";
 
@@ -93,11 +99,11 @@ function App() {
           element={<EquipmentContainer />}
           exact="true"
         />
-        <Route
+        {/* <Route
           path="/equipment/borrow"
           element={<EquipmentBorrow />}
           exact="true"
-        />
+        /> */}
         <Route path="/search/:keyword" element={<Home />} exact="true" />
         <Route path="/login" element={<Login />} exact="true" />
         <Route path="/register" element={<Register />} exact="true" />
@@ -112,6 +118,7 @@ function App() {
           exact="true"
         />
         <Route path="/cart" element={<Cart />} exact="true" />
+        <Route path="/borrowCart" element={<BorrowCart />} exact="true" />
         <Route path="/" element={<Home />} exact="true" />
         <Route path="/calendar" element={<Calendar />} exact="true" />
         <Route path="/request" element={<Appointment />} exact="true" />
@@ -206,14 +213,14 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/admin/borrow/:id"
           element={
             <ProtectedRoute isAdmin={true}>
               <UpdateBorrow />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/admin/sport"
@@ -354,6 +361,16 @@ function App() {
         />
 
         <Route
+          path="/borrowingInfo"
+          element={
+            <ProtectedRoute>
+              <BorrowingInfo />
+            </ProtectedRoute>
+          }
+          exact="true"
+        />
+
+        <Route
           path="/confirm"
           element={
             <ProtectedRoute>
@@ -361,11 +378,30 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/confirmBorrow"
+          element={
+            <ProtectedRoute>
+              <ConfirmBorrow />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/payment"
           element={
             <ProtectedRoute>
               <Payment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/borrow"
+          element={
+            <ProtectedRoute>
+              <Borrow />
             </ProtectedRoute>
           }
         />
@@ -391,6 +427,14 @@ function App() {
           element={
             <ProtectedRoute>
               <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/borrow/:id"
+          element={
+            <ProtectedRoute>
+              <BorrowDetails />
             </ProtectedRoute>
           }
         />
@@ -442,6 +486,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/admin/borrow/:id"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <ProcessBorrow />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/admin/users"
           element={
@@ -467,9 +520,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-
-
       </Routes>
       {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
     </div>

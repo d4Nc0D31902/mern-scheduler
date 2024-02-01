@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const borrowingSchema = new mongoose.Schema({
+const borrowingSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -10,33 +10,48 @@ const borrowingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  equipment: {
-    type: String,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  reason_borrow: {
-    type: String,
-    required: true,
-  },
-  date_borrow: {
-    type: Date,
-    required: true,
+
+  borrowItems: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      image: {
+        type: String,
+        required: true,
+      },
+      equipment: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Equipment",
+      },
+    },
+  ],
+  borrowingInfo: {
+    date_borrow: {
+      type: Date,
+      required: true,
+    },
+    reason_borrow: {
+      type: String,
+      required: true,
+    },
   },
   date_return: {
     type: Date,
-    // required: true,
-    default: Date.now,
+    default: null, // or any default date value you prefer
   },
   issue: {
     type: String,
     required: true,
     enum: {
       values: [
-        "N/A", // Add 'N/A' to the allowed values
+        "N/A",
         "Damage",
         "Missing",
         "Incorrect Equipment",
@@ -56,6 +71,7 @@ const borrowingSchema = new mongoose.Schema({
   reason_status: {
     type: String,
     required: true,
+    default: "N/A",
   },
   createdAt: {
     type: Date,
@@ -63,4 +79,14 @@ const borrowingSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Borrowing", borrowingSchema);
+borrowingSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+borrowingSchema.set("toJSON", {
+  virtuals: true,
+});
+
+const Borrowing = mongoose.model("Borrowing", borrowingSchema);
+
+module.exports = Borrowing; // Exporting the model

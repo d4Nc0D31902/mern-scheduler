@@ -1,13 +1,18 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
-import { useDispatch, useSelector } from "react-redux";
-import { myBorrows, clearErrors } from "../../actions/borrowActions";
+
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { myBorrows, clearErrors } from "../../actions/borrowActions";
 
 const MyBorrow = () => {
   const dispatch = useDispatch();
-  const { loading, error, borrows } = useSelector((state) => state.myBorrows);
+  const { loading, error, borrowings } = useSelector(
+    (state) => state.myBorrows
+  );
+  const [selectedStatus, setSelectedStatus] = useState("All");
 
   useEffect(() => {
     dispatch(myBorrows());
@@ -16,42 +21,50 @@ const MyBorrow = () => {
     }
   }, [dispatch, error]);
 
-  const setBorrowsData = () => {
+  const filteredBorrowings = () => {
+    if (selectedStatus === "All") {
+      return borrowings;
+    }
+    return borrowings.filter((borrow) => borrow.status === selectedStatus);
+  };
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Approved":
+        return "green";
+      case "Pending":
+        return "orange";
+      case "Denied":
+        return "red";
+      case "Borrowed":
+        return "orange";
+      case "Returned":
+        return "green";
+      default:
+        return "";
+    }
+  };
+
+  const setBorrowings = () => {
     const data = {
       columns: [
-        {
-          label: "Borrow ID",
-          field: "id",
-          sort: "asc",
-        },
         {
           label: "User",
           field: "user",
           sort: "asc",
         },
         {
-          label: "Equipment",
-          field: "equipment",
-          sort: "asc",
-        },
-        {
-          label: "Quantity",
-          field: "quantity",
-          sort: "asc",
-        },
-        {
-          label: "Reason for Borrow",
-          field: "reason_borrow",
+          label: "No of Items",
+          field: "numofItems",
           sort: "asc",
         },
         {
           label: "Borrow Date",
-          field: "date_borrow",
-          sort: "asc",
-        },
-        {
-          label: "Return Date",
-          field: "date_return",
+          field: "borrowDate",
           sort: "asc",
         },
         {
@@ -60,50 +73,46 @@ const MyBorrow = () => {
           sort: "asc",
         },
         {
-          label: "Reason of Status",
-          field: "reason_status",
+          label: "Actions",
+          field: "actions",
           sort: "asc",
         },
       ],
       rows: [],
     };
 
-    if (
-      borrows &&
-      borrows.success &&
-      Array.isArray(borrows.borrows) &&
-      borrows.borrows.length > 0
-    ) {
-      borrows.borrows.forEach((borrow) => {
-        let statusColor;
-        switch (borrow.status) {
-          case "Approved":
-            statusColor = "green";
-            break;
-          case "Denied":
-            statusColor = "red";
-            break;
-          case "Pending":
-            statusColor = "orange";
-            break;
-          default:
-            statusColor = "black";
-        }
-
+    if (filteredBorrowings().length > 0) {
+      filteredBorrowings().forEach((borrow) => {
         data.rows.push({
-          id: borrow._id,
+          numofItems: borrow.borrowItems.length,
+          borrowDate: new Date(borrow.borrowingInfo.date_borrow).toLocaleString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            }
+          ),
           user: borrow.user,
-          equipment: borrow.equipment,
-          quantity: borrow.quantity,
-          reason_borrow: borrow.reason_borrow,
-          date_borrow: new Date(borrow.date_borrow).toLocaleString(),
-          date_return: new Date(borrow.date_return).toLocaleString(),
-          status: <p style={{ color: statusColor }}>{borrow.status}</p>,
-          reason_status: borrow.reason_status,
+          status: (
+            <span style={{ color: getStatusColor(borrow.status) }}>
+              {borrow.status}
+            </span>
+          ),
+          actions: (
+            <Fragment>
+              <Link
+                to={`/borrow/${borrow._id}`}
+                className="btn btn-primary py-1 px-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+            </Fragment>
+          ),
         });
       });
-    } else {
-      console.error("Invalid borrows data:", borrows);
     }
 
     return data;
@@ -111,13 +120,29 @@ const MyBorrow = () => {
 
   return (
     <Fragment>
-      <MetaData title={"My Borrows"} />
-      <h1 className="my-5">My Borrows</h1>
+      <MetaData title={"My Borrowings"} />
+      <h1 className="my-5">My Borrowings</h1>
+      <div className="mb-3">
+        <label htmlFor="statusFilter">Filter by Status:</label>
+        <select
+          id="statusFilter"
+          className="form-control"
+          value={selectedStatus}
+          onChange={handleStatusChange}
+        >
+          <option value="All">All</option>
+          <option value="Approved">Approved</option>
+          <option value="Denied">Denied</option>
+          <option value="Pending">Pending</option>
+          <option value="Borrowed">Borrowed</option>
+          <option value="Returned">Returned</option>
+        </select>
+      </div>
       {loading ? (
         <Loader />
       ) : (
         <MDBDataTable
-          data={setBorrowsData()}
+          data={setBorrowings()}
           className="px-3"
           bordered
           striped

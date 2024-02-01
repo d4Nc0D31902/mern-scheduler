@@ -1,189 +1,121 @@
-const Borrow = require("../models/borrowing");
+const Borrowing = require("../models/borrowing");
 const Equipment = require("../models/equipment");
+
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
-const checkAndHandleExpiredBorrows = async () => {
-  const threeDaysAgo = new Date();
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
-  try {
-    const expiredBorrows = await Borrow.find({
-      status: "Pending",
-      date_borrow: { $lte: threeDaysAgo },
-    });
-
-    await Borrow.updateMany(
-      { _id: { $in: expiredBorrows.map((borrow) => borrow._id) } },
-      { status: "Denied" }
-    );
-  } catch (error) {
-    console.error(
-      "Error occurred while checking for expired borrow requests:",
-      error
-    );
-  }
-};
-
-setInterval(checkAndHandleExpiredBorrows, 24 * 60 * 60 * 1000);
-
-exports.createBorrow = async (req, res, next) => {
+exports.newBorrowing = async (req, res, next) => {
   const {
-    equipment,
-    quantity,
-    reason_borrow,
-    date_borrow,
+    // userId,
+    borrowItems,
+    borrowingInfo,
     date_return,
     issue,
     status,
     reason_status,
   } = req.body;
+  const borrowing = await Borrowing.create({
+    userId: req.user._id,
+    user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    borrowItems,
+    borrowingInfo,
+    date_return,
+    issue,
+    status,
+    reason_status,
+  });
 
-  try {
-    const defaultStatus = "Pending";
-
-    const borrowing = await Borrow.create({
-      userId: req.user._id,
-      user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
-      equipment,
-      quantity,
-      reason_borrow,
-      date_borrow,
-      date_return,
-      issue,
-      status: defaultStatus,
-      reason_status,
-    });
-
-    res.status(200).json({
-      success: true,
-      borrowing,
-    });
-  } catch (error) {
-    console.error(error);
-    next(new ErrorHandler("Failed to create borrow request", 500));
-  }
+  res.status(200).json({
+    success: true,
+    borrowing,
+  });
 };
 
-exports.getBorrows = async (req, res, next) => {
-  try {
-    const borrows = await Borrow.find();
-    res.status(200).json({
-      success: true,
-      borrows,
-    });
-  } catch (error) {
-    next(new ErrorHandler("Failed to retrieve borrows", 500));
+exports.getSingleBorrowing = async (req, res, next) => {
+  const borrowing = await Borrowing.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+  if (!borrowing) {
+    return next(new ErrorHandler("No Borrowing found with this ID", 404));
   }
+
+  res.status(200).json({
+    success: true,
+    borrowing,
+  });
 };
 
-exports.getBorrowById = async (req, res, next) => {
-  try {
-    const borrow = await Borrow.findById(req.params.id);
+exports.myBorrowings = async (req, res, next) => {
+  const borrowings = await Borrowing.find({ userId: req.user._id });
+  res.status(200).json({
+    success: true,
+    borrowings,
+  });
+};
 
-    if (!borrow) {
-      return next(new ErrorHandler("Borrow not found", 404));
+exports.allBorrowings = async (req, res, next) => {
+  const borrowings = await Borrowing.find();
+  borrowings.forEach((borrowing) => {});
+  res.status(200).json({
+    success: true,
+    borrowings,
+  });
+};
+
+exports.updateBorrowing = async (req, res, next) => {
+  const borrowing = await Borrowing.findById(req.params.id);
+  if (!borrowing) {
+    return next(new ErrorHandler("Borrowing not found", 404));
+  }
+
+  if (borrowing.status === "Returned") {
+    return next(
+      new ErrorHandler("This borrowing has already been returned", 400)
+    );
+  }
+
+  borrowing.borrowItems.forEach(async (item) => {
+    const equipment = await Equipment.findById(item.equipment);
+    if (!equipment) {
+      throw new Error("Equipment not found");
     }
 
-    res.status(200).json({
-      success: true,
-      borrow,
-    });
-  } catch (error) {
-    next(new ErrorHandler("Failed to retrieve the borrow", 500));
-  }
-};
-
-exports.updateBorrow = async (req, res, next) => {
-  try {
-    const {
-      equipment,
-      quantity,
-      reason_borrow,
-      date_borrow,
-      date_return,
-      issue,
-      status,
-      reason_status,
-    } = req.body;
-    const borrow = await Borrow.findById(req.params.id);
-
-    if (!borrow) {
-      return next(new ErrorHandler("Borrow not found", 404));
+    if (borrowing.status === "Borrowed") {
+      equipment.stock -= item.quantity;
+    } else if (borrowing.status === "Returned") {
+      equipment.stock += item.quantity;
     }
 
-    if (status === "Approved" && borrow.status !== "Approved") {
-      const equipmentDetails = await Equipment.findOne({ name: equipment });
+    await equipment.save();
+  });
 
-      if (!equipmentDetails) {
-        return next(new ErrorHandler("Equipment not found", 404));
-      }
+  borrowing.status = req.body.status;
+  borrowing.date_return = borrowing.status === "Returned" ? Date.now() : null; // Set date_returned based on status
+  borrowing.reason_status = req.body.reason_status; // Update reason_status
+  borrowing.issue = req.body.issue; // Update issue
 
-      equipmentDetails.stock -= quantity;
+  await borrowing.save();
 
-      await equipmentDetails.save();
-    }
-
-    if (status === "Returned" && borrow.status !== "Returned") {
-      const equipmentDetails = await Equipment.findOne({ name: equipment });
-
-      if (!equipmentDetails) {
-        return next(new ErrorHandler("Equipment not found", 404));
-      }
-
-      equipmentDetails.stock += quantity;
-
-      await equipmentDetails.save();
-    }
-
-    borrow.equipment = equipment;
-    borrow.quantity = quantity;
-    borrow.reason_borrow = reason_borrow;
-    borrow.date_borrow = date_borrow;
-    borrow.date_return = date_return;
-    borrow.issue = issue;
-    borrow.status = status;
-    borrow.reason_status = reason_status;
-
-    const updatedBorrow = await borrow.save();
-
-    res.status(200).json({
-      success: true,
-      borrow: updatedBorrow,
-    });
-  } catch (error) {
-    next(new ErrorHandler("Failed to update the borrow", 500));
-  }
+  res.status(200).json({ success: true });
 };
 
-exports.deleteBorrow = async (req, res, next) => {
-  try {
-    const borrow = await Borrow.findById(req.params.id);
+exports.deleteBorrowing = async (req, res, next) => {
+  const borrowing = await Borrowing.findById(req.params.id);
 
-    if (!borrow) {
-      return next(new ErrorHandler("Borrow not found", 404));
-    }
-
-    await borrow.remove();
-    res.status(200).json({
-      success: true,
-      message: "Borrow deleted",
-    });
-  } catch (error) {
-    next(new ErrorHandler("Failed to delete the borrow", 500));
+  if (!borrowing) {
+    return next(new ErrorHandler("No Borrowing found with this ID", 404));
   }
+
+  await borrowing.remove();
+
+  res.status(200).json({
+    success: true,
+  });
 };
 
-exports.myBorrows = async (req, res, next) => {
-  try {
-    console.log("User ID:", req.user._id);
-    const borrows = await Borrow.find({ userId: req.user._id });
-
-    res.status(200).json({
-      success: true,
-      borrows,
-    });
-  } catch (error) {
-    next(new ErrorHandler("Failed to retrieve user borrows", 500));
-  }
-};
+async function updateEquipmentStock(id, quantity) {
+  const equipment = await Equipment.findById(id);
+  // Update equipment stock logic if needed
+  await equipment.save({ validateBeforeSave: false });
+}

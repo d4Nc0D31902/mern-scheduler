@@ -10,6 +10,8 @@ import { NEW_LOCATION_RESET } from "../../constants/locationConstants";
 
 const NewLocation = () => {
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState({});
+
   const dispatch = useDispatch();
 
   const { loading, error, success } = useSelector((state) => state.newLocation);
@@ -32,8 +34,25 @@ const NewLocation = () => {
     }
   }, [dispatch, error, success, navigate]);
 
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!name.trim()) {
+      errors.name = "Name is required";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const locationData = {
       name,
@@ -64,8 +83,24 @@ const NewLocation = () => {
           <Fragment>
             <div className="wrapper my-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
-                <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                  <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                <h3
+                  className="card-title"
+                  style={{
+                    fontFamily: "sans-serif",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    margin: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/tupt_logo.png"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginRight: "25px",
+                    }}
+                    alt="Logo"
+                  />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
                 <h1 className="mb-4 text-center">New Location</h1>
@@ -76,10 +111,15 @@ const NewLocation = () => {
                     placeholder="put here new location"
                     type="text"
                     id="name_field"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
+                  {errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
                 </div>
 
                 <button
