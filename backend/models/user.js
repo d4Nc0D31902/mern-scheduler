@@ -1,4 +1,3 @@
-// Model/User.js
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
@@ -13,15 +12,15 @@ const userSchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: true,
+    // required: true,
   },
   course: {
     type: String,
-    required: true,
+    // required: true,
   },
   year: {
     type: String,
-    required: true,
+    // required: true,
   },
   email: {
     type: String,

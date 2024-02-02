@@ -1,11 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
 import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS file
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/userActions";
 
@@ -18,19 +16,13 @@ const Login = () => {
   const { isAuthenticated, error, loading } = useSelector(
     (state) => state.auth
   );
-  // const redirect = location.search ? location.search.split('=')[1] : ''
   const redirect = new URLSearchParams(location.search).get("redirect");
-  const notify = (error = "") =>
-    toast.error(error, {
-      position: toast.POSITION.BOTTOM_CENTER,
-    });
+
   useEffect(() => {
     if (isAuthenticated && redirect === "shipping") {
       navigate(`/${redirect}`, { replace: true });
     } else if (isAuthenticated) navigate("/");
     if (error) {
-      // alert.error(error);
-      console.log(error);
       notify(error);
       dispatch(clearErrors());
     }
@@ -38,7 +30,21 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(login(email, password))
+      .then(() => {
+        toast.success("Login successful");
+      })
+      .catch((error) => {
+        toast.error(
+          "Login failed. Please check your credentials and try again."
+        );
+      });
+  };
+
+  const notify = (message) => {
+    toast(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
   };
 
   return (

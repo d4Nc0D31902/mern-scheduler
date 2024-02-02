@@ -15,6 +15,7 @@ import {
   getProductDetails,
   clearErrors,
   newReview,
+  submitProductReview,
 } from "../../actions/productActions";
 import { addItemToCart } from "../../actions/cartActions";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
@@ -32,6 +33,7 @@ const ProductDetails = () => {
   const { user } = useSelector((state) => state.auth);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [anonymous, setAnonymous] = useState(false); // Add anonymous state variable
 
   const notify = (error = "") =>
     toast.error(error, {
@@ -64,6 +66,16 @@ const ProductDetails = () => {
   const decreaseQty = () => {
     if (quantity <= 1) return;
     setQuantity(quantity - 1);
+  };
+
+  const submitRatingsHandler = () => {
+    const reviewData = {
+      rating,
+      comment,
+      productId: id,
+      anonymous,
+    };
+    dispatch(submitProductReview(reviewData));
   };
 
   const addToCart = () => {
@@ -264,11 +276,28 @@ const ProductDetails = () => {
                             onChange={(e) => setComment(e.target.value)}
                           ></textarea>
 
+                          <div className="form-check mt-3">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              value={anonymous}
+                              id="anonymousCheckbox"
+                              onChange={(e) => setAnonymous(e.target.checked)}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="anonymousCheckbox"
+                            >
+                              Submit as Anonymous
+                            </label>
+                          </div>
+
                           <button
-                            className="btn my-3 float-right review-btn px-4 text-white"
+                            type="button"
+                            className="btn btn-primary mt-4"
                             data-toggle="modal"
                             data-target="#ratingModal"
-                            onClick={setUserRatings}
+                            onClick={submitRatingsHandler} // Changed onClick event
                           >
                             Submit
                           </button>

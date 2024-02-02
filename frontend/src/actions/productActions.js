@@ -286,6 +286,43 @@ export const reactivateProduct = (id) => async (dispatch) => {
   }
 };
 
+export const submitProductReview = (reviewData) => async (dispatch) => {
+  try {
+    // Dispatch the NEW_REVIEW_REQUEST action before making the request
+    dispatch({ type: NEW_REVIEW_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+
+    console.log("Submitting product review:", reviewData); // Add console log
+
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API}/api/v1/review`,
+      reviewData,
+      config
+    );
+
+    console.log("Product review submitted successfully:", data); // Add console log
+
+    // Dispatch the NEW_REVIEW_SUCCESS action with the payload received from the server
+    dispatch({
+      type: NEW_REVIEW_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    // Dispatch the NEW_REVIEW_FAIL action with the error message
+    dispatch({
+      type: NEW_REVIEW_FAIL,
+      payload: error.response.data.message,
+    });
+    console.error("Error submitting product review:", error); // Add console log
+  }
+};
+
 export const clearErrors = () => async (dispatch) => {
   dispatch({
     type: CLEAR_ERRORS,

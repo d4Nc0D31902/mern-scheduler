@@ -13,7 +13,6 @@ const Register = () => {
     course: "",
     year: "",
   });
-
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
     "/images/default_avatar.jpg"
@@ -51,20 +50,6 @@ const Register = () => {
       isValid = false;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (
-      !email.trim() ||
-      !emailRegex.test(email) ||
-      !email.endsWith("@tup.email.com")
-    ) {
-      newErrors = {
-        ...newErrors,
-        email: "Valid email is required and must be firstname.lastname@tup.email.com",
-      };
-      isValid = false;
-    }
-
     // Password validation
     if (password.length < 6) {
       newErrors = {
@@ -84,7 +69,7 @@ const Register = () => {
     if (validateForm()) {
       const formData = new FormData();
       formData.set("name", name);
-      formData.set("email", email);
+      formData.set("email", email + "@tup.edu.ph");
       formData.set("password", password);
       formData.set("avatar", avatar);
       formData.set("department", department);
@@ -166,6 +151,7 @@ const Register = () => {
                 className={`form-control ${errors.name && "is-invalid"}`}
                 name="name"
                 value={name}
+                placeholder="John Doe"
                 onChange={onChange}
               />
               {errors.name && (
@@ -175,14 +161,24 @@ const Register = () => {
 
             <div className="form-group">
               <label htmlFor="email_field">Email</label>
-              <input
-                type="email"
-                id="email_field"
-                className={`form-control ${errors.email && "is-invalid"}`}
-                name="email"
-                value={email}
-                onChange={onChange}
-              />
+              <div className="d-flex">
+                <input
+                  type="text"
+                  id="email_field"
+                  className="form-control"
+                  name="email"
+                  value={email}
+                  placeholder="john.doe"
+                  onChange={onChange}
+                />
+                <input
+                  type="text"
+                  id="email_field"
+                  className="form-control"
+                  value="@tup.edu.ph"
+                  disabled
+                />
+              </div>
               {errors.email && (
                 <div className="invalid-feedback">{errors.email}</div>
               )}
@@ -196,6 +192,7 @@ const Register = () => {
                 className={`form-control ${errors.password && "is-invalid"}`}
                 name="password"
                 value={password}
+                placeholder="Input Password Here"
                 onChange={onChange}
               />
               {errors.password && (

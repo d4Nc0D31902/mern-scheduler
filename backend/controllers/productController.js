@@ -149,37 +149,55 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.createProductReview = async (req, res, next) => {
-  const { rating, comment, productId } = req.body;
-  const review = {
-    user: req.user._id,
-    name: req.user.name,
-    rating: Number(rating),
-    comment,
-  };
-  const product = await Product.findById(productId);
-  const isReviewed = product.reviews.find(
-    (r) => r.user.toString() === req.user._id.toString()
-  );
+  const { rating, comment, productId, anonymous } = req.body;
 
-  if (isReviewed) {
-    product.reviews.forEach((review) => {
-      if (review.user.toString() === req.user._id.toString()) {
-        review.comment = comment;
-        review.rating = rating;
-      }
-    });
+  let review;
+  if (anonymous) {
+    review = {
+      user: req.user._id,
+      name: "Anonymous",
+      rating: Number(rating),
+      comment,
+    };
   } else {
-    product.reviews.push(review);
-    product.numOfReviews = product.reviews.length;
+    review = {
+      user: req.user._id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+    };
   }
-  product.ratings =
-    product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-    product.reviews.length;
-  await product.save({ validateBeforeSave: false });
-  res.status(200).json({
-    success: true,
-  });
+
+  try {
+    const product = await Product.findById(productId);
+    const isReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+
+    if (isReviewed) {
+      product.reviews.forEach((reviews) => {
+        if (reviews.user.toString() === req.user._id.toString()) {
+          reviews.name = review.name;
+          reviews.comment = comment;
+          reviews.rating = rating;
+        }
+      });
+    } else {
+      product.reviews.push(review);
+      product.numOfReviews = product.reviews.length;
+    }
+    product.ratings =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+    await product.save({ validateBeforeSave: false });
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Error in creating product review", 500));
+  }
 };
+
 exports.getProductReviews = async (req, res, next) => {
   const product = await Product.findById(req.query.id);
   res.status(200).json({

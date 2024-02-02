@@ -4,6 +4,8 @@ import Search from "./Search";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/userActions";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -13,7 +15,13 @@ const Header = () => {
   const location = useLocation();
 
   const logoutHandler = () => {
-    dispatch(logout());
+    dispatch(logout())
+      .then(() => {
+        toast.success("Logout successful");
+      })
+      .catch((error) => {
+        toast.error("Logout failed");
+      });
   };
 
   const isHomePage = location.pathname === "/";
@@ -21,6 +29,7 @@ const Header = () => {
 
   return (
     <Fragment>
+      <ToastContainer />
       <nav className="navbar row">
         <div className="col-3 col-md-2">
           <div className="navbar-brand">
