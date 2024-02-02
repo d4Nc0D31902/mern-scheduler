@@ -247,26 +247,9 @@ const AppointmentView = () => {
                     onChange={(e) => setKey(e.target.value)}
                     disabled
                   />
-                  <div className="input-group-append">
-                    {/* <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={generateRandomKey}
-                    >
-                      Generate
-                    </button> */}
-                  </div>
+                  <div className="input-group-append"></div>
                 </div>
               </div>
-
-              {/* <button
-                id="login_button"
-                type="submit"
-                className="btn btn-block py-3"
-                // disabled={loading ? true : false}
-              >
-                UPDATE
-              </button> */}
             </form>
           </div>
         </div>

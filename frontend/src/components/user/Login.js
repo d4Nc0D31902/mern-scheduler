@@ -21,30 +21,19 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated && redirect === "shipping") {
       navigate(`/${redirect}`, { replace: true });
-    } else if (isAuthenticated) navigate("/");
+    } else if (isAuthenticated) {
+      navigate("/");
+      toast.success("Login successful!");
+    }
     if (error) {
-      notify(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
   }, [dispatch, isAuthenticated, error, navigate, redirect]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(login(email, password))
-      .then(() => {
-        toast.success("Login successful");
-      })
-      .catch((error) => {
-        toast.error(
-          "Login failed. Please check your credentials and try again."
-        );
-      });
-  };
-
-  const notify = (message) => {
-    toast(message, {
-      position: toast.POSITION.BOTTOM_CENTER,
-    });
+    dispatch(login(email, password));
   };
 
   return (

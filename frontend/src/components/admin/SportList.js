@@ -5,6 +5,7 @@ import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import Sidebar from "../admin/Sidebar";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allSports,
@@ -58,12 +59,14 @@ const SportsList = () => {
   const toggleSportActivation = async (id, isDeactivated) => {
     if (isDeactivated) {
       await dispatch(reactivateSport(id));
+      successMsg("Sport Category Reactivated Successfully");
       console.log("Sport reactivated:", id);
     } else {
       await dispatch(deactivateSport(id));
+      successMsg("Sport Category Deactivated Successfully");
       console.log("Sport deactivated:", id);
     }
-    window.location.reload(); // Reload the page
+    dispatch(allSports());
   };
 
   const setSports = () => {
@@ -102,10 +105,7 @@ const SportsList = () => {
                   sport.status === "inactive" ? "btn-success" : "btn-danger"
                 } py-1 px-2 ml-2`}
                 onClick={() =>
-                  toggleSportActivation(
-                    sport._id,
-                    sport.status === "inactive"
-                  )
+                  toggleSportActivation(sport._id, sport.status === "inactive")
                 }
               >
                 <i

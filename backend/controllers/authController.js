@@ -47,7 +47,9 @@ exports.loginUser = async (req, res, next) => {
   }
 
   if (user.status === "inactive") {
-    return next(new ErrorHandler("Sorry your Account has been Deactivated", 401));
+    return next(
+      new ErrorHandler("Sorry your Account has been Deactivated", 401)
+    );
   }
 
   const isPasswordMatched = await user.comparePassword(password);
@@ -157,6 +159,9 @@ exports.updateProfile = async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
+    department: req.body.department,
+    course: req.body.course,
+    year: req.body.year,
   };
 
   if (req.body.avatar !== "") {

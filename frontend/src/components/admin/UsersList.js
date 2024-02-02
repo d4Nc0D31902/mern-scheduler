@@ -57,12 +57,14 @@ const UsersList = () => {
   const toggleUserActivation = async (id, isDeactivated) => {
     if (isDeactivated) {
       await dispatch(reactivateUser(id));
+      successMsg("Category Reactivated Successfully");
       console.log("User reactivated:", id);
     } else {
       await dispatch(deactivateUser(id));
+      successMsg("Category Deactivated Successfully");
       console.log("User deactivated:", id);
     }
-    window.location.reload(); // Reload the page
+    dispatch(allUsers());
   };
 
   const setUsers = () => {
@@ -111,10 +113,7 @@ const UsersList = () => {
                 user.status === "inactive" ? "btn-success" : "btn-danger"
               } py-1 px-2 ml-2`}
               onClick={() =>
-                toggleUserActivation(
-                  user._id,
-                  user.status === "inactive"
-                )
+                toggleUserActivation(user._id, user.status === "inactive")
               }
             >
               <i

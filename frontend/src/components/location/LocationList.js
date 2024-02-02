@@ -5,6 +5,7 @@ import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import Sidebar from "../admin/Sidebar";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allLocations,
@@ -31,11 +32,14 @@ const LocationsList = () => {
     []
   );
 
-  const successMsg = useCallback(
-    (message = "") =>
-      toast.success(message, { position: toast.POSITION.BOTTOM_CENTER }),
-    []
-  );
+  // const successMsg = useCallback(
+  //   (message = "") =>
+  //     toast.success(message, { position: toast.POSITION.BOTTOM_CENTER }),
+  //   []
+  // );
+
+  const successMsg = (message = "") =>
+    toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
 
   const handleDeleteLocation = useCallback(
     (id) => {
@@ -87,32 +91,17 @@ const LocationsList = () => {
     }
   }, [isReactivated, successMsg, dispatch]);
 
-  useEffect(() => {
-    if (isDeleted || isDeactivated || isReactivated) {
-      // Add a delay to give time for the success toast to show
-      setTimeout(() => {
-        // Reload the page
-        window.location.reload();
-
-        // Navigate to "/admin/locations"
-        navigate("/admin/locations");
-      }, 1000);
-    }
-  }, [isDeleted, isDeactivated, isReactivated, navigate]);
-
-  const deleteLocationHandler = (id) => {
-    handleDeleteLocation(id);
-  };
-
   const toggleLocationActivation = async (id, isDeactivated) => {
     if (isDeactivated) {
       await dispatch(reactivateLocation(id));
+      successMsg("Location Reactivated Successfully");
       console.log("Location reactivated:", id);
     } else {
       await dispatch(deactivateLocation(id));
+      successMsg("Location Deactivated Successfully");
       console.log("Location deactivated:", id);
     }
-    window.location.reload(); // Reload the page
+    dispatch(allLocations());
   };
 
   const setLocations = () => {

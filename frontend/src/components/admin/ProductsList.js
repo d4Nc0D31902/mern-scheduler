@@ -4,6 +4,8 @@ import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import Sidebar from "./Sidebar";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAdminProducts,
@@ -32,6 +34,11 @@ const ProductsList = () => {
   );
   const { isDeactivated } = useSelector((state) => state.product) || {};
   const { isReactivated } = useSelector((state) => state.product) || {};
+
+  const errMsg = (message = "") =>
+    toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
+  const successMsg = (message = "") =>
+    toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
 
   useEffect(() => {
     dispatch(getAdminProducts());
@@ -67,9 +74,11 @@ const ProductsList = () => {
     if (isDeactivated) {
       setReactivateLoading(true);
       await dispatch(reactivateProduct(id));
+      successMsg("Product Reactivated Successfully");
     } else {
       setDeactivateLoading(true);
       await dispatch(deactivateProduct(id));
+      successMsg("Product Deactivated Successfully");
     }
     dispatch(getAdminProducts()); // Reload the product list
   };

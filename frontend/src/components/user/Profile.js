@@ -45,13 +45,13 @@ const Profile = () => {
                       borderWidth: "2px",
                     }}
                   />
-                  <Link
+                  {/* <Link
                     to="/me/update"
                     id="edit_profile"
                     className="btn btn-primary btn-block"
                   >
                     EDIT PROFILE
-                  </Link>
+                  </Link> */}
 
                   <Link
                     to="/password/update"

@@ -9,6 +9,8 @@ import {
 } from "../../actions/userActions";
 
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateProfile = () => {
   const [name, setName] = useState("");
@@ -35,9 +37,11 @@ const UpdateProfile = () => {
       setYear(user.year);
     }
     if (error) {
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (isUpdated) {
+      toast.success("Profile Updated Successfully!");
       dispatch(loadUser());
       navigate("/me", { replace: true });
       dispatch({
@@ -50,7 +54,7 @@ const UpdateProfile = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.set("name", name);
-    formData.set("email", email);
+    formData.set("email", email + "@tup.edu.ph");
     formData.set("avatar", avatar);
     formData.set("department", department);
     formData.set("course", course);
@@ -92,42 +96,25 @@ const UpdateProfile = () => {
                 disabled
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="email_field">Email</label>
-              <input
-                type="email"
-                id="email_field"
-                className="form-control"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="avatar_upload">Avatar</label>
-              <div className="d-flex align-items-center">
-                <div>
-                  <figure className="avatar mr-3 item-rtl">
-                    <img
-                      src={avatarPreview}
-                      className="rounded-circle"
-                      alt="Avatar Preview"
-                    />
-                  </figure>
-                </div>
-                <div className="custom-file">
-                  <input
-                    type="file"
-                    name="avatar"
-                    className="custom-file-input"
-                    id="customFile"
-                    accept="image/*"
-                    onChange={onChange}
-                  />
-                  <label className="custom-file-label" htmlFor="customFile">
-                    Choose Avatar
-                  </label>
-                </div>
+              <div className="d-flex">
+                <input
+                  type="text"
+                  id="email_field"
+                  className="form-control"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  type="text"
+                  id="email_field"
+                  className="form-control"
+                  value="@tup.edu.ph"
+                  disabled
+                />
               </div>
             </div>
             <div className="form-group">
@@ -165,6 +152,33 @@ const UpdateProfile = () => {
                 onChange={(e) => setYear(e.target.value)}
                 disabled
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="avatar_upload">Avatar</label>
+              <div className="d-flex align-items-center">
+                <div>
+                  <figure className="avatar mr-3 item-rtl">
+                    <img
+                      src={avatarPreview}
+                      className="rounded-circle"
+                      alt="Avatar Preview"
+                    />
+                  </figure>
+                </div>
+                <div className="custom-file">
+                  <input
+                    type="file"
+                    name="avatar"
+                    className="custom-file-input"
+                    id="customFile"
+                    accept="image/*"
+                    onChange={onChange}
+                  />
+                  <label className="custom-file-label" htmlFor="customFile">
+                    Choose Avatar
+                  </label>
+                </div>
+              </div>
             </div>
             <button
               type="submit"

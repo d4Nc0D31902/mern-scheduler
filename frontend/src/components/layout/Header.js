@@ -17,7 +17,7 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(logout())
       .then(() => {
-        toast.success("Logout successful");
+        toast.success("Logout Successful");
       })
       .catch((error) => {
         toast.error("Logout failed");

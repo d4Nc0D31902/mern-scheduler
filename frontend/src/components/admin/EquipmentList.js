@@ -4,6 +4,7 @@ import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import Sidebar from "../admin/Sidebar";
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -51,12 +52,14 @@ const EquipmentsList = () => {
   const toggleEquipmentActivation = async (id, isDeactivated) => {
     if (isDeactivated) {
       await dispatch(reactivateEquipment(id));
+      successMsg("Equipment Reactivated Successfully");
       console.log("Equipment reactivated:", id);
     } else {
       await dispatch(deactivateEquipment(id));
+      successMsg("Equipment Reactivated Successfully");
       console.log("Equipment deactivated:", id);
     }
-    window.location.reload(); // Reload the page
+    dispatch(allEquipments());
   };
 
   const setEquipments = () => {

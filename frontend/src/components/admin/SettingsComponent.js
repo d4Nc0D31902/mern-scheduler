@@ -7,11 +7,13 @@ import {
   getSettings,
   clearSettingsErrors,
 } from "../../actions/settingsActions";
+import { toast } from "react-toastify";
 
 const SettingsComponent = () => {
   const dispatch = useDispatch();
   const { settings, loading, error } = useSelector((state) => state.settings);
 
+  // State for form data and toast messages
   const [formData, setFormData] = useState({
     days: {
       Sunday: false,
@@ -29,10 +31,7 @@ const SettingsComponent = () => {
   const [morningTime, setMorningTime] = useState(["", ""]);
   const [afternoonTime, setAfternoonTime] = useState(["", ""]);
 
-  const formatTime = (time) => {
-    // Ensure time is in HH:mm format (24-hour clock)
-    return time ? time.slice(0, 5) : ""; // Extract only HH:mm part
-  };
+  const [toastId, setToastId] = useState(null);
 
   useEffect(() => {
     dispatch(getSettings());
@@ -70,6 +69,10 @@ const SettingsComponent = () => {
     }
   }, [settings]);
 
+  const formatTime = (time) => {
+    return time ? time.slice(0, 5) : "";
+  };
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setFormData((prevData) => ({
@@ -92,7 +95,6 @@ const SettingsComponent = () => {
       [scheduleType]: updatedSchedule,
     });
 
-    // Update the state for time pickers
     if (scheduleType === "morning_schedule") {
       setMorningTime(updatedSchedule);
     } else if (scheduleType === "afternoon_schedule") {
@@ -100,7 +102,7 @@ const SettingsComponent = () => {
     }
   };
 
-  const handleUpdateSettings = (e) => {
+  const handleUpdateSettings = async (e) => {
     e.preventDefault();
 
     const selectedDays = Object.keys(formData.days).filter(
@@ -111,16 +113,23 @@ const SettingsComponent = () => {
       morning_schedule: formData.morning_schedule,
       afternoon_schedule: formData.afternoon_schedule,
     };
-    dispatch(updateSettings(updatedSettings));
+
+    try {
+      await dispatch(updateSettings(updatedSettings));
+      if (toastId) {
+        // Close the existing toast if it exists
+        toast.dismiss(toastId);
+      }
+      setToastId(toast.success("Settings Updated Successfully"));
+    } catch (error) {
+      if (toastId) {
+        // Close the existing toast if it exists
+        toast.dismiss(toastId);
+      }
+      setToastId(toast.error("Failed to update settings"));
+    }
+    dispatch(getSettings());
   };
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
 
   return (
     <>
@@ -132,11 +141,37 @@ const SettingsComponent = () => {
         <div className="col-12 col-md-10">
           <div className="wrapper my-5">
             <form className="shadow-lg" onSubmit={handleUpdateSettings}>
-              <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+              <h3
+                className="card-title"
+                style={{
+                  fontFamily: "sans-serif",
+                  textAlign: "center",
+                  marginBottom: "10px",
+                  margin: "20px",
+                }}
+              >
+                <img
+                  src="/images/tupt_logo.png"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    marginRight: "25px",
+                  }}
+                  alt="Logo"
+                />
                 TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
               </h3>
-              <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Settings</h1>
+              <h1
+                className="mb-4 text-center"
+                style={{
+                  backgroundColor: "maroon",
+                  padding: "20px",
+                  borderRadius: "20px",
+                  color: "white",
+                }}
+              >
+                Update Settings
+              </h1>
               <div>
                 <div>
                   {Object.entries(formData.days).map(([day, isChecked]) => (
