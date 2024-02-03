@@ -125,7 +125,7 @@ const Borrow = () => {
                 }
                 required
               >
-                <option value="" disabled>
+                <option value="" disabled selected>
                   Select a reason
                 </option>
                 <option value="For Play">For Play</option>
@@ -172,7 +172,45 @@ const Borrow = () => {
               </button>
             </div>
             <div className="modal-body">
-              <p>Terms and agreement content goes here...</p>
+              <p>
+                Greetings from TUP-T Grayhawks! By accessing or utilizing our
+                services, you are consenting to adhere to the subsequent terms
+                and conditions. These terms govern the use of our website,
+                products, and services offered by TUP-T Grayhawks. Acceptance of
+                Terms: Your access to or use of our services indicates your
+                acceptance of these terms of agreement. If you disagree with any
+                part of these terms, kindly refrain from accessing or using our
+                services. Use of Services: Our services are provided on an "as
+                is" and "as available" basis. You agree to utilize our services
+                solely for lawful purposes and in compliance with all applicable
+                laws and regulations. Intellectual Property: All content
+                accessible through our services, including but not limited to
+                text, graphics, logos, button icons, images, audio clips,
+                digital downloads, and data compilations, is the exclusive
+                property of TUP-T Grayhawks or its content suppliers and is
+                protected by international copyright laws. Privacy Policy: We
+                value your privacy. Please review our Privacy Policy, which
+                governs your use of our services, to understand our data
+                handling practices. Same Item, Higher Price Policy:
+                Occasionally, due to market dynamics or other factors, the price
+                of an item may fluctuate without prior notice. While we endeavor
+                to maintain consistent pricing, we retain the right to adjust
+                prices as necessary. Thus, by agreeing to these terms, you
+                acknowledge that the price of an item may be higher than
+                previously advertised. Limitation of Liability: Under no
+                circumstances shall TUP-T Grayhawks, its officers, directors,
+                employees, or agents be liable for any direct, indirect,
+                incidental, special, or consequential damages arising from your
+                use of our services. without regard to its conflict of law provisions.
+                Changes to Terms: TUP-T Grayhawks reserves the right to modify
+                or replace these terms at any time without prior notice. It is
+                your responsibility to periodically review these terms for any
+                changes. Your continued use of our services after any
+                modifications to these terms constitutes acceptance of the
+                revised terms. Thank you for choosing TUP-T Grayhawks. Should
+                you have any inquiries regarding these terms, feel free to
+                contact us.
+              </p>
               <div className="form-check">
                 <input
                   className="form-check-input"

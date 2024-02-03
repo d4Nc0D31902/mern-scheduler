@@ -154,6 +154,85 @@ const UpdateUser = () => {
                   />
                 </div>
 
+                {/* Conditionally render Department Dropdown */}
+                {role !== "admin" && (
+                  <div className="form-group">
+                    <label htmlFor="department_field">Department</label>
+                    <select
+                      id="department_field"
+                      className={`form-control ${
+                        errors.department && "is-invalid"
+                      }`}
+                      name="department"
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                    >
+                      <option value="">Select Department</option>
+                      {departments.map((dep) => (
+                        <option key={dep} value={dep}>
+                          {dep}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.department && (
+                      <div className="invalid-feedback">
+                        {errors.department}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Conditionally render Course Dropdown based on user's role */}
+                {role !== "professor" && role !== "admin" && (
+                  <div className="form-group">
+                    <label htmlFor="course_field">Course</label>
+                    <select
+                      id="course_field"
+                      className={`form-control ${
+                        errors.course && "is-invalid"
+                      }`}
+                      name="course"
+                      value={course}
+                      onChange={(e) => setCourse(e.target.value)}
+                    >
+                      <option value="">Select Course</option>
+                      {courses.map((crs) => (
+                        <option key={crs} value={crs}>
+                          {crs}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.course && (
+                      <div className="invalid-feedback">{errors.course}</div>
+                    )}
+                  </div>
+                )}
+
+                {/* Conditionally render Year Dropdown based on user's role */}
+                {role !== "professor" && role !== "admin" && (
+                  <div className="form-group">
+                    <label htmlFor="year_field">Year</label>
+                    <select
+                      id="year_field"
+                      className={`form-control ${errors.year && "is-invalid"}`}
+                      name="year"
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                    >
+                      <option value="">Select Year</option>
+                      {years.map((yr) => (
+                        <option key={yr} value={yr}>
+                          {yr}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.year && (
+                      <div className="invalid-feedback">{errors.year}</div>
+                    )}
+                  </div>
+                )}
+                {/* End of Conditional Rendering */}
+
                 <div className="form-group">
                   <label htmlFor="role_field">Role:</label>
                   <select
@@ -163,118 +242,12 @@ const UpdateUser = () => {
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value="user">User</option>
                     <option value="admin">Admin</option>
-                    <option value="professor">Professor</option>
+                    <option value="user">User</option>
                     <option value="officer">Officer</option>
+                    <option value="professor">Professor</option>
                   </select>
                 </div>
-
-                {/* <div className="form-group">
-                  <label htmlFor="department_field">Department:</label>
-                  <input
-                    type="text"
-                    id="department_field"
-                    className="form-control"
-                    name="department"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                  />
-                </div> */}
-
-                {/* Department Dropdown */}
-                <div className="form-group">
-                  <label htmlFor="department_field">Department</label>
-                  <select
-                    id="department_field"
-                    className={`form-control ${
-                      errors.department && "is-invalid"
-                    }`}
-                    name="department"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                  >
-                    <option value="">Select Department</option>
-                    {departments.map((dep) => (
-                      <option key={dep} value={dep}>
-                        {dep}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.department && (
-                    <div className="invalid-feedback">{errors.department}</div>
-                  )}
-                </div>
-
-                {/* <div className="form-group">
-                  <label htmlFor="course_field">Course:</label>
-                  <input
-                    type="text"
-                    id="course_field"
-                    className="form-control"
-                    name="course"
-                    value={course}
-                    onChange={(e) => setCourse(e.target.value)}
-                  />
-                </div> */}
-
-                {/* Course Dropdown */}
-                <div className="form-group">
-                  <label htmlFor="course_field">Course</label>
-                  <select
-                    id="course_field"
-                    className={`form-control ${errors.course && "is-invalid"}`}
-                    name="course"
-                    value={course}
-                    onChange={(e) => setCourse(e.target.value)}
-                  >
-                    <option value="">Select Course</option>
-                    {courses.map((crs) => (
-                      <option key={crs} value={crs}>
-                        {crs}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.course && (
-                    <div className="invalid-feedback">{errors.course}</div>
-                  )}
-                </div>
-                {/* 
-                <div className="form-group">
-                  <label htmlFor="year_field">Year:</label>
-                  <input
-                    type="text"
-                    id="year_field"
-                    className="form-control"
-                    name="year"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                  />
-                </div>
-                 */}
-
-                {/* Year Dropdown */}
-                <div className="form-group">
-                  <label htmlFor="year_field">Year</label>
-                  <select
-                    id="year_field"
-                    className={`form-control ${errors.year && "is-invalid"}`}
-                    name="year"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                  >
-                    <option value="">Select Year</option>
-                    {years.map((yr) => (
-                      <option key={yr} value={yr}>
-                        {yr}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.year && (
-                    <div className="invalid-feedback">{errors.year}</div>
-                  )}
-                </div>
-                {/* End of Dropdowns */}
 
                 <button
                   type="submit"

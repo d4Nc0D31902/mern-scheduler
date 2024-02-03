@@ -73,7 +73,7 @@ const Header = () => {
                   style={{ textDecoration: "none", marginLeft: "10px" }}
                 >
                   <span id="cart">
-                    <i className="fa fa-shopping-basket"></i> Borrowed
+                    <i className="fa fa-briefcase"></i> Borrowed
                     <span className="ml-1" id="cart_count">
                       {borrowCartItems.length}
                     </span>
@@ -112,7 +112,7 @@ const Header = () => {
                   style={{ textDecoration: "none", marginLeft: "10px" }}
                 >
                   <span id="cart">
-                    <i className="fa fa-folder-open"></i> Equipment
+                    <i className="fa fa-wrench"></i> Equipment
                   </span>
                 </Link>
               </>

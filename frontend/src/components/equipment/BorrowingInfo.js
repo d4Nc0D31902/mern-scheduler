@@ -77,7 +77,7 @@ const BorrowingInfo = () => {
                 }
                 required
               >
-                <option value="" disabled>
+                <option value="" disabled selected>
                   Select a reason
                 </option>
                 <option value="For Play">For Play</option>

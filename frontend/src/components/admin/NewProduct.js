@@ -251,7 +251,9 @@ const NewProduct = () => {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
-                    <option value="">Select Category</option>
+                    <option value="" disabled selected>
+                      Select Category
+                    </option>
                     {categories.map((cat) => (
                       <option key={cat._id} value={cat._id}>
                         {cat.name}
@@ -283,7 +285,7 @@ const NewProduct = () => {
                 <div className="form-group">
                   <label htmlFor="seller_field">Seller Name:</label>
                   <input
-                    placeholder="Enter seller name"
+                    placeholder="TUP-T GrayHawks"
                     type="text"
                     id="seller_field"
                     className={`form-control ${

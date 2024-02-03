@@ -242,6 +242,7 @@ const BorrowDetails = () => {
                         {/* Add other reason options */}
                       </select>
                     </div>
+
                     <div style={{ textAlign: "center", margin: "20px 0" }}>
                       <ReactToPrint
                         trigger={() => (
@@ -250,6 +251,7 @@ const BorrowDetails = () => {
                         content={() => componentRef.current} // Content to be printed
                       />
                     </div>
+                    
                   </div>
                   <hr />
                   <h4

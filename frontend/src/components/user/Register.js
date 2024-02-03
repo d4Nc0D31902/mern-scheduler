@@ -50,6 +50,16 @@ const Register = () => {
       isValid = false;
     }
 
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors = { ...newErrors, email: "Email is required" };
+      isValid = false;
+    } else if (!emailPattern.test(email)) {
+      newErrors = { ...newErrors, email: "Invalid email format" };
+      isValid = false;
+    }
+
     // Password validation
     if (password.length < 6) {
       newErrors = {
@@ -165,7 +175,7 @@ const Register = () => {
                 <input
                   type="text"
                   id="email_field"
-                  className="form-control"
+                  className={`form-control ${errors.email && "is-invalid"}`}
                   name="email"
                   value={email}
                   placeholder="john.doe"
@@ -210,7 +220,7 @@ const Register = () => {
                 value={department}
                 onChange={onChange}
               >
-                <option value="">Select Department</option>
+                <option value="" disabled selected>Select Department</option>
                 {departments.map((dep) => (
                   <option key={dep} value={dep}>
                     {dep}
@@ -232,7 +242,7 @@ const Register = () => {
                 value={course}
                 onChange={onChange}
               >
-                <option value="">Select Course</option>
+                <option value="" disabled selected>Select Course</option>
                 {courses.map((crs) => (
                   <option key={crs} value={crs}>
                     {crs}
@@ -254,7 +264,7 @@ const Register = () => {
                 value={year}
                 onChange={onChange}
               >
-                <option value="">Select Year</option>
+                <option value="" disabled selected>Select Year</option>
                 {years.map((yr) => (
                   <option key={yr} value={yr}>
                     {yr}

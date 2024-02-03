@@ -101,18 +101,20 @@ const BorrowList = () => {
 
     if (borrows && borrows.borrowings && borrows.borrowings.length > 0) {
       filteredBorrows().forEach((borrow) => {
+        const borrowDate = borrow.borrowingInfo
+          ? borrow.borrowingInfo.date_borrow
+          : null;
         data.rows.push({
           numofItems: borrow.borrowItems.length,
-          borrowDate: new Date(borrow.borrowingInfo.date_borrow).toLocaleString(
-            "en-US",
-            {
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-            }
-          ),
+          borrowDate: borrowDate
+            ? new Date(borrowDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "",
           user: borrow.user, // Include user's name in the data
           status: (
             <span style={{ color: getStatusColor(borrow.status) }}>

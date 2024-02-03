@@ -57,11 +57,11 @@ const UsersList = () => {
   const toggleUserActivation = async (id, isDeactivated) => {
     if (isDeactivated) {
       await dispatch(reactivateUser(id));
-      successMsg("Category Reactivated Successfully");
+      successMsg("User Reactivated Successfully");
       console.log("User reactivated:", id);
     } else {
       await dispatch(deactivateUser(id));
-      successMsg("Category Deactivated Successfully");
+      successMsg("User Deactivated Successfully");
       console.log("User deactivated:", id);
     }
     dispatch(allUsers());
