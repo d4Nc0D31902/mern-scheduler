@@ -1,37 +1,40 @@
-import React, { Fragment, useEffect } from "react";
-
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { MDBDataTable } from "mdbreact";
-
 import MetaData from "../layout/MetaData";
-
 import Loader from "../layout/Loader";
-
 import Sidebar from "./Sidebar";
-
 import { toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   allOrders,
   clearErrors,
   deleteOrder,
 } from "../../actions/orderActions";
-
 import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 
 const OrdersList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  let navigate = useNavigate();
+  const [filter, setFilter] = useState("All"); // State to track the selected filter
 
   const { loading, error, orders } = useSelector((state) => state.allOrders);
-
   const { isDeleted } = useSelector((state) => state.order);
+
+  useEffect(() => {
+    dispatch(allOrders(filter)); // Fetch orders based on the selected filter
+    if (error) {
+      errMsg(error);
+      dispatch(clearErrors());
+    }
+    if (isDeleted) {
+      successMsg("Order deleted successfully");
+      navigate("/admin/orders");
+      dispatch({ type: DELETE_ORDER_RESET });
+    }
+  }, [dispatch, filter, error, isDeleted, navigate]);
 
   const errMsg = (message = "") =>
     toast.error(message, {
@@ -43,29 +46,23 @@ const OrdersList = () => {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
-  useEffect(() => {
-    dispatch(allOrders());
-
-    if (error) {
-      errMsg(error);
-
-      dispatch(clearErrors());
-    }
-
-    if (isDeleted) {
-      successMsg("Order deleted successfully");
-
-      navigate("/admin/orders");
-
-      dispatch({ type: DELETE_ORDER_RESET });
-    }
-  }, [dispatch, error, navigate, isDeleted]);
-
-  const deleteOrderHandler = (id) => {
-    dispatch(deleteOrder(id));
-  };
-
   const setOrders = () => {
+    const filteredOrders = orders.filter((order) => {
+      if (filter === "All") {
+        return true;
+      }
+      if (filter === "Pending") {
+        return order.orderStatus === "Pending";
+      }
+      if (filter === "For Claiming") {
+        return order.orderStatus === "For Claiming";
+      }
+      if (filter === "Claimed") {
+        return order.orderStatus === "Claimed";
+      }
+      return true;
+    });
+
     const data = {
       columns: [
         {
@@ -96,10 +93,10 @@ const OrdersList = () => {
       rows: [],
     };
 
-    orders.forEach((order) => {
+    filteredOrders.forEach((order) => {
       data.rows.push({
         numofItems: order.orderItems.length,
-        amount: `$${order.totalPrice}`,
+        amount: `₱${order.totalPrice}`,
         status:
           order.orderStatus &&
           String(order.orderStatus).includes("Delivered") ? (
@@ -107,7 +104,7 @@ const OrdersList = () => {
           ) : (
             <p style={{ color: "red" }}>{order.orderStatus}</p>
           ),
-        customerName: order.user.name, // Fetching customer name from order.user
+        customerName: order.customer, // Fetching customer name from order.user
         actions: (
           <Fragment>
             <Link
@@ -124,19 +121,33 @@ const OrdersList = () => {
     return data;
   };
 
+  const deleteOrderHandler = (id) => {
+    dispatch(deleteOrder(id));
+  };
+
   return (
     <Fragment>
       <MetaData title={"All Orders"} />
-
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
-
         <div className="col-12 col-md-10">
           <Fragment>
             <h1 className="my-5">All Orders</h1>
-
+            <div>
+              <label htmlFor="statusFilter">Filter by Status:</label>
+              <select
+                value={filter}
+                className="form-control"
+                onChange={(e) => setFilter(e.target.value)}
+              >
+                <option value="All">All</option>
+                <option value="Pending">Pending</option>
+                <option value="For Claiming">For Claiming</option>
+                <option value="Claimed">Claimed</option>
+              </select>
+            </div>
             {loading ? (
               <Loader />
             ) : (

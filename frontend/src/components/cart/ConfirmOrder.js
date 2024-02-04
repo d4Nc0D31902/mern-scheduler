@@ -83,7 +83,7 @@ const ConfirmOrder = () => {
 
             <p>
               Subtotal:{" "}
-              <span className="order-summary-values">${itemsPrice}</span>
+              <span className="order-summary-values">₱{itemsPrice}</span>
             </p>
 
             {/* <p>
@@ -98,7 +98,7 @@ const ConfirmOrder = () => {
             <hr />
 
             <p>
-              Total: <span className="order-summary-values">${totalPrice}</span>
+              Total: <span className="order-summary-values">₱{totalPrice}</span>
             </p>
 
             <hr />

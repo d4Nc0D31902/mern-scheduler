@@ -28,6 +28,10 @@ const orderSchema = mongoose.Schema({
     required: true,
     ref: "User",
   },
+  customer: {
+    type: String,
+    required: true,
+  },
   orderItems: [
     {
       name: {

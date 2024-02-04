@@ -25,6 +25,7 @@ exports.newOrder = async (req, res, next) => {
     paymentInfo,
     paidAt: Date.now(),
     user: req.user._id,
+    customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
   });
 
   res.status(200).json({

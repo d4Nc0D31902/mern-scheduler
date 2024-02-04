@@ -163,7 +163,7 @@ const ProcessOrder = () => {
                   <h4 className="mb-4 text-center">PAYMENT INFORMATION</h4>
 
                   <p>
-                    <b>Customer Name:</b> {user && user.name}
+                    <b>Customer Name:</b> {order && order.customer}
                   </p>
 
                   <p>
@@ -251,9 +251,9 @@ const ProcessOrder = () => {
                     >
                       <option value="Processing">Pending</option>
 
-                      <option value="Shipped">For Claiming</option>
+                      <option value="For Claiming">For Claiming</option>
 
-                      <option value="Delivered">Claimed</option>
+                      <option value="Claimed">Claimed</option>
                     </select>
                   </div>
 

@@ -66,7 +66,7 @@ const Payment = () => {
             </div> */}
 
             <button id="pay_btn" type="submit" className="btn btn-block py-3">
-              ORDER {` - ${orderInfo && orderInfo.totalPrice}`}
+              ORDER {` - ₱${orderInfo && orderInfo.totalPrice}`}
             </button>
           </form>
         </div>
