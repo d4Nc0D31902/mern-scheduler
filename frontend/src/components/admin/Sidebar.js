@@ -9,7 +9,7 @@ const Sidebar = () => {
         <ul className="list-unstyled components">
           <li>
             <Link to="/admin/announcement">
-              <i className="fa fa-bullhorn"></i> Announcement
+              <i className="fa fa-bullhorn"></i> Announcements
             </Link>
           </li>
           <li>
@@ -67,6 +67,11 @@ const Sidebar = () => {
                   <i className="fa fa-dribbble"></i> Sport
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/equipments/stock">
+                  <i className="fa fa-briefcase"></i> Stock
+                </Link>
+              </li>
             </ul>
           </li>
 
@@ -110,6 +115,11 @@ const Sidebar = () => {
               <li>
                 <Link to="/admin/categories">
                   <i className="fa fa-list-alt"></i> Categories
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/products/stock">
+                  <i className="fa fa-briefcase"></i> Stock
                 </Link>
               </li>
             </ul>

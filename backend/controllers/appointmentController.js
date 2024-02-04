@@ -5,31 +5,6 @@ const mongoose = require("mongoose");
 // @desc    Create a new appointment
 // @route   POST /api/appointments
 // @access  Private (You can define your own authentication middleware)
-
-const checkAndHandleExpiredAppointments = async () => {
-  const threeDaysAgo = new Date();
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
-  try {
-    const expiredAppointments = await Appointment.find({
-      status: "Pending",
-      createdAt: { $lte: threeDaysAgo },
-    });
-
-    await Appointment.updateMany(
-      { _id: { $in: expiredAppointments.map((appt) => appt._id) } },
-      { status: "Denied" }
-    );
-  } catch (error) {
-    console.error(
-      "Error occurred while checking for expired appointments:",
-      error
-    );
-  }
-};
-
-setInterval(checkAndHandleExpiredAppointments, 24 * 60 * 60 * 1000);
-
 exports.createAppointment = async (req, res, next) => {
   try {
     const {

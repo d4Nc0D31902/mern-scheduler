@@ -31,8 +31,10 @@ import BorrowCart from "./components/equipment/BorrowCart.js";
 
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
+import ProductsStockList from "./components/admin/ProductsStockList.js";
 import NewProduct from "./components/admin/NewProduct";
 import UpdateProduct from "./components/admin/UpdateProduct";
+import UpdateProductStock from "./components/admin/UpdateProductStock.js";
 import OrdersList from "./components/admin/OrdersList";
 import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
@@ -62,6 +64,8 @@ import UpdateSport from "./components/admin/UpdateSport";
 import EquipmentList from "./components/admin/EquipmentList";
 import NewEquipment from "./components/admin/NewEquipment";
 import UpdateEquipment from "./components/admin/UpdateEquipment";
+import UpdateEquipmentStock from "./components/admin/UpdateEquipmentStock.js";
+import EquipmentStockList from "./components/admin/EquipmentStockList.js";
 
 import BorrowList from "./components/admin/BorrowList.js";
 // import UpdateBorrow from "./components/admin/UpdateBorrow.js";
@@ -170,6 +174,15 @@ function App() {
         />
 
         <Route
+          path="/admin/equipments/stock"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <EquipmentStockList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/settings/6581a5b1466cfcabab4cc84f"
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
@@ -210,6 +223,15 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateEquipment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/equipment/stock/:id"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <UpdateEquipmentStock />
             </ProtectedRoute>
           }
         />
@@ -465,6 +487,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/admin/products/stock"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <ProductsStockList />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/admin/product"
           element={
@@ -478,6 +509,14 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
               <UpdateProduct />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/product/stock/:id"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <UpdateProductStock />
             </ProtectedRoute>
           }
         />

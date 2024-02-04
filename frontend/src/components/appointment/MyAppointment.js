@@ -133,7 +133,7 @@ const MyAppointment = () => {
     <Fragment>
       <MetaData title={"My Appointments"} />
 
-      <h1 className="my-5">My Appointments</h1>
+      <h1 className="my-5">My Schedules</h1>
 
       {loading ? (
         <Loader />

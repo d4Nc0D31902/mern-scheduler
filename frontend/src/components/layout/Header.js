@@ -155,11 +155,11 @@ const Header = () => {
                   </Link>
 
                   <Link className="dropdown-item" to="/equipment/me">
-                    My Borrows
+                    Borrowed
                   </Link>
 
                   <Link className="dropdown-item" to="/appointments/me">
-                    Appointments
+                    Schedules
                   </Link>
 
                   <Link className="dropdown-item" to="/me">

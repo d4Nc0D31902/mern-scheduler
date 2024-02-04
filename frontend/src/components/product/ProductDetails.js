@@ -30,6 +30,8 @@ const ProductDetails = () => {
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
+  const { cartError } = useSelector((state) => state.cart);
+
   const { user } = useSelector((state) => state.auth);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -80,6 +82,11 @@ const ProductDetails = () => {
 
   const addToCart = () => {
     dispatch(addItemToCart(id, quantity));
+    if (!cartError) {
+      successMsg("Added to Cart");
+    } else {
+      notify("Failed to add product to cart");
+    }
   };
 
   function setUserRatings() {

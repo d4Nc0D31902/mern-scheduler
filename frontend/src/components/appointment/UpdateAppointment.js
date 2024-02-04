@@ -111,7 +111,7 @@ const UpdateAppointment = () => {
 
   return (
     <Fragment>
-      <MetaData title={"Update Appointment"} />
+      <MetaData title={"Update Schedules"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -119,7 +119,7 @@ const UpdateAppointment = () => {
         <div className="col-12 col-md-10">
           <div className="wrapper my-5">
             <form className="shadow-lg" onSubmit={submitHandler}>
-              <h1 className="mb-4">Update Appointment</h1>
+              <h1 className="mb-4">Update Schedules</h1>
 
               <div className="form-group">
                 <label htmlFor="attendees_field">Attendees</label>

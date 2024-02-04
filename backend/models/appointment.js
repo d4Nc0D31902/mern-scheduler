@@ -14,12 +14,6 @@ const schema = mongoose.Schema(
     attendees: {
       type: [String],
       required: true,
-      // validate: {
-      //   validator: function (attendees) {
-      //     return attendees.length >= 10;
-      //   },
-      //   // message: "At least ten attendees are required.",
-      // },
       default: "N/A",
     },
     location: {

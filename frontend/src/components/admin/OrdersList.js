@@ -68,56 +68,38 @@ const OrdersList = () => {
   const setOrders = () => {
     const data = {
       columns: [
-        // {
-        //   label: "Order ID",
-
-        //   field: "id",
-
-        //   sort: "asc",
-        // },
-
+        {
+          label: "Customer Name",
+          field: "customerName",
+          sort: "asc",
+        },
         {
           label: "No of Items",
-
           field: "numofItems",
-
           sort: "asc",
         },
-
         {
           label: "Amount",
-
           field: "amount",
-
           sort: "asc",
         },
-
         {
           label: "Status",
-
           field: "status",
-
           sort: "asc",
         },
-
         {
           label: "Actions",
-
           field: "actions",
         },
       ],
-
       rows: [],
     };
 
     orders.forEach((order) => {
       data.rows.push({
-        // id: order._id,
-
         numofItems: order.orderItems.length,
-
         amount: `$${order.totalPrice}`,
-
         status:
           order.orderStatus &&
           String(order.orderStatus).includes("Delivered") ? (
@@ -125,7 +107,7 @@ const OrdersList = () => {
           ) : (
             <p style={{ color: "red" }}>{order.orderStatus}</p>
           ),
-
+        customerName: order.user.name, // Fetching customer name from order.user
         actions: (
           <Fragment>
             <Link
@@ -134,13 +116,6 @@ const OrdersList = () => {
             >
               <i className="fa fa-eye"></i>
             </Link>
-            {/* 
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => deleteOrderHandler(order._id)}
-            >
-              <i className="fa fa-trash"></i>
-            </button> */}
           </Fragment>
         ),
       });

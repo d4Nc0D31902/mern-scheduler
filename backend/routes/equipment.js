@@ -20,28 +20,40 @@ router.get("/equipments", getEquipment);
 router.get(
   "/admin/equipments",
   isAuthenticatedUser,
-  authorizeRoles("admin","officer"),
+  authorizeRoles("admin", "officer"),
   getEquipment
 );
+
+router
+  .route("/admin/equipment/stock/:id")
+  .put(
+    isAuthenticatedUser,
+    authorizeRoles("admin", "officer"),
+    updateEquipment
+  );
 
 router.post("/equipment/new", isAuthenticatedUser, createEquipment);
 router.get("/equipment/:id", getEquipmentById);
 router
   .route("/admin/equipment/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin","officer"), updateEquipment)
-  .delete(isAuthenticatedUser, authorizeRoles("admin","officer"), deleteEquipment);
+  .put(isAuthenticatedUser, authorizeRoles("admin", "officer"), updateEquipment)
+  .delete(
+    isAuthenticatedUser,
+    authorizeRoles("admin", "officer"),
+    deleteEquipment
+  );
 
 router.put(
   "/admin/equipment/deactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin","officer"),
+  authorizeRoles("admin", "officer"),
   deactivateEquipment
 );
 
 router.put(
   "/admin/equipment/reactivate/:id",
   isAuthenticatedUser,
-  authorizeRoles("admin","officer"),
+  authorizeRoles("admin", "officer"),
   reactivateEquipment
 );
 
