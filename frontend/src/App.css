@@ -567,7 +567,7 @@ footer {
   margin-right: 0.3rem;
 }
 
-#sidebar ul li.active>a,
+#sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: #fff;
   background: gray;
@@ -652,6 +652,13 @@ ul.CTAs a {
 
 .review_user {
   font-size: 0.8rem;
+  margin-bottom: 0px;
+  color: rgb(117, 116, 116);
+}
+
+.review_date {
+  font-size: 0.8rem;
+  margin-top: 0px;
   color: rgb(117, 116, 116);
 }
 
@@ -692,16 +699,15 @@ ul.CTAs a {
 }
 
 /* Add this style to center the input and button in the form group */
-.input-group>input,
-.input-group>.input-group-append {
+.input-group > input,
+.input-group > .input-group-append {
   display: inline-block;
 }
 
 /* Add this style for responsiveness */
 @media (max-width: 576px) {
-
-  .input-group>input,
-  .input-group>.input-group-append {
+  .input-group > input,
+  .input-group > .input-group-append {
     display: block;
     width: 100%;
   }
@@ -710,7 +716,6 @@ ul.CTAs a {
     border-radius: 0 0 5px 5px;
   }
 }
-
 
 @keyframes slideInLeft {
   from {
@@ -747,7 +752,6 @@ ul.CTAs a {
     opacity: 1;
     transform: translateX(0);
   }
-
 }
 
 @keyframes slideInTop {

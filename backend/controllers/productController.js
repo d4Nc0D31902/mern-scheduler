@@ -149,7 +149,7 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.createProductReview = async (req, res, next) => {
-  const { rating, comment, productId, anonymous } = req.body;
+  const { rating, comment, productId, anonymous, date } = req.body;
 
   let review;
   if (anonymous) {
@@ -158,6 +158,7 @@ exports.createProductReview = async (req, res, next) => {
       name: "Anonymous",
       rating: Number(rating),
       comment,
+      date,
     };
   } else {
     review = {
@@ -165,6 +166,7 @@ exports.createProductReview = async (req, res, next) => {
       name: req.user.name,
       rating: Number(rating),
       comment,
+      date,
     };
   }
 
@@ -180,6 +182,7 @@ exports.createProductReview = async (req, res, next) => {
           reviews.name = review.name;
           reviews.comment = comment;
           reviews.rating = rating;
+          reviews.date = date;
         }
       });
     } else {
