@@ -1,6 +1,47 @@
 const mongoose = require("mongoose");
 
-const schema = mongoose.Schema(
+const historySchema = mongoose.Schema(
+  {
+    schedTitle: {
+      type: String,
+      required: true,
+    },
+    requester: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    timeStart: {
+      type: Date,
+      required: true,
+    },
+    timeEnd: {
+      type: Date,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+    },
+    by: {
+      type: String,
+      required: true,
+      default: "N/A",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const appointmentSchema = mongoose.Schema(
   {
     userId: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -49,10 +90,11 @@ const schema = mongoose.Schema(
       maxlength: [6],
       default: " ",
     },
+    history: [historySchema],
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Appointment", schema);
+module.exports = mongoose.model("Appointment", appointmentSchema);

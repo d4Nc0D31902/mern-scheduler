@@ -51,6 +51,7 @@ import AppointmentList from "./components/appointment/AppointmentList";
 import UpdateAppointment from "./components/appointment/UpdateAppointment";
 import MyAppointment from "./components/appointment/MyAppointment";
 import AppointmentView from "./components/appointment/AppointmentView.js";
+import AppHistoryList from "./components/admin/AppHistoryList.js";
 // import ProcessAppointment from "./components/admin/ProcessAppointment.js";
 
 import LocationList from "./components/location/LocationList";
@@ -151,6 +152,15 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
               <AppointmentList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/app/history"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <AppHistoryList />
             </ProtectedRoute>
           }
         />

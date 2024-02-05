@@ -33,6 +33,11 @@ const Sidebar = () => {
                   <i className="fa fa-thumb-tack"></i> Location
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/app/history">
+                  <i className="fa fa-file"></i> History Logs
+                </Link>
+              </li>
             </ul>
           </li>
 

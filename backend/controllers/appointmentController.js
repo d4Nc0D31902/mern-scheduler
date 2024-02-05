@@ -5,6 +5,45 @@ const mongoose = require("mongoose");
 // @desc    Create a new appointment
 // @route   POST /api/appointments
 // @access  Private (You can define your own authentication middleware)
+// exports.createAppointment = async (req, res, next) => {
+//   try {
+//     const {
+//       attendees,
+//       location,
+//       title,
+//       description,
+//       timeStart,
+//       timeEnd,
+//       reason,
+//       key,
+//     } = req.body;
+
+//     const status = "Pending";
+
+//     const newAppointment = await Appointment.create({
+//       userId: req.user._id,
+//       requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       attendees,
+//       location,
+//       title,
+//       description,
+//       timeStart,
+//       timeEnd,
+//       status,
+//       reason,
+//       key,
+//     });
+
+//     res.status(201).json({
+//       success: true,
+//       newAppointment,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     next(new ErrorHandler("Appointment creation failed", 500));
+//   }
+// };
+
 exports.createAppointment = async (req, res, next) => {
   try {
     const {
@@ -20,6 +59,7 @@ exports.createAppointment = async (req, res, next) => {
 
     const status = "Pending";
 
+    // Create the new appointment
     const newAppointment = await Appointment.create({
       userId: req.user._id,
       requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
@@ -33,6 +73,24 @@ exports.createAppointment = async (req, res, next) => {
       reason,
       key,
     });
+
+    // Create a history log for the new appointment
+    const historyLog = {
+      schedTitle: title,
+      requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      location,
+      description,
+      timeStart,
+      timeEnd,
+      status,
+      by: "N/A",
+    };
+
+    // Add the history log to the appointment's history array
+    newAppointment.history.push(historyLog);
+
+    // Save the appointment with the updated history
+    await newAppointment.save();
 
     res.status(201).json({
       success: true,
@@ -98,6 +156,45 @@ exports.getSingleAppointment = async (req, res, next) => {
 // @route   PUT /api/appointments/:id
 // @access  Private (You can define your own authentication middleware)
 
+// exports.updateAppointment = async (req, res, next) => {
+//   try {
+//     const {
+//       attendees,
+//       title,
+//       location,
+//       timeStart,
+//       timeEnd,
+//       status,
+//       reason,
+//       key,
+//     } = req.body;
+//     const appointment = await Appointment.findById(req.params.id);
+
+//     if (!appointment) {
+//       return next(new ErrorHandler("Appointment not found", 404));
+//     }
+
+//     // Update appointment properties
+//     appointment.attendees = attendees;
+//     appointment.title = title;
+//     appointment.location = location;
+//     appointment.timeStart = timeStart;
+//     appointment.timeEnd = timeEnd;
+//     appointment.status = status;
+//     appointment.reason = reason;
+//     appointment.key = key;
+
+//     const updatedAppointment = await appointment.save();
+
+//     res.status(200).json({
+//       success: true,
+//       appointment: updatedAppointment,
+//     });
+//   } catch (error) {
+//     next(new ErrorHandler("Failed to update the appointment", 500));
+//   }
+// };
+
 exports.updateAppointment = async (req, res, next) => {
   try {
     const {
@@ -110,13 +207,24 @@ exports.updateAppointment = async (req, res, next) => {
       reason,
       key,
     } = req.body;
+
     const appointment = await Appointment.findById(req.params.id);
 
     if (!appointment) {
       return next(new ErrorHandler("Appointment not found", 404));
     }
 
-    // Update appointment properties
+    const historyLog = {
+      schedTitle: appointment.title,
+      requester: appointment.requester,
+      description: appointment.description,
+      location: appointment.location,
+      timeStart: appointment.timeStart,
+      timeEnd: appointment.timeEnd,
+      status: status, 
+      by: appointment.requester,
+    };
+
     appointment.attendees = attendees;
     appointment.title = title;
     appointment.location = location;
@@ -125,6 +233,8 @@ exports.updateAppointment = async (req, res, next) => {
     appointment.status = status;
     appointment.reason = reason;
     appointment.key = key;
+
+    appointment.history.push(historyLog);
 
     const updatedAppointment = await appointment.save();
 

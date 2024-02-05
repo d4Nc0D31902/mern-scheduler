@@ -109,6 +109,13 @@ const UpdateAppointment = () => {
     setKey(randomKey);
   };
 
+  const handleStatusChange = (value) => {
+    setStatus(value);
+    if (value === "Denied" || value === "Pending") {
+      setKey("");
+    }
+  };
+
   return (
     <Fragment>
       <MetaData title={"Update Schedules"} />
@@ -196,7 +203,10 @@ const UpdateAppointment = () => {
                   id="status_field"
                   className="form-control"
                   value={status}
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    handleStatusChange(e.target.value);
+                  }}
                 >
                   <option value="Approved">Approved</option>
                   <option value="Pending">Pending</option>
@@ -212,7 +222,9 @@ const UpdateAppointment = () => {
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                 >
-                  <option value="">Select a reason</option>
+                  <option value="" disabled selected>
+                    Select a reason
+                  </option>
                   <option value="Reason 1">Reason 1</option>
                   <option value="Reason 2">Reason 2</option>
                   <option value="Reason 3">Reason 3</option>
@@ -231,13 +243,15 @@ const UpdateAppointment = () => {
                     disabled
                   />
                   <div className="input-group-append">
-                    <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={generateRandomKey}
-                    >
-                      Generate
-                    </button>
+                    {status !== "Pending" && status !== "Denied" && (
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={generateRandomKey}
+                      >
+                        Generate
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
