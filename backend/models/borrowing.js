@@ -1,5 +1,56 @@
 const mongoose = require("mongoose");
 
+// Define the historySchema
+const historySchema = mongoose.Schema(
+  {
+    user: {
+      type: String,
+      required: true,
+    },
+    borrowItems: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+        image: {
+          type: String,
+          required: true,
+        },
+        equipment: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Equipment",
+        },
+      },
+    ],
+    date_borrow: {
+      type: Date,
+      required: true,
+    },
+    date_return: {
+      type: Date,
+      default: null,
+    },
+    status: {
+      type: String,
+      default: "Pending",
+    },
+    by: {
+      type: String,
+      default: "N/A",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// Define the borrowingSchema
 const borrowingSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -10,7 +61,6 @@ const borrowingSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-
   borrowItems: [
     {
       name: {
@@ -44,7 +94,7 @@ const borrowingSchema = mongoose.Schema({
   },
   date_return: {
     type: Date,
-    default: null, // or any default date value you prefer
+    default: null,
   },
   issue: {
     type: String,
@@ -70,13 +120,14 @@ const borrowingSchema = mongoose.Schema({
   },
   reason_status: {
     type: String,
-    required: true,
     default: "N/A",
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  // Reference to historySchema
+  history: [historySchema],
 });
 
 borrowingSchema.virtual("id").get(function () {

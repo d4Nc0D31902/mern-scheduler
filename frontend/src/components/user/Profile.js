@@ -14,14 +14,6 @@ const Profile = () => {
           <h5 style={{ fontFamily: "calibri" }}>DEPARTMENT:</h5>
           <p style={{ fontSize: "18px" }}>{user.department}</p>
           <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
-
-          {/* <h5 style={{ fontFamily: "calibri" }}>COURSE:</h5>
-          <p style={{ fontSize: "18px" }}>{user.course}</p>
-          <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
-
-          <h5 style={{ fontFamily: "calibri" }}>YEAR:</h5>
-          <p style={{ fontSize: "18px" }}>{user.year}</p>
-          <hr style={{ borderStyle: "solid", borderWidth: "2px" }} /> */}
         </Fragment>
       );
     } else if (user.role === "admin") {
@@ -42,6 +34,22 @@ const Profile = () => {
           <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
         </Fragment>
       );
+    }
+  };
+
+  const renderAvailabilityDot = () => {
+    const dotStyle = {
+      width: "10px",
+      height: "10px",
+      borderRadius: "50%",
+      display: "inline-block",
+      marginRight: "5px",
+    };
+
+    if (user.availability === "available") {
+      return <span style={{ ...dotStyle, backgroundColor: "green" }}></span>;
+    } else {
+      return <span style={{ ...dotStyle, backgroundColor: "red" }}></span>;
     }
   };
 
@@ -69,6 +77,13 @@ const Profile = () => {
                     alt={user.name}
                   />
                   <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
+                  <Link
+                    to="/me/update"
+                    id="edit_profile"
+                    className="btn btn-primary btn-block"
+                  >
+                    EDIT PROFILE
+                  </Link>
                   <Link
                     to="/password/update"
                     className="btn btn-primary btn-block"
@@ -99,6 +114,17 @@ const Profile = () => {
                   </div>
 
                   {renderUserRoleSpecificInfo()}
+
+                  {user.role !== "user" && user.role !== "officer" && (
+                    <div className="col-lg-12">
+                      <h5 style={{ fontFamily: "calibri" }}>AVAILABILITY:</h5>
+                      {renderAvailabilityDot()}
+                      <p style={{ fontSize: "18px" }}>{user.availability}</p>
+                      <hr
+                        style={{ borderStyle: "solid", borderWidth: "2px" }}
+                      />
+                    </div>
+                  )}
 
                   <div className="col-lg-12">
                     <h5 style={{ fontFamily: "calibri" }}>ROLE:</h5>

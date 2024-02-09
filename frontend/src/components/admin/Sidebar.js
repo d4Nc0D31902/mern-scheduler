@@ -33,24 +33,46 @@ const Sidebar = () => {
                   <i className="fa fa-thumb-tack"></i> Location
                 </Link>
               </li>
-              <li>
-                <Link to="/admin/app/history">
-                  <i className="fa fa-file"></i> History Logs
+              {/* <li>
+                <Link to="/admin/loc/history">
+                  <i className="fa fa-file"></i> Location Logs
                 </Link>
-              </li>
+              </li> */}
+              {/* <li>
+                <Link to="/admin/app/history">
+                  <i className="fa fa-file"></i> Schedule Logs
+                </Link>
+              </li> */}
             </ul>
           </li>
 
-          <li>
-            <Link to="/admin/borrows">
-              <i className="fa fa-bullhorn"></i> Borrow Requests
-            </Link>
-          </li>
           {/* <li>
-            <Link to="/admin/equipments">
-              <i className="fa fa-archive"></i> Equipment
-            </Link>
-          </li> */}
+            <a
+              href="#borrowSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-bullhorn"></i> Borrow Requests
+            </a>
+
+            <ul className="collapse list-unstyled" id="borrowSubmenu"> */}
+              <li>
+                <Link to="/admin/borrows">
+                  <i className="fa fa-clipboard"></i> Borrow Requests
+                </Link>
+              </li>
+              {/* <li>
+                <Link to="/admin/bor/history">
+                  <i className="fa fa-file"></i> Borrowing Logs
+                </Link>
+              </li> */}
+            {/* </ul> */}
+            {/* <Link to="/admin/borrows">
+              <i className="fa fa-bullhorn"></i> Borrow Requests
+            </Link> */}
+          {/* </li> */}
+
           <li>
             <a
               href="#equipmentSubmenu"
@@ -77,6 +99,21 @@ const Sidebar = () => {
                   <i className="fa fa-briefcase"></i> Stock
                 </Link>
               </li>
+              {/* <li>
+                <Link to="/admin/eq/history">
+                  <i className="fa fa-file"></i> Equipment Logs
+                </Link>
+              </li> */}
+              {/* <li>
+                <Link to="/admin/sp/history">
+                  <i className="fa fa-file"></i> Sport Logs
+                </Link>
+              </li> */}
+              {/* <li>
+                <Link to="/admin/stock/history">
+                  <i className="fa fa-file"></i> Stock Logs
+                </Link>
+              </li> */}
             </ul>
           </li>
 
@@ -127,6 +164,11 @@ const Sidebar = () => {
                   <i className="fa fa-briefcase"></i> Stock
                 </Link>
               </li>
+              {/* <li>
+                <Link to="/admin/stock/list">
+                  <i className="fa fa-file"></i> Stock Logs
+                </Link>
+              </li> */}
             </ul>
           </li>
           <li>
@@ -143,6 +185,55 @@ const Sidebar = () => {
             <Link to="/admin/users">
               <i className="fa fa-users"></i> Users
             </Link>
+          </li>
+
+          <li>
+            <a
+              href="#logsSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-file"></i> Logs
+            </a>
+
+            <ul className="collapse list-unstyled" id="logsSubmenu">
+              <li>
+                <Link to="/admin/app/history">
+                  <i className="fa fa-file"></i> Schedule Logs
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/loc/history">
+                  <i className="fa fa-file"></i> Location Logs
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/bor/history">
+                  <i className="fa fa-file"></i> Borrowing Logs
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/sp/history">
+                  <i className="fa fa-file"></i> Sport Logs
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/eq/history">
+                  <i className="fa fa-file"></i> Equipment Logs
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/stock/history">
+                  <i className="fa fa-file"></i> Equipment Stock Logs
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/stock/list">
+                  <i className="fa fa-file"></i> Product Stock Logs
+                </Link>
+              </li>
+            </ul>
           </li>
 
           {/* <li>

@@ -18,6 +18,8 @@ const NewAppointment = () => {
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [locations, setLocations] = useState([]);
+  const [professor, setProfessor] = useState("");
+  const [users, setUsers] = useState([]);
   const [settingsData, setSettingsData] = useState(null);
 
   const dispatch = useDispatch();
@@ -87,6 +89,21 @@ const NewAppointment = () => {
     fetchLocations();
   }, []);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/users`
+        );
+        setUsers(response.data.users);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -146,6 +163,7 @@ const NewAppointment = () => {
         description: description,
         timeStart: timeStart,
         timeEnd: timeEnd,
+        professor: professor,
         status: status,
         reason: reason,
         key: key,
@@ -309,6 +327,33 @@ const NewAppointment = () => {
               <div className="invalid-feedback">{errors.location}</div>
             )}
           </div>
+
+          {location === "Outdoor Court" && (
+            <div className="form-group">
+              <label htmlFor="professor_field">Professor:</label>
+              <select
+                id="professor_field"
+                className="form-control"
+                value={professor}
+                onChange={(e) => setProfessor(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select Professor
+                </option>
+                {users
+                  .filter(
+                    (user) =>
+                      user.role === "professor" &&
+                      user.availability === "available"
+                  )
+                  .map((professor) => (
+                    <option key={professor._id} value={professor.name}>
+                      {professor.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="timeStart_field">Date & Time Start:</label>

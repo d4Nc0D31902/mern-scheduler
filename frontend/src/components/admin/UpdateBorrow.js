@@ -235,6 +235,7 @@ const UpdateBorrow = () => {
                   <option value="Returned">Returned</option>
                 </select>
               </div>
+
               <div className="form-group">
                 <label htmlFor="reasonStatus_field">Reason for Status</label>
                 <input
@@ -245,6 +246,7 @@ const UpdateBorrow = () => {
                   onChange={(e) => setReasonStatus(e.target.value)}
                 />
               </div>
+              
               <button
                 type="submit"
                 className="btn btn-block py-3"

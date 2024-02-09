@@ -24,6 +24,7 @@ const UpdateProduct = () => {
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [stockToAdd, setStockToAdd] = useState(0);
 
   // const categories = [
   //   "Electronics",
@@ -93,7 +94,7 @@ const UpdateProduct = () => {
       dispatch(clearErrors());
     }
     if (isUpdated) {
-      navigate("/admin/products");
+      navigate("/admin/products/stock");
       successMsg("Stock Updated Successfully");
       dispatch({ type: UPDATE_PRODUCT_RESET });
     }
@@ -106,7 +107,9 @@ const UpdateProduct = () => {
     formData.set("price", price);
     formData.set("description", description);
     formData.set("category", category);
-    formData.set("stock", stock);
+    // formData.set("stock", stock);
+    const newStock = parseInt(stock) + parseInt(stockToAdd);
+    formData.set("stock", newStock);
     formData.set("seller", seller);
     images.forEach((image) => {
       formData.append("images", image);
@@ -187,7 +190,7 @@ const UpdateProduct = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="stock_field">Remaining Stocks:</label>
 
                   <input
@@ -197,6 +200,19 @@ const UpdateProduct = () => {
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                   />
+                </div> */}
+
+                <div className="form-group">
+                  <label htmlFor="add_stock_field">Add to Stock:</label>
+                  <div className="input-group">
+                    <input
+                      type="number"
+                      id="add_stock_field"
+                      className="form-control"
+                      value={stockToAdd}
+                      onChange={(e) => setStockToAdd(e.target.value)}
+                    />
+                  </div>
                 </div>
 
                 <button

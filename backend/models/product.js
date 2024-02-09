@@ -1,5 +1,25 @@
 const mongoose = require("mongoose");
 
+const stockHistorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+    },
+    quantity: {
+      type: Number,
+    },
+    status: {
+      type: String,
+    },
+    by: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -48,6 +68,7 @@ const productSchema = new mongoose.Schema({
     maxLength: [5, "Product name cannot exceed 5 characters"],
     default: 0,
   },
+  stockHistory: [stockHistorySchema], // Adding stock history array
   numOfReviews: {
     type: Number,
     default: 0,

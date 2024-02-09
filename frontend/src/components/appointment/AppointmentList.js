@@ -104,6 +104,11 @@ const AppointmentsList = () => {
           sort: "asc",
         },
         {
+          label: "Professor",
+          field: "professor",
+          sort: "asc",
+        },
+        {
           label: "Time Start",
           field: "timeStart",
           sort: "asc",
@@ -159,6 +164,7 @@ const AppointmentsList = () => {
           title: appointment.title,
           description: appointment.description,
           location: appointment.location,
+          professor: appointment.professor,
           timeStart: new Date(appointment.timeStart).toLocaleString("en-US", {
             year: "numeric",
             month: "short",

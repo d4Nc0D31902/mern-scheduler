@@ -662,6 +662,12 @@ ul.CTAs a {
   color: rgb(117, 116, 116);
 }
 
+.select-user option {
+  padding-left: 10px; /* Adjust as needed */
+  background-color: #e6ffe6; /* Green background color */
+}
+
+
 .center-request {
   display: flex;
   justify-content: center;

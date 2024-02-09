@@ -54,12 +54,12 @@ exports.createAppointment = async (req, res, next) => {
       timeStart,
       timeEnd,
       reason,
+      professor, // Include professor here
       key,
     } = req.body;
 
     const status = "Pending";
 
-    // Create the new appointment
     const newAppointment = await Appointment.create({
       userId: req.user._id,
       requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
@@ -69,12 +69,12 @@ exports.createAppointment = async (req, res, next) => {
       description,
       timeStart,
       timeEnd,
+      professor,
       status,
       reason,
       key,
     });
 
-    // Create a history log for the new appointment
     const historyLog = {
       schedTitle: title,
       requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
@@ -82,14 +82,13 @@ exports.createAppointment = async (req, res, next) => {
       description,
       timeStart,
       timeEnd,
+      professor,
       status,
       by: "N/A",
     };
 
-    // Add the history log to the appointment's history array
     newAppointment.history.push(historyLog);
 
-    // Save the appointment with the updated history
     await newAppointment.save();
 
     res.status(201).json({
@@ -204,6 +203,7 @@ exports.updateAppointment = async (req, res, next) => {
       timeStart,
       timeEnd,
       status,
+      professor,
       reason,
       key,
     } = req.body;
@@ -221,8 +221,9 @@ exports.updateAppointment = async (req, res, next) => {
       location: appointment.location,
       timeStart: appointment.timeStart,
       timeEnd: appointment.timeEnd,
-      status: status, 
-      by: appointment.requester,
+      professor: professor,
+      status: status,
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
     };
 
     appointment.attendees = attendees;
@@ -231,6 +232,7 @@ exports.updateAppointment = async (req, res, next) => {
     appointment.timeStart = timeStart;
     appointment.timeEnd = timeEnd;
     appointment.status = status;
+    appointment.professor = professor;
     appointment.reason = reason;
     appointment.key = key;
 

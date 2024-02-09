@@ -22,6 +22,7 @@ const UpdateProfile = () => {
   const [department, setDepartment] = useState("");
   const [course, setCourse] = useState("");
   const [year, setYear] = useState("");
+  const [availability, setAvailability] = useState("");
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -35,6 +36,7 @@ const UpdateProfile = () => {
       setDepartment(user.department);
       setCourse(user.course);
       setYear(user.year);
+      setAvailability(user.availability);
     }
     if (error) {
       toast.error(error);
@@ -54,11 +56,12 @@ const UpdateProfile = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.set("name", name);
-    formData.set("email", email + "@tup.edu.ph");
+    formData.set("email", email);
     formData.set("avatar", avatar);
     formData.set("department", department);
     formData.set("course", course);
     formData.set("year", year);
+    formData.set("availability", availability);
     dispatch(updateProfile(formData));
   };
 
@@ -107,12 +110,6 @@ const UpdateProfile = () => {
                   name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                  type="text"
-                  id="email_field"
-                  className="form-control"
-                  value="@tup.edu.ph"
                   disabled
                 />
               </div>
@@ -129,30 +126,86 @@ const UpdateProfile = () => {
                 disabled
               />
             </div>
+            {user.role !== "professor" && (
+              <div className="form-group">
+                <label htmlFor="course_field">Course</label>
+                <input
+                  type="text"
+                  id="course_field"
+                  className="form-control"
+                  name="course"
+                  value={course}
+                  onChange={(e) => setCourse(e.target.value)}
+                  disabled
+                />
+              </div>
+            )}
+            {user.role !== "professor" && (
+              <div className="form-group">
+                <label htmlFor="year_field">Year</label>
+                <input
+                  type="text"
+                  id="year_field"
+                  className="form-control"
+                  name="year"
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  disabled
+                />
+              </div>
+            )}
+            {/* Toggle switch for availability */}
+            {/* <div className="form-group">
+              <label htmlFor="availability_field">Availability</label>
+              <div className="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  className="custom-control-input"
+                  id="availability_field"
+                  checked={availability === "available"}
+                  onChange={() =>
+                    setAvailability(
+                      availability === "available"
+                        ? "not available"
+                        : "available"
+                    )
+                  }
+                />
+                <label
+                  className="custom-control-label"
+                  htmlFor="availability_field"
+                >
+                  {availability === "available" ? "Available" : "Not Available"}
+                </label>
+              </div>
+            </div> */}
+
             <div className="form-group">
-              <label htmlFor="course_field">Course</label>
-              <input
-                type="text"
-                id="course_field"
-                className="form-control"
-                name="course"
-                value={course}
-                onChange={(e) => setCourse(e.target.value)}
-                disabled
-              />
+              <label htmlFor="availability_field">Availability</label>
+              <div className="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  className="custom-control-input"
+                  id="availability_field"
+                  checked={availability === "available"}
+                  onChange={() =>
+                    setAvailability(
+                      availability === "available"
+                        ? "not available"
+                        : "available"
+                    )
+                  }
+                  disabled={user.role === "user" || user.role === "officer"}
+                />
+                <label
+                  className="custom-control-label"
+                  htmlFor="availability_field"
+                >
+                  {availability === "available" ? "Available" : "Not Available"}
+                </label>
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="year_field">Year</label>
-              <input
-                type="text"
-                id="year_field"
-                className="form-control"
-                name="year"
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-                disabled
-              />
-            </div>
+
             <div className="form-group">
               <label htmlFor="avatar_upload">Avatar</label>
               <div className="d-flex align-items-center">

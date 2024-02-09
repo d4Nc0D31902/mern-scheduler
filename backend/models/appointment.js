@@ -26,6 +26,10 @@ const historySchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    professor: {
+      type: String,
+      default: "N/A",
+    },
     status: {
       type: String,
       required: true,
@@ -80,6 +84,10 @@ const appointmentSchema = mongoose.Schema(
     status: {
       type: String,
       default: "Pending",
+    },
+    professor: {
+      type: String,
+      default: "N/A",
     },
     reason: {
       type: String,

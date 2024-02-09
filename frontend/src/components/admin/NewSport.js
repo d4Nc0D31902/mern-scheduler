@@ -16,6 +16,12 @@ const NewSport = () => {
 
   const { loading, error, success } = useSelector((state) => state.newSport);
 
+  const successMsg = (message = "") =>
+    toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
+
+  const errMsg = (message = "") =>
+    toast.error(message, { position: toast.POSITION.BOTTOM_CENTER });
+
   const navigate = useNavigate();
   const message = (message = "") =>
     toast.success(message, {
@@ -47,7 +53,7 @@ const NewSport = () => {
     return isValid;
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -58,7 +64,13 @@ const NewSport = () => {
       name,
     };
 
-    dispatch(newSport(sportData));
+    try {
+      await dispatch(newSport(sportData));
+      successMsg("Sport created successfully");
+      navigate("/admin/sports");
+    } catch (error) {
+      errMsg("Failed to create sport");
+    }
   };
 
   return (

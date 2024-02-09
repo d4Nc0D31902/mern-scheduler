@@ -162,6 +162,7 @@ exports.updateProfile = async (req, res, next) => {
     department: req.body.department,
     course: req.body.course,
     year: req.body.year,
+    availability: req.body.availability,
   };
 
   if (req.body.avatar !== "") {

@@ -73,13 +73,29 @@ exports.allOrders = async (req, res, next) => {
   });
 };
 
+// exports.updateOrder = async (req, res, next) => {
+//   const order = await Order.findById(req.params.id);
+//   if (order.orderStatus === "Delivered") {
+//     return next(new ErrorHandler("You have already delivered this order", 400));
+//   }
+//   order.orderItems.forEach(async (item) => {
+//     await updateStock(item.product, item.quantity);
+//   });
+//   order.orderStatus = req.body.status;
+//   order.deliveredAt = Date.now();
+//   await order.save();
+//   res.status(200).json({
+//     success: true,
+//   });
+// };
+
 exports.updateOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (order.orderStatus === "Delivered") {
     return next(new ErrorHandler("You have already delivered this order", 400));
   }
   order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.quantity);
+    await updateStock(item.product, item.quantity, req.user);
   });
   order.orderStatus = req.body.status;
   order.deliveredAt = Date.now();
@@ -88,6 +104,27 @@ exports.updateOrder = async (req, res, next) => {
     success: true,
   });
 };
+
+async function updateStock(id, quantity, user) {
+  const product = await Product.findById(id);
+  const oldStock = product.stock;
+  product.stock -= quantity;
+
+  const order = await Order.findOne({ "orderItems.product": id });
+  const paymentStatus = order.orderStatus;
+
+  const stockHistory = {
+    name: product.name,
+    quantity: quantity,
+    status: paymentStatus,
+    by: `${user.name} - ${user.department}, ${user.course}, ${user.year}`,
+  };
+  product.stockHistory.push(stockHistory);
+
+  await product.save({ validateBeforeSave: false });
+}
+
+
 
 exports.deleteOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
@@ -256,8 +293,9 @@ exports.salesPerMonth = async (req, res, next) => {
   });
 };
 
-async function updateStock(id, quantity) {
-  const product = await Product.findById(id);
-  product.stock = product.stock - quantity;
-  await product.save({ validateBeforeSave: false });
-}
+// async function updateStock(id, quantity) {
+//   const product = await Product.findById(id);
+//   product.stock = product.stock - quantity;
+//   await product.save({ validateBeforeSave: false });
+// }
+

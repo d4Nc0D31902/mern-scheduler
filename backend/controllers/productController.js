@@ -82,51 +82,117 @@ exports.getSingleProduct = async (req, res, next) => {
   });
 };
 
+// exports.updateProduct = async (req, res, next) => {
+//   let product = await Product.findById(req.params.id);
+
+//   if (!product) {
+//     return next(new ErrorHandler("Product not found", 404));
+//   }
+
+//   let images = req.body.images;
+
+//   if (images) {
+//     if (typeof images === "string") {
+//       images = [images];
+//     }
+
+//     for (let i = 0; i < product.images.length; i++) {
+//       const result = await cloudinary.v2.uploader.destroy(
+//         product.images[i].public_id
+//       );
+//     }
+
+//     let imagesLinks = [];
+//     for (let i = 0; i < images.length; i++) {
+//       const result = await cloudinary.v2.uploader.upload(images[i], {
+//         folder: "products",
+//       });
+//       imagesLinks.push({
+//         public_id: result.public_id,
+//         url: result.secure_url,
+//       });
+//     }
+//     req.body.images = imagesLinks;
+//   }
+
+//   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//     useFindandModify: false,
+//   });
+
+//   return res.status(200).json({
+//     success: true,
+//     product,
+//   });
+// };
+
 exports.updateProduct = async (req, res, next) => {
-  let product = await Product.findById(req.params.id);
+  try {
+    let product = await Product.findById(req.params.id);
 
-  if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 404));
+    }
+
+    const oldProduct = { ...product.toObject() };
+
+    let images = req.body.images;
+
+    if (images) {
+      if (typeof images === "string") {
+        images = [images];
+      }
+
+      for (let i = 0; i < product.images.length; i++) {
+        const result = await cloudinary.v2.uploader.destroy(
+          product.images[i].public_id
+        );
+      }
+
+      let imagesLinks = [];
+      for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.v2.uploader.upload(images[i], {
+          folder: "products",
+        });
+        imagesLinks.push({
+          public_id: result.public_id,
+          url: result.secure_url,
+        });
+      }
+      req.body.images = imagesLinks;
+    }
+
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+      useFindandModify: false,
+    });
+
+    const stockChange = parseInt(req.body.stock) - parseInt(oldProduct.stock);
+
+    const newStockHistory = {
+      name: oldProduct.name,
+      quantity: Math.abs(stockChange),
+      status: stockChange > 0 ? "Restocked" : "Deducted",
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    };
+
+    product.stockHistory.push(newStockHistory);
+
+    product.stock = req.body.stock;
+
+    product.user = req.user._id;
+
+    product = await product.save();
+
+    return res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    next(error);
   }
-
-  let images = req.body.images; // Get images from the request body
-
-  if (images) {
-    // Check if images is defined
-    if (typeof images === "string") {
-      images = [images]; // Convert to an array if it's a string
-    }
-
-    // Deleting images associated with the product
-    for (let i = 0; i < product.images.length; i++) {
-      const result = await cloudinary.v2.uploader.destroy(
-        product.images[i].public_id
-      );
-    }
-
-    let imagesLinks = [];
-    for (let i = 0; i < images.length; i++) {
-      const result = await cloudinary.v2.uploader.upload(images[i], {
-        folder: "products",
-      });
-      imagesLinks.push({
-        public_id: result.public_id,
-        url: result.secure_url,
-      });
-    }
-    req.body.images = imagesLinks;
-  }
-
-  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-    useFindandModify: false,
-  });
-
-  return res.status(200).json({
-    success: true,
-    product,
-  });
 };
 
 exports.deleteProduct = async (req, res, next) => {
@@ -216,6 +282,7 @@ exports.getAdminProducts = async (req, res, next) => {
     products,
   });
 };
+
 exports.deleteReview = async (req, res, next) => {
   const product = await Product.findById(req.query.productId);
 

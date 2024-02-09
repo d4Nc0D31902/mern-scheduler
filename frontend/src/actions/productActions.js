@@ -114,8 +114,7 @@ export const getAdminProducts = () => async (dispatch) => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_API}/api/v1/admin/products`,
       {
-        //AxiosRequestConfig parameter
-        withCredentials: true, //correct
+        withCredentials: true, 
       }
     );
     dispatch({
@@ -129,6 +128,7 @@ export const getAdminProducts = () => async (dispatch) => {
     });
   }
 };
+
 export const newProduct = (productData) => async (dispatch) => {
   try {
     dispatch({ type: NEW_PRODUCT_REQUEST });

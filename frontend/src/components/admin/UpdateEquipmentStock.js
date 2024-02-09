@@ -21,6 +21,7 @@ const UpdateEquipment = () => {
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [stockToAdd, setStockToAdd] = useState(0);
   const [sports, setSports] = useState([]);
 
   const dispatch = useDispatch();
@@ -89,6 +90,32 @@ const UpdateEquipment = () => {
     }
   }, [dispatch, error, isUpdated, equipment, id, isFormSubmitted, updateError]);
 
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const formData = new FormData();
+  //     formData.set("name", name);
+  //     formData.set("description", description);
+  //     formData.set("sport", sport);
+  //     formData.set("stock", stock);
+  //     images.forEach((image) => {
+  //       formData.append("images", image);
+  //     });
+
+  //     await dispatch(updateEquipment(equipment._id, formData));
+
+  //     successMsg("Stock Updated Successfully");
+  //     dispatch({ type: UPDATE_EQUIPMENT_RESET });
+
+  //     setTimeout(() => {
+  //       navigate("/admin/equipments/stock");
+  //       reloadPage();
+  //     }, 1000);
+  //   } catch (error) {
+  //     errMsg("Error Updating Stock");
+  //   }
+  // };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -96,7 +123,8 @@ const UpdateEquipment = () => {
       formData.set("name", name);
       formData.set("description", description);
       formData.set("sport", sport);
-      formData.set("stock", stock);
+      const newStock = parseInt(stock) + parseInt(stockToAdd);
+      formData.set("stock", newStock);
       images.forEach((image) => {
         formData.append("images", image);
       });
@@ -189,16 +217,9 @@ const UpdateEquipment = () => {
                     />
                   </div>
 
-                  <div className="form-group">
+                  {/* <div className="form-group">
                     <label htmlFor="stock_field">Remaining Stocks:</label>
                     <div className="input-group">
-                      {/* <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={() => setStock(stock - 1 >= 0 ? stock - 1 : 0)}
-                      >
-                        -
-                      </button> */}
                       <input
                         type="number"
                         id="stock_field"
@@ -206,13 +227,19 @@ const UpdateEquipment = () => {
                         value={stock}
                         onChange={(e) => setStock(e.target.value)}
                       />
-                      {/* <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={() => setStock(stock + 1)}
-                      >
-                        +
-                      </button> */}
+                    </div>
+                  </div> */}
+
+                  <div className="form-group">
+                    <label htmlFor="add_stock_field">Add to Stock:</label>
+                    <div className="input-group">
+                      <input
+                        type="number"
+                        id="add_stock_field"
+                        className="form-control"
+                        value={stockToAdd}
+                        onChange={(e) => setStockToAdd(e.target.value)}
+                      />
                     </div>
                   </div>
 

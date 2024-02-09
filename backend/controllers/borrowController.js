@@ -4,9 +4,35 @@ const Equipment = require("../models/equipment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
+// exports.newBorrowing = async (req, res, next) => {
+//   const {
+//     // userId,
+//     borrowItems,
+//     borrowingInfo,
+//     date_return,
+//     issue,
+//     status,
+//     reason_status,
+//   } = req.body;
+//   const borrowing = await Borrowing.create({
+//     userId: req.user._id,
+//     user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     borrowItems,
+//     borrowingInfo,
+//     date_return,
+//     issue,
+//     status,
+//     reason_status,
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     borrowing,
+//   });
+// };
+
 exports.newBorrowing = async (req, res, next) => {
   const {
-    // userId,
     borrowItems,
     borrowingInfo,
     date_return,
@@ -14,6 +40,7 @@ exports.newBorrowing = async (req, res, next) => {
     status,
     reason_status,
   } = req.body;
+
   const borrowing = await Borrowing.create({
     userId: req.user._id,
     user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
@@ -23,6 +50,16 @@ exports.newBorrowing = async (req, res, next) => {
     issue,
     status,
     reason_status,
+    history: [
+      {
+        user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+        borrowItems,
+        status,
+        by: "N/A",
+        date_return,
+        date_borrow: borrowingInfo.date_borrow, // Adding date_borrow
+      },
+    ],
   });
 
   res.status(200).json({
@@ -63,41 +100,220 @@ exports.allBorrowings = async (req, res, next) => {
   });
 };
 
+// exports.updateBorrowing = async (req, res, next) => {
+//   const borrowing = await Borrowing.findById(req.params.id);
+//   if (!borrowing) {
+//     return next(new ErrorHandler("Borrowing not found", 404));
+//   }
+
+//   if (borrowing.status === "Returned") {
+//     return next(
+//       new ErrorHandler("This borrowing has already been returned", 400)
+//     );
+//   }
+
+//   borrowing.borrowItems.forEach(async (item) => {
+//     const equipment = await Equipment.findById(item.equipment);
+//     if (!equipment) {
+//       throw new Error("Equipment not found");
+//     }
+
+//     if (borrowing.status === "Borrowed") {
+//       equipment.stock -= item.quantity;
+//     } else if (borrowing.status === "Returned") {
+//       equipment.stock += item.quantity;
+//     }
+
+//     await equipment.save();
+//   });
+
+//   borrowing.status = req.body.status;
+//   borrowing.date_return = borrowing.status === "Returned" ? Date.now() : null; // Set date_returned based on status
+//   borrowing.reason_status = req.body.reason_status; // Update reason_status
+//   borrowing.issue = req.body.issue; // Update issue
+
+//   await borrowing.save();
+
+//   res.status(200).json({ success: true });
+// };
+
+// exports.updateBorrowing = async (req, res, next) => {
+//   try {
+//     const borrowing = await Borrowing.findById(req.params.id);
+//     if (!borrowing) {
+//       return next(new ErrorHandler("Borrowing not found", 404));
+//     }
+
+//     if (borrowing.status === "Returned") {
+//       return next(
+//         new ErrorHandler("This borrowing has already been returned", 400)
+//       );
+//     }
+
+//     if (req.body.status === "Borrowed") {
+//       borrowing.borrowItems.forEach(async (item) => {
+//         const equipment = await Equipment.findById(item.equipment);
+//         if (!equipment) {
+//           return next(new ErrorHandler("Equipment not found", 404));
+//         }
+//         equipment.stock -= item.quantity;
+//         await equipment.save();
+//       });
+//     }
+
+//     if (req.body.status === "Returned") {
+//       borrowing.borrowItems.forEach(async (item) => {
+//         const equipment = await Equipment.findById(item.equipment);
+//         if (!equipment) {
+//           return next(new ErrorHandler("Equipment not found", 404));
+//         }
+//         equipment.stock += item.quantity;
+//         await equipment.save();
+//       });
+//     }
+
+//     const historyObj = {
+//       user: borrowing.user,
+//       borrowItems: borrowing.borrowItems,
+//       date_borrow: borrowing.borrowingInfo.date_borrow,
+//       date_return: req.body.status === "Returned" ? Date.now() : null,
+//       status: req.body.status,
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     };
+
+//     borrowing.history.push(historyObj);
+
+//     borrowing.status = req.body.status;
+//     borrowing.date_return = req.body.status === "Returned" ? Date.now() : null;
+//     borrowing.reason_status = req.body.reason_status;
+//     borrowing.issue = req.body.issue;
+
+//     await borrowing.save();
+
+//     res.status(200).json({ success: true });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+// exports.updateBorrowing = async (req, res, next) => {
+//   try {
+//     const borrowing = await Borrowing.findById(req.params.id);
+//     if (!borrowing) {
+//       return next(new ErrorHandler("Borrowing not found", 404));
+//     }
+
+//     if (borrowing.status === "Returned") {
+//       return next(
+//         new ErrorHandler("This borrowing has already been returned", 400)
+//       );
+//     }
+
+//     const equipmentHistory = [];
+
+//     for (const item of borrowing.borrowItems) {
+//       const equipment = await Equipment.findById(item.equipment);
+//       if (!equipment) {
+//         return next(new ErrorHandler("Equipment not found", 404));
+//       }
+
+//       const itemHistory = {
+//         name: item.name,
+//         quantity: item.quantity,
+//         status: req.body.status,
+//         by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       };
+
+//       equipment.stockHistory.push(itemHistory);
+
+//       if (req.body.status === "Borrowed") {
+//         equipment.stock -= item.quantity;
+//       } else if (req.body.status === "Returned") {
+//         equipment.stock += item.quantity;
+//       }
+
+//       await equipment.save();
+//     }
+
+//     const historyObj = {
+//       user: borrowing.user,
+//       borrowItems: equipmentHistory,
+//       date_borrow: borrowing.borrowingInfo.date_borrow,
+//       date_return: req.body.status === "Returned" ? Date.now() : null,
+//       status: req.body.status,
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     };
+
+//     borrowing.history.push(historyObj);
+
+//     borrowing.status = req.body.status;
+//     borrowing.date_return = req.body.status === "Returned" ? Date.now() : null;
+//     borrowing.reason_status = req.body.reason_status;
+//     borrowing.issue = req.body.issue;
+
+//     await borrowing.save();
+
+//     res.status(200).json({ success: true });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 exports.updateBorrowing = async (req, res, next) => {
-  const borrowing = await Borrowing.findById(req.params.id);
-  if (!borrowing) {
-    return next(new ErrorHandler("Borrowing not found", 404));
-  }
-
-  if (borrowing.status === "Returned") {
-    return next(
-      new ErrorHandler("This borrowing has already been returned", 400)
-    );
-  }
-
-  borrowing.borrowItems.forEach(async (item) => {
-    const equipment = await Equipment.findById(item.equipment);
-    if (!equipment) {
-      throw new Error("Equipment not found");
+  try {
+    const borrowing = await Borrowing.findById(req.params.id);
+    if (!borrowing) {
+      return next(new ErrorHandler("Borrowing not found", 404));
     }
 
-    if (borrowing.status === "Borrowed") {
-      equipment.stock -= item.quantity;
-    } else if (borrowing.status === "Returned") {
-      equipment.stock += item.quantity;
+    const equipmentHistory = [];
+
+    for (const item of borrowing.borrowItems) {
+      const equipment = await Equipment.findById(item.equipment);
+      if (!equipment) {
+        return next(new ErrorHandler("Equipment not found", 404));
+      }
+
+      const itemHistory = {
+        name: item.name,
+        quantity: item.quantity,
+        status: req.body.status,
+        by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      };
+
+      equipment.stockHistory.push(itemHistory);
+
+      if (req.body.status === "Borrowed") {
+        equipment.stock -= item.quantity;
+      } else if (req.body.status === "Returned") {
+        equipment.stock += item.quantity;
+      }
+
+      await equipment.save();
     }
 
-    await equipment.save();
-  });
+    const historyObj = {
+      user: borrowing.user,
+      borrowItems: borrowing.borrowItems,
+      date_borrow: borrowing.borrowingInfo.date_borrow,
+      date_return: req.body.status === "Returned" ? Date.now() : null,
+      status: req.body.status,
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    };
 
-  borrowing.status = req.body.status;
-  borrowing.date_return = borrowing.status === "Returned" ? Date.now() : null; // Set date_returned based on status
-  borrowing.reason_status = req.body.reason_status; // Update reason_status
-  borrowing.issue = req.body.issue; // Update issue
+    borrowing.history.push(historyObj);
 
-  await borrowing.save();
+    borrowing.status = req.body.status;
+    borrowing.date_return = req.body.status === "Returned" ? Date.now() : null;
+    borrowing.reason_status = req.body.reason_status;
+    borrowing.issue = req.body.issue;
 
-  res.status(200).json({ success: true });
+    await borrowing.save();
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.deleteBorrowing = async (req, res, next) => {

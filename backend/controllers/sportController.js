@@ -5,21 +5,47 @@ const ErrorHandler = require("../utils/errorHandler");
 // @route   POST /api/sports
 // @access  Private (You can define your own authentication middleware)
 
+// exports.createSport = async (req, res, next) => {
+//   try {
+//     const { name } = req.body;
+
+//     // Create a new instance of the Sport model
+//     const newSport = await Sport.create({
+//       name,
+//     });
+
+//     res.status(201).json({
+//       success: true,
+//       newSport,
+//     });
+//   } catch (error) {
+//     console.error(error); // Log the error
+//     next(new ErrorHandler("Sport creation failed", 500));
+//   }
+// };
+
 exports.createSport = async (req, res, next) => {
   try {
     const { name } = req.body;
 
-    // Create a new instance of the Sport model
     const newSport = await Sport.create({
       name,
     });
+
+    newSport.history.push({
+      name: newSport.name,
+      status: newSport.status,
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    });
+
+    await newSport.save();
 
     res.status(201).json({
       success: true,
       newSport,
     });
   } catch (error) {
-    console.error(error); // Log the error
+    console.error(error);
     next(new ErrorHandler("Sport creation failed", 500));
   }
 };
@@ -65,6 +91,29 @@ exports.getSportById = async (req, res, next) => {
 // @route   PUT /api/sports/:id
 // @access  Private (You can define your own authentication middleware)
 
+// exports.updateSport = async (req, res, next) => {
+//   try {
+//     const { name } = req.body;
+//     const sport = await Sport.findById(req.params.id);
+
+//     if (!sport) {
+//       return next(new ErrorHandler("Sport not found", 404));
+//     }
+
+//     // Update sport properties
+//     sport.name = name;
+
+//     const updatedSport = await sport.save();
+
+//     res.status(200).json({
+//       success: true,
+//       sport: updatedSport,
+//     });
+//   } catch (error) {
+//     next(new ErrorHandler("Failed to update the sport", 500));
+//   }
+// };
+
 exports.updateSport = async (req, res, next) => {
   try {
     const { name } = req.body;
@@ -76,6 +125,16 @@ exports.updateSport = async (req, res, next) => {
 
     // Update sport properties
     sport.name = name;
+
+    // Create a history log before updating
+    const historyLog = {
+      name: sport.name,
+      status: sport.status,
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    };
+
+    // Push the history log into the sport's history array
+    sport.history.push(historyLog);
 
     const updatedSport = await sport.save();
 
@@ -110,6 +169,50 @@ exports.deleteSport = async (req, res, next) => {
   }
 };
 
+// exports.deactivateSport = async (req, res, next) => {
+//   try {
+//     const sport = await Sport.findById(req.params.id);
+
+//     if (!sport) {
+//       return next(new ErrorHandler("Sport not found", 404));
+//     }
+
+//     sport.status = "inactive";
+//     await sport.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Sport deactivated",
+//     });
+//   } catch (error) {
+//     next(new ErrorHandler("Failed to deactivate the sport", 500));
+//   }
+// };
+
+// // @desc    Reactivate a sport by ID
+// // @route   PUT /api/sports/:id/reactivate
+// // @access  Private (You can define your own authentication middleware)
+
+// exports.reactivateSport = async (req, res, next) => {
+//   try {
+//     const sport = await Sport.findById(req.params.id);
+
+//     if (!sport) {
+//       return next(new ErrorHandler("Sport not found", 404));
+//     }
+
+//     sport.status = "active";
+//     await sport.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Sport reactivated",
+//     });
+//   } catch (error) {
+//     next(new ErrorHandler("Failed to reactivate the sport", 500));
+//   }
+// };
+
 exports.deactivateSport = async (req, res, next) => {
   try {
     const sport = await Sport.findById(req.params.id);
@@ -119,20 +222,27 @@ exports.deactivateSport = async (req, res, next) => {
     }
 
     sport.status = "inactive";
-    await sport.save();
+
+    // Create a new history entry
+    const historyEntry = {
+      name: sport.name,
+      status: "inactive",
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    };
+
+    // Push the history entry to the history array
+    sport.history.push(historyEntry);
+
+    const deactivatedSport = await sport.save();
 
     res.status(200).json({
       success: true,
-      message: "Sport deactivated",
+      sport: deactivatedSport,
     });
   } catch (error) {
     next(new ErrorHandler("Failed to deactivate the sport", 500));
   }
 };
-
-// @desc    Reactivate a sport by ID
-// @route   PUT /api/sports/:id/reactivate
-// @access  Private (You can define your own authentication middleware)
 
 exports.reactivateSport = async (req, res, next) => {
   try {
@@ -143,11 +253,22 @@ exports.reactivateSport = async (req, res, next) => {
     }
 
     sport.status = "active";
-    await sport.save();
+
+    // Create a new history entry
+    const historyEntry = {
+      name: sport.name,
+      status: "active",
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    };
+
+    // Push the history entry to the history array
+    sport.history.push(historyEntry);
+
+    const reactivatedSport = await sport.save();
 
     res.status(200).json({
       success: true,
-      message: "Sport reactivated",
+      sport: reactivatedSport,
     });
   } catch (error) {
     next(new ErrorHandler("Failed to reactivate the sport", 500));

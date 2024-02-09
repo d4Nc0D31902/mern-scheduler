@@ -242,7 +242,6 @@ const BorrowDetails = () => {
                         {/* Add other reason options */}
                       </select>
                     </div>
-
                     <div style={{ textAlign: "center", margin: "20px 0" }}>
                       <ReactToPrint
                         trigger={() => (
@@ -251,7 +250,6 @@ const BorrowDetails = () => {
                         content={() => componentRef.current} // Content to be printed
                       />
                     </div>
-                    
                   </div>
                   <hr />
                   <h4
@@ -260,7 +258,7 @@ const BorrowDetails = () => {
                   >
                     Status
                   </h4>
-                  <div className="form-group" style={{ marginBottom: "" }}>
+                  {/* <div className="form-group" style={{ marginBottom: "" }}>
                     <select
                       className="form-control"
                       name="status"
@@ -273,7 +271,24 @@ const BorrowDetails = () => {
                       <option value="Borrowed">Borrowed</option>
                       <option value="Returned">Returned</option>
                     </select>
+                  </div> */}
+
+                  <div className="form-group" style={{ marginBottom: "" }}>
+                    <select
+                      className="form-control"
+                      name="status"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      // disabled={status === "Returned"}
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Denied">Denied</option>
+                      <option value="Borrowed">Borrowed</option>
+                      <option value="Returned">Returned</option>
+                    </select>
                   </div>
+                  
                   <button
                     className="btn btn-primary btn-block"
                     onClick={() => updateBorrowHandler(borrow._id)}

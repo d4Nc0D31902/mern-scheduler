@@ -99,12 +99,12 @@ const OrdersList = () => {
         amount: `₱${order.totalPrice}`,
         status:
           order.orderStatus &&
-          String(order.orderStatus).includes("Delivered") ? (
+          String(order.orderStatus).includes("Claimed") ? (
             <p style={{ color: "green" }}>{order.orderStatus}</p>
           ) : (
             <p style={{ color: "red" }}>{order.orderStatus}</p>
           ),
-        customerName: order.customer, // Fetching customer name from order.user
+        customerName: order.customer, 
         actions: (
           <Fragment>
             <Link

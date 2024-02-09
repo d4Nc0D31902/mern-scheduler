@@ -40,6 +40,7 @@ import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
+import ProductStockLogs from "./components/admin/ProductStockLogs.js";
 
 import { loadUser } from "./actions/userActions";
 import { useSelector } from "react-redux";
@@ -52,6 +53,7 @@ import UpdateAppointment from "./components/appointment/UpdateAppointment";
 import MyAppointment from "./components/appointment/MyAppointment";
 import AppointmentView from "./components/appointment/AppointmentView.js";
 import AppHistoryList from "./components/admin/AppHistoryList.js";
+import LocationHistoryList from "./components/admin/LocationHistoryList.js";
 // import ProcessAppointment from "./components/admin/ProcessAppointment.js";
 
 import LocationList from "./components/location/LocationList";
@@ -66,9 +68,15 @@ import EquipmentList from "./components/admin/EquipmentList";
 import NewEquipment from "./components/admin/NewEquipment";
 import UpdateEquipment from "./components/admin/UpdateEquipment";
 import UpdateEquipmentStock from "./components/admin/UpdateEquipmentStock.js";
+import EquipmentHistoryList from "./components/admin/EquipmentHistoryList.js";
 import EquipmentStockList from "./components/admin/EquipmentStockList.js";
+import EquipmentStockLogs from "./components/admin/EquipmentStockLogs.js";
 
 import BorrowList from "./components/admin/BorrowList.js";
+import BorrowHistoryList from "./components/admin/BorrowHistoryList.js";
+
+import SportHistoryList from "./components/admin/SportHistoryList.js";
+
 // import UpdateBorrow from "./components/admin/UpdateBorrow.js";
 
 import Settings from "./components/admin/SettingsComponent.js";
@@ -166,6 +174,42 @@ function App() {
         />
 
         <Route
+          path="/admin/SP/history"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <SportHistoryList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/eq/history"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <EquipmentHistoryList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/loc/history"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <LocationHistoryList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/bor/history"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <BorrowHistoryList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/admin/borrows/"
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
@@ -188,6 +232,15 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
               <EquipmentStockList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/stock/history"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <EquipmentStockLogs />
             </ProtectedRoute>
           }
         />
@@ -494,6 +547,14 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
               <ProductsList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/stock/list"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <ProductStockLogs />
             </ProtectedRoute>
           }
         />

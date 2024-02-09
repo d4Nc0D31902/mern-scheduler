@@ -94,6 +94,11 @@ const AppointmentsList = () => {
           sort: "asc",
         },
         {
+          label: "Professor",
+          field: "professor",
+          sort: "asc",
+        },
+        {
           label: "Time Start",
           field: "timeStart",
           sort: "asc",
@@ -109,7 +114,7 @@ const AppointmentsList = () => {
           sort: "asc",
         },
         {
-          label: "By",
+          label: "Action At",
           field: "by",
           sort: "asc",
         },
@@ -134,6 +139,7 @@ const AppointmentsList = () => {
             requester: historyRecord.requester,
             description: historyRecord.description,
             location: historyRecord.location,
+            professor: historyRecord.professor,
             timeStart: new Date(historyRecord.timeStart).toLocaleString(
               "en-US",
               {

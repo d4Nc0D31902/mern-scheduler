@@ -112,7 +112,7 @@ export const allEquipments = () => async (dispatch) => {
 
     dispatch({
       type: ALL_EQUIPMENTS_SUCCESS,
-      payload: data.equipmentList, // Make sure to use the correct property from the API response
+      payload: data.equipmentList,
     });
   } catch (error) {
     dispatch({
