@@ -428,9 +428,9 @@ exports.updateAppointment = async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
       }
 
-      user.penalty += 1;
+      user.sched_penalty += 1;
 
-      if (user.penalty === 3) {
+      if (user.sched_penalty === 3) {
         user.status = "inactive";
       }
 

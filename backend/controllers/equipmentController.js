@@ -315,9 +315,9 @@ exports.updateEquipment = async (req, res, next) => {
 
     equipment.stockHistory.push(newStockHistory);
 
-    equipment.stock = req.body.stock; // Update the stock separately
+    equipment.stock = req.body.stock;
 
-    equipment = await equipment.save(); // Save the updated equipment
+    equipment = await equipment.save(); 
 
     return res.status(200).json({
       success: true,

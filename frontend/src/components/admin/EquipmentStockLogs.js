@@ -110,7 +110,7 @@ const EquipmentsList = () => {
               historyEntry.status === "Borrowed" ||
               historyEntry.status === "Returned" ||
               historyEntry.status === "Restocked" ||
-              historyEntry.status === "Depleted" 
+              historyEntry.status === "Deducted" 
           )
           .forEach((historyEntry) => {
             data.rows.push({
