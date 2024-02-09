@@ -202,7 +202,7 @@ const UpdateEquipment = () => {
                       color: "white",
                     }}
                   >
-                    Update Stock
+                    Add or Remove Equipment Stock
                   </h1>
 
                   <div className="form-group">
