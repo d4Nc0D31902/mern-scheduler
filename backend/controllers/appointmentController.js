@@ -1,5 +1,6 @@
 const Appointment = require("../models/appointment");
 const ErrorHandler = require("../utils/errorHandler");
+const User = require("../models/user");
 const mongoose = require("mongoose");
 
 // @desc    Create a new appointment
@@ -44,6 +45,63 @@ const mongoose = require("mongoose");
 //   }
 // };
 
+// exports.createAppointment = async (req, res, next) => {
+//   try {
+//     const {
+//       attendees,
+//       location,
+//       title,
+//       description,
+//       timeStart,
+//       timeEnd,
+//       reason,
+//       professor, // Include professor here
+//       key,
+//     } = req.body;
+
+//     const status = "Pending";
+
+//     const newAppointment = await Appointment.create({
+//       userId: req.user._id,
+//       requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       attendees,
+//       location,
+//       title,
+//       description,
+//       timeStart,
+//       timeEnd,
+//       professor,
+//       status,
+//       reason,
+//       key,
+//     });
+
+//     const historyLog = {
+//       schedTitle: title,
+//       requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       location,
+//       description,
+//       timeStart,
+//       timeEnd,
+//       professor,
+//       status,
+//       by: "N/A",
+//     };
+
+//     newAppointment.history.push(historyLog);
+
+//     await newAppointment.save();
+
+//     res.status(201).json({
+//       success: true,
+//       newAppointment,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     next(new ErrorHandler("Appointment creation failed", 500));
+//   }
+// };
+
 exports.createAppointment = async (req, res, next) => {
   try {
     const {
@@ -59,10 +117,17 @@ exports.createAppointment = async (req, res, next) => {
     } = req.body;
 
     const status = "Pending";
+    let requester = "";
+
+    if (req.user.role === "professor") {
+      requester = `${req.user.name} - ${req.user.department}`;
+    } else {
+      requester = `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`;
+    }
 
     const newAppointment = await Appointment.create({
       userId: req.user._id,
-      requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      requester,
       attendees,
       location,
       title,
@@ -77,7 +142,7 @@ exports.createAppointment = async (req, res, next) => {
 
     const historyLog = {
       schedTitle: title,
-      requester: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      requester,
       location,
       description,
       timeStart,
@@ -194,6 +259,132 @@ exports.getSingleAppointment = async (req, res, next) => {
 //   }
 // };
 
+// exports.updateAppointment = async (req, res, next) => {
+//   try {
+//     const {
+//       attendees,
+//       title,
+//       location,
+//       timeStart,
+//       timeEnd,
+//       status,
+//       professor,
+//       reason,
+//       key,
+//     } = req.body;
+
+//     const appointment = await Appointment.findById(req.params.id);
+
+//     if (!appointment) {
+//       return next(new ErrorHandler("Appointment not found", 404));
+//     }
+
+//     const historyLog = {
+//       schedTitle: appointment.title,
+//       requester: appointment.requester,
+//       description: appointment.description,
+//       location: appointment.location,
+//       timeStart: appointment.timeStart,
+//       timeEnd: appointment.timeEnd,
+//       professor: professor,
+//       status: status,
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     };
+
+//     appointment.attendees = attendees;
+//     appointment.title = title;
+//     appointment.location = location;
+//     appointment.timeStart = timeStart;
+//     appointment.timeEnd = timeEnd;
+//     appointment.status = status;
+//     appointment.professor = professor;
+//     appointment.reason = reason;
+//     appointment.key = key;
+
+//     appointment.history.push(historyLog);
+
+//     const updatedAppointment = await appointment.save();
+
+//     res.status(200).json({
+//       success: true,
+//       appointment: updatedAppointment,
+//     });
+//   } catch (error) {
+//     next(new ErrorHandler("Failed to update the appointment", 500));
+//   }
+// };
+
+// exports.updateAppointment = async (req, res, next) => {
+//   try {
+//     const {
+//       attendees,
+//       title,
+//       location,
+//       timeStart,
+//       timeEnd,
+//       status,
+//       professor,
+//       reason,
+//       key,
+//     } = req.body;
+
+//     const appointment = await Appointment.findById(req.params.id);
+
+//     if (!appointment) {
+//       return next(new ErrorHandler("Appointment not found", 404));
+//     }
+
+//     const historyLog = {
+//       schedTitle: appointment.title,
+//       requester: appointment.requester,
+//       description: appointment.description,
+//       location: appointment.location,
+//       timeStart: appointment.timeStart,
+//       timeEnd: appointment.timeEnd,
+//       professor: professor,
+//       status: status,
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     };
+
+//     if (
+//       reason === "Reason 1" ||
+//       reason === "Reason 2" ||
+//       reason === "Reason 3"
+//     ) {
+//       const user = await User.findById(appointment.userId);
+
+//       if (!user) {
+//         return next(new ErrorHandler("User not found", 404));
+//       }
+
+//       user.penalty += 1;
+
+//       await user.save();
+//     }
+
+//     appointment.attendees = attendees;
+//     appointment.title = title;
+//     appointment.location = location;
+//     appointment.timeStart = timeStart;
+//     appointment.timeEnd = timeEnd;
+//     appointment.status = status;
+//     appointment.professor = professor;
+//     appointment.reason = reason;
+//     appointment.key = key;
+
+//     appointment.history.push(historyLog);
+
+//     await appointment.save();
+
+//     res.status(200).json({
+//       success: true,
+//       appointment: appointment,
+//     });
+//   } catch (error) {
+//     next(new ErrorHandler("Failed to update the appointment", 500));
+//   }
+// };
+
 exports.updateAppointment = async (req, res, next) => {
   try {
     const {
@@ -226,6 +417,26 @@ exports.updateAppointment = async (req, res, next) => {
       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
     };
 
+    if (
+      reason === "Reason 1" ||
+      reason === "Reason 2" ||
+      reason === "Reason 3"
+    ) {
+      const user = await User.findById(appointment.userId);
+
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+
+      user.penalty += 1;
+
+      if (user.penalty === 3) {
+        user.status = "inactive";
+      }
+
+      await user.save();
+    }
+
     appointment.attendees = attendees;
     appointment.title = title;
     appointment.location = location;
@@ -238,16 +449,17 @@ exports.updateAppointment = async (req, res, next) => {
 
     appointment.history.push(historyLog);
 
-    const updatedAppointment = await appointment.save();
+    await appointment.save();
 
     res.status(200).json({
       success: true,
-      appointment: updatedAppointment,
+      appointment: appointment,
     });
   } catch (error) {
     next(new ErrorHandler("Failed to update the appointment", 500));
   }
 };
+
 
 // @desc    Delete an appointment by ID
 // @route   DELETE /api/appointments/:id

@@ -12,7 +12,7 @@ import { NEW_APPOINTMENT_RESET } from "../../constants/appointmentConstants";
 
 const NewAppointment = () => {
   const [attendees, setAttendees] = useState([]);
-  const [description, setDescrtiption] = useState("");
+  const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [timeStart, setTimeStart] = useState("");
@@ -103,6 +103,11 @@ const NewAppointment = () => {
 
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    // Reset professor data when location changes
+    setProfessor("");
+  }, [location]);
 
   const [errors, setErrors] = useState({});
 
@@ -293,7 +298,7 @@ const NewAppointment = () => {
               placeholder="Describe the event..."
               rows="8"
               value={description}
-              onChange={(e) => setDescrtiption(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             {errors.description && (
               <div className="invalid-feedback">{errors.description}</div>
@@ -342,9 +347,10 @@ const NewAppointment = () => {
                 </option>
                 {users
                   .filter(
-                    (user) =>
-                      user.role === "professor" &&
-                      user.availability === "available"
+                    (professor) =>
+                      professor.role === "professor" &&
+                      professor.availability === "available" &&
+                      professor._id !== user._id
                   )
                   .map((professor) => (
                     <option key={professor._id} value={professor.name}>

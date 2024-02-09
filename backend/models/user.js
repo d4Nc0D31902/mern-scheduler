@@ -48,6 +48,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  penalty: {
+    type: Number,
+    default: 0,
+    validate: {
+      validator: function(value) {
+        return value >= 0 && value <= 3;
+      },
+      message: "Penalty must be between 0 and 3",
+    },
+  },
   availability: {
     type: String,
     default: "available",

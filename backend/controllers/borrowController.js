@@ -31,6 +31,43 @@ const mongoose = require("mongoose");
 //   });
 // };
 
+// exports.newBorrowing = async (req, res, next) => {
+//   const {
+//     borrowItems,
+//     borrowingInfo,
+//     date_return,
+//     issue,
+//     status,
+//     reason_status,
+//   } = req.body;
+
+//   const borrowing = await Borrowing.create({
+//     userId: req.user._id,
+//     user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     borrowItems,
+//     borrowingInfo,
+//     date_return,
+//     issue,
+//     status,
+//     reason_status,
+//     history: [
+//       {
+//         user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//         borrowItems,
+//         status,
+//         by: "N/A",
+//         date_return,
+//         date_borrow: borrowingInfo.date_borrow, // Adding date_borrow
+//       },
+//     ],
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     borrowing,
+//   });
+// };
+
 exports.newBorrowing = async (req, res, next) => {
   const {
     borrowItems,
@@ -41,9 +78,17 @@ exports.newBorrowing = async (req, res, next) => {
     reason_status,
   } = req.body;
 
+  let userDetail = "";
+
+  if (req.user.role === "professor") {
+    userDetail = `${req.user.name} - ${req.user.department}`;
+  } else {
+    userDetail = `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`;
+  }
+
   const borrowing = await Borrowing.create({
     userId: req.user._id,
-    user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+    user: userDetail,
     borrowItems,
     borrowingInfo,
     date_return,
@@ -52,7 +97,7 @@ exports.newBorrowing = async (req, res, next) => {
     reason_status,
     history: [
       {
-        user: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+        user: userDetail,
         borrowItems,
         status,
         by: "N/A",

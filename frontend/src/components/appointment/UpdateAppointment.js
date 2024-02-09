@@ -225,6 +225,7 @@ const UpdateAppointment = () => {
                   <option value="" disabled selected>
                     Select a reason
                   </option>
+                  <option value="N/A">N/A</option>
                   <option value="Reason 1">Reason 1</option>
                   <option value="Reason 2">Reason 2</option>
                   <option value="Reason 3">Reason 3</option>
