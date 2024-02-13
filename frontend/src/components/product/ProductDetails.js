@@ -80,12 +80,25 @@ const ProductDetails = () => {
     dispatch(submitProductReview(reviewData));
   };
 
+  // const addToCart = () => {
+  //   dispatch(addItemToCart(id, quantity));
+  //   if (!cartError) {
+  //     successMsg("Added to Cart");
+  //   } else {
+  //     notify("Failed to add product to cart");
+  //   }
+  // };
+
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity));
-    if (!cartError) {
-      successMsg("Added to Cart");
+    if (quantity > product.stock) {
+      notify("Quantity exceeds available stock");
     } else {
-      notify("Failed to add product to cart");
+      dispatch(addItemToCart(id, quantity));
+      if (!cartError) {
+        successMsg("Added to Cart");
+      } else {
+        notify("Failed to add product to cart");
+      }
     }
   };
 

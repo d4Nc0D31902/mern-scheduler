@@ -5,33 +5,119 @@ const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
 // Create a new order   =>  /api/v1/order/new
+// exports.newOrder = async (req, res, next) => {
+//   const {
+//     orderItems,
+//     shippingInfo,
+//     itemsPrice,
+//     // taxPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paymentInfo,
+//   } = req.body;
+//   const order = await Order.create({
+//     orderItems,
+//     shippingInfo,
+//     itemsPrice,
+//     // taxPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paymentInfo,
+//     paidAt: Date.now(),
+//     user: req.user._id,
+//     customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     order,
+//   });
+// };
+// exports.newOrder = async (req, res, next) => {
+//   const {
+//     orderItems,
+//     shippingInfo,
+//     itemsPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paymentInfo,
+//     reference_num,
+//     paymentMeth,
+//   } = req.body;
+
+//   const order = await Order.create({
+//     orderItems,
+//     shippingInfo,
+//     itemsPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paymentInfo,
+//     paidAt: Date.now(),
+//     user: req.user._id,
+//     customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     reference_num,
+//     paymentMeth,
+//     orderStatus: "Pending",
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     order,
+//   });
+// };
+
 exports.newOrder = async (req, res, next) => {
   const {
     orderItems,
     shippingInfo,
     itemsPrice,
-    // taxPrice,
     shippingPrice,
     totalPrice,
     paymentInfo,
+    reference_num,
+    paymentMeth,
   } = req.body;
-  const order = await Order.create({
-    orderItems,
-    shippingInfo,
-    itemsPrice,
-    // taxPrice,
-    shippingPrice,
-    totalPrice,
-    paymentInfo,
-    paidAt: Date.now(),
-    user: req.user._id,
-    customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
-  });
 
-  res.status(200).json({
-    success: true,
-    order,
-  });
+  try {
+    // Create new order
+    const order = await Order.create({
+      orderItems,
+      shippingInfo,
+      itemsPrice,
+      shippingPrice,
+      totalPrice,
+      paymentInfo,
+      paidAt: Date.now(),
+      user: req.user._id,
+      customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      reference_num,
+      paymentMeth,
+      orderStatus: "Pending",
+      history: [
+        {
+          // Create new history record within the order
+          customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+          orderItems,
+          totalPrice,
+          orderStatus: "Pending",
+          paymentMeth,
+          reference_num,
+          by: "N/A",
+          createdAt: Date.now(),
+        },
+      ],
+    });
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
 };
 
 exports.getSingleOrder = async (req, res, next) => {
@@ -89,20 +175,62 @@ exports.allOrders = async (req, res, next) => {
 //   });
 // };
 
+// exports.updateOrder = async (req, res, next) => {
+//   const order = await Order.findById(req.params.id);
+//   if (order.orderStatus === "Delivered") {
+//     return next(new ErrorHandler("You have already delivered this order", 400));
+//   }
+//   order.orderItems.forEach(async (item) => {
+//     await updateStock(item.product, item.quantity, req.user);
+//   });
+//   order.orderStatus = req.body.status;
+//   order.deliveredAt = Date.now();
+//   await order.save();
+//   res.status(200).json({
+//     success: true,
+//   });
+// };
+
 exports.updateOrder = async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
-  if (order.orderStatus === "Delivered") {
-    return next(new ErrorHandler("You have already delivered this order", 400));
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return next(new ErrorHandler("Order not found", 404));
+    }
+
+    // Create history record based on the current order details
+    const historyRecord = {
+      customer: order.customer,
+      orderItems: order.orderItems,
+      totalPrice: order.totalPrice,
+      orderStatus: req.body.status,
+      paymentMeth: order.paymentMeth,
+      reference_num: order.reference_num,
+      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      createdAt: order.createdAt,
+    };
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.quantity, req.user);
+    });
+
+    order.orderStatus = req.body.status;
+    if (req.body.status === "Sold") {
+      order.deliveredAt = Date.now();
+    }
+
+    // Save the updated order
+    await order.save();
+
+    // Add the history record to the order's history array
+    order.history.push(historyRecord);
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    next(error);
   }
-  order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.quantity, req.user);
-  });
-  order.orderStatus = req.body.status;
-  order.deliveredAt = Date.now();
-  await order.save();
-  res.status(200).json({
-    success: true,
-  });
 };
 
 async function updateStock(id, quantity, user) {
@@ -123,8 +251,6 @@ async function updateStock(id, quantity, user) {
 
   await product.save({ validateBeforeSave: false });
 }
-
-
 
 exports.deleteOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
@@ -298,4 +424,3 @@ exports.salesPerMonth = async (req, res, next) => {
 //   product.stock = product.stock - quantity;
 //   await product.save({ validateBeforeSave: false });
 // }
-

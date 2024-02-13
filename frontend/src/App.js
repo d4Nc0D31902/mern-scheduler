@@ -36,6 +36,7 @@ import NewProduct from "./components/admin/NewProduct";
 import UpdateProduct from "./components/admin/UpdateProduct";
 import UpdateProductStock from "./components/admin/UpdateProductStock.js";
 import OrdersList from "./components/admin/OrdersList";
+import OrderLogs from "./components/admin/OrderLogs.js";
 import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
@@ -136,7 +137,6 @@ function App() {
         <Route path="/" element={<Home />} exact="true" />
         <Route path="/calendar" element={<Calendar />} exact="true" />
         <Route path="/request" element={<Appointment />} exact="true" />
-
         <Route
           path="/appointments/me"
           element={
@@ -145,7 +145,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/equipment/me"
           element={
@@ -154,7 +153,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/appointments/"
           element={
@@ -163,7 +161,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/app/history"
           element={
@@ -172,7 +169,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/SP/history"
           element={
@@ -181,7 +177,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/eq/history"
           element={
@@ -190,7 +185,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/loc/history"
           element={
@@ -199,7 +193,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/bor/history"
           element={
@@ -208,7 +201,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/borrows/"
           element={
@@ -217,7 +209,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/equipments/"
           element={
@@ -226,7 +217,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/equipments/stock"
           element={
@@ -235,7 +225,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/stock/history"
           element={
@@ -244,7 +233,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/settings/6581a5b1466cfcabab4cc84f"
           element={
@@ -253,7 +241,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/locations/"
           element={
@@ -262,7 +249,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/location"
           element={
@@ -271,7 +257,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/equipment"
           element={
@@ -280,7 +265,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/equipment/:id"
           element={
@@ -289,7 +273,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/equipment/stock/:id"
           element={
@@ -298,7 +281,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         {/* <Route
           path="/admin/borrow/:id"
           element={
@@ -307,7 +289,6 @@ function App() {
             </ProtectedRoute>
           }
         /> */}
-
         <Route
           path="/admin/sport"
           element={
@@ -316,7 +297,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/category"
           element={
@@ -325,7 +305,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/sports"
           element={
@@ -334,7 +313,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/categories"
           element={
@@ -343,7 +321,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/announcement"
           element={
@@ -353,7 +330,6 @@ function App() {
           }
         />
         <Route path="/announcements" element={<AllAnnouncement />} />
-
         <Route
           path="/admin/appointment/:id"
           element={
@@ -362,7 +338,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/appointment/:id"
           element={
@@ -371,7 +346,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/announcement/:id"
           element={
@@ -380,7 +354,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/location/:id"
           element={
@@ -389,7 +362,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/sport/:id"
           element={
@@ -398,7 +370,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/category/:id"
           element={
@@ -407,7 +378,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/location"
           element={
@@ -416,7 +386,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/me"
           element={
@@ -444,7 +413,6 @@ function App() {
           }
           exact="true"
         />
-
         <Route
           path="/shipping"
           element={
@@ -454,7 +422,6 @@ function App() {
           }
           exact="true"
         />
-
         <Route
           path="/borrowingInfo"
           element={
@@ -464,7 +431,6 @@ function App() {
           }
           exact="true"
         />
-
         <Route
           path="/confirm"
           element={
@@ -473,7 +439,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/confirmBorrow"
           element={
@@ -482,7 +447,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/payment"
           element={
@@ -491,7 +455,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/borrow"
           element={
@@ -500,7 +463,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/success"
           element={
@@ -541,7 +503,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/products"
           element={
@@ -558,7 +519,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/products/stock"
           element={
@@ -600,6 +560,14 @@ function App() {
           }
         />
         <Route
+          path="/admin/order/logs"
+          element={
+            <ProtectedRoute isAdmin={true} isOfficer={true}>
+              <OrderLogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/order/:id"
           element={
             <ProtectedRoute isAdmin={true} isOfficer={true}>
@@ -607,7 +575,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/borrow/:id"
           element={
@@ -632,7 +599,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/reviews"
           element={

@@ -38,6 +38,8 @@ const ProcessOrder = () => {
     user,
     totalPrice,
     orderStatus,
+    paymentMeth,
+    reference_num,
   } = order;
 
   const { error, isUpdated } = useSelector((state) => state.order);
@@ -180,38 +182,21 @@ const ProcessOrder = () => {
                   </p>
 
                   <p>
-                    <b>Reference #</b> {order._id}
+                    <b>Reference #:</b> {reference_num}
+                  </p>
+
+                  <p>
+                    <b>Payment Method:</b> {paymentMeth}
                   </p>
 
                   <hr />
-                  {/* <p>
-                    <b>Payment Status: </b>
-                    <b className={isPaid ? "greenColor" : "redColor"}>
-                      {isPaid ? "PAID" : "NOT PAID"}
-                    </b>
-                  </p> */}
-
-                  {/* <h4 className="my-4">Payment Status</h4>
-
-                  <p className={isPaid ? "greenColor" : "redColor"}>
-                    <b>{isPaid ? "PAID" : "NOT PAID"}</b>
-                  </p> */}
-                  {/* <p>
-                    <b>Stripe ID</b> {paymentInfo && paymentInfo.id}
-                  </p> */}
-
-                  {/* <h4 className="my-4">Stripe ID</h4>
-
-                  <p>
-                    <b>{paymentInfo && paymentInfo.id}</b>
-                  </p> */}
 
                   <p>
                     <b>Order Status: </b>{" "}
                     <b
                       className={
                         order.orderStatus &&
-                        String(order.orderStatus).includes("Delivered")
+                        String(order.orderStatus).includes("Sold")
                           ? "greenColor"
                           : "redColor"
                       }
@@ -219,19 +204,6 @@ const ProcessOrder = () => {
                       {orderStatus}
                     </b>
                   </p>
-
-                  {/* <h4 className="my-4">Order Status:</h4>
-
-                  <p
-                    className={
-                      order.orderStatus &&
-                        String(order.orderStatus).includes("Delivered")
-                        ? "greenColor"
-                        : "redColor"
-                    }
-                  >
-                    <b>{orderStatus}</b>
-                  </p> */}
 
                   <hr />
 
@@ -250,10 +222,8 @@ const ProcessOrder = () => {
                       onChange={(e) => setStatus(e.target.value)}
                     >
                       <option value="Processing">Pending</option>
-
-                      <option value="For Claiming">For Claiming</option>
-
-                      <option value="Claimed">Claimed</option>
+                      <option value="For Pickup">For Pickup</option>
+                      {order.stock > 0 && <option value="Sold">Sold</option>}
                       <option value="Denied">Denied</option>
                     </select>
                   </div>

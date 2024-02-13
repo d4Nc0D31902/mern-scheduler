@@ -47,27 +47,11 @@ const OrdersList = () => {
     });
 
   const setOrders = () => {
-    const filteredOrders = orders.filter((order) => {
-      if (filter === "All") {
-        return true;
-      }
-      if (filter === "Pending") {
-        return order.orderStatus === "Pending";
-      }
-      if (filter === "For Pickup") {
-        return order.orderStatus === "For Pickup";
-      }
-      if (filter === "Sold") {
-        return order.orderStatus === "Sold";
-      }
-      return true;
-    });
-
     const data = {
       columns: [
         {
-          label: "Customer Name",
-          field: "customerName",
+          label: "Customer",
+          field: "customer",
           sort: "asc",
         },
         {
@@ -76,49 +60,97 @@ const OrdersList = () => {
           sort: "asc",
         },
         {
-          label: "Amount",
-          field: "amount",
+          label: "Total Price",
+          field: "totalPrice",
           sort: "asc",
         },
         {
-          label: "Status",
-          field: "status",
+          label: "Order Status",
+          field: "orderStatus",
           sort: "asc",
         },
         {
-          label: "Actions",
-          field: "actions",
+          label: "Payment Method",
+          field: "paymentMethod",
+          sort: "asc",
+        },
+        {
+          label: "Reference Number",
+          field: "referenceNum",
+          sort: "asc",
+        },
+        {
+          label: "Action By",
+          field: "by",
+          sort: "asc",
+        },
+        {
+          label: "Created At",
+          field: "createdAt",
+          sort: "asc",
         },
       ],
       rows: [],
     };
 
-    
+    // Populate rows with order history
+    if (orders && orders.length > 0) {
+      orders.forEach((order) => {
+        order.history.forEach((historyLog) => {
+          let statusColor;
+          switch (historyLog.orderStatus) {
+            case "Pending":
+              statusColor = "orange";
+              break;
+            case "For Pickup":
+              statusColor = "orange";
+              break;
+            case "Sold":
+              statusColor = "green";
+              break;
+            case "Denied":
+              statusColor = "red";
+              break;
+            default:
+              statusColor = "";
+              break;
+          }
 
-    filteredOrders.forEach((order) => {
-      data.rows.push({
-        numofItems: order.orderItems.length,
-        amount: `₱${order.totalPrice}`,
-        status:
-          order.orderStatus &&
-          String(order.orderStatus).includes("Sold") ? (
-            <p style={{ color: "green" }}>{order.orderStatus}</p>
-          ) : (
-            <p style={{ color: "red" }}>{order.orderStatus}</p>
-          ),
-        customerName: order.customer, 
-        actions: (
-          <Fragment>
-            <Link
-              to={`/admin/order/${order._id}`}
-              className="btn btn-primary py-1 px-2"
-            >
-              <i className="fa fa-eye"></i>
-            </Link>
-          </Fragment>
-        ),
+          // Generate a bullet list of items with quantities
+          const itemsList = (
+            <ul>
+              {historyLog.orderItems.map((item) => (
+                <li key={item._id}>
+                  {item.name} = {item.quantity}
+                </li>
+              ))}
+            </ul>
+          );
+
+          data.rows.push({
+            customer: historyLog.customer,
+            numofItems: itemsList, // Display items and quantities in bullet form
+            totalPrice: `₱${historyLog.totalPrice}`,
+            orderStatus: (
+              <span style={{ color: statusColor }}>
+                {historyLog.orderStatus}
+              </span>
+            ),
+            paymentMethod: historyLog.paymentMeth,
+            referenceNum: historyLog.reference_num,
+            by: historyLog.by,
+            createdAt: new Date(order.createdAt).toLocaleString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            }),
+          });
+        });
       });
-    });
+    }
 
     return data;
   };
@@ -129,14 +161,14 @@ const OrdersList = () => {
 
   return (
     <Fragment>
-      <MetaData title={"All Orders"} />
+      <MetaData title={"Order Logs"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
         <div className="col-12 col-md-10">
           <Fragment>
-            <h1 className="my-5">All Orders</h1>
+            <h1 className="my-5">Order Logs</h1>
             <div>
               <label htmlFor="statusFilter">Filter by Status:</label>
               <select
@@ -148,6 +180,7 @@ const OrdersList = () => {
                 <option value="Pending">Pending</option>
                 <option value="For Pickup">For Pickup</option>
                 <option value="Sold">Sold</option>
+                <option value="Denied">Denied</option>
               </select>
             </div>
             {loading ? (

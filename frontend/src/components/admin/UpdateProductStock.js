@@ -102,6 +102,12 @@ const UpdateProduct = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // Validate if stockToAdd is a positive number
+    if (parseInt(stockToAdd) < 0) {
+      errMsg("Please enter a positive number for adding stock");
+      return;
+    }
+
     const formData = new FormData();
     formData.set("name", name);
     formData.set("price", price);
@@ -116,6 +122,7 @@ const UpdateProduct = () => {
     });
     dispatch(updateProduct(product._id, formData));
   };
+
   const onChange = (e) => {
     const files = Array.from(e.target.files);
     setImagesPreview([]);

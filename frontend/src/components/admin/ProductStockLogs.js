@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
@@ -8,7 +8,7 @@ import { getAdminProducts, clearErrors } from "../../actions/productActions";
 
 const ProductsList = () => {
   const dispatch = useDispatch();
-
+  const [selectedStatus, setSelectedStatus] = useState("");
   const { loading, error, products } = useSelector((state) => state.products);
 
   useEffect(() => {
@@ -20,15 +20,17 @@ const ProductsList = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Claimed":
+      case "Sold":
         return "green";
       case "Restocked":
         return "green";
-      case "Deducted":
-        return "red";
       default:
         return "black";
     }
+  };
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
   };
 
   const setProducts = () => {
@@ -66,27 +68,29 @@ const ProductsList = () => {
     if (products && products.length > 0) {
       products.forEach((product) => {
         product.stockHistory.forEach((historyEntry) => {
-          data.rows.push({
-            name: historyEntry.name,
-            quantity: historyEntry.quantity,
-            status: (
-              <span style={{ color: getStatusColor(historyEntry.status) }}>
-                {historyEntry.status}
-              </span>
-            ),
-            by: historyEntry.by,
-            createdAt: new Date(historyEntry.createdAt).toLocaleString(
-              "en-US",
-              {
-                year: "numeric",
-                month: "short",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-              }
-            ),
-          });
+          if (selectedStatus === "" || historyEntry.status === selectedStatus) {
+            data.rows.push({
+              name: historyEntry.name,
+              quantity: historyEntry.quantity,
+              status: (
+                <span style={{ color: getStatusColor(historyEntry.status) }}>
+                  {historyEntry.status}
+                </span>
+              ),
+              by: historyEntry.by,
+              createdAt: new Date(historyEntry.createdAt).toLocaleString(
+                "en-US",
+                {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }
+              ),
+            });
+          }
         });
       });
     } else {
@@ -104,8 +108,51 @@ const ProductsList = () => {
           <Sidebar />
         </div>
         <div className="col-12 col-md-10">
+          {/* <Fragment>
+            <div className="mb-3">
+              <label htmlFor="statusFilter">Filter by Status:</label>
+              <select
+                id="statusFilter"
+                className="form-control"
+                value={selectedStatus}
+                onChange={handleStatusChange}
+              >
+                <option value="">All</option>
+                <option value="Sold">Sold</option>
+                <option value="Restocked">Restocked</option>
+              </select>
+            </div>
+            <h1 className="my-5">Product Stock History</h1>
+            {loading ? (
+              <Loader />
+            ) : (
+              <MDBDataTable
+                data={setProducts()}
+                className="px-3"
+                bordered
+                striped
+                hover
+              />
+            )}
+          </Fragment> */}
           <Fragment>
             <h1 className="my-5">Product Stock History</h1>
+            <div className="mb-3">
+              <label htmlFor="statusFilter">Filter by Status:</label>
+              <select
+                id="statusFilter"
+                className="form-control"
+                value={selectedStatus}
+                onChange={handleStatusChange}
+              >
+                <option value="">All</option>
+                <option value="Restocked">Restocked</option>
+                <option value="Sold">Sold</option>
+                {/* <option value="Pending">Pending</option>
+                <option value="Borrowed">Borrowed</option>
+                <option value="Returned">Returned</option> */}
+              </select>
+            </div>
             {loading ? (
               <Loader />
             ) : (

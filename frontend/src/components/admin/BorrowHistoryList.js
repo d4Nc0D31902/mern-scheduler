@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
@@ -8,11 +7,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { allBorrows, clearErrors } from "../../actions/borrowActions";
-import axios from "axios";
 
 const BorrowList = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { loading, error, borrows } = useSelector((state) => state.allBorrows);
   const [selectedStatus, setSelectedStatus] = useState("All");
 
@@ -22,7 +19,6 @@ const BorrowList = () => {
     toast.success(message, { position: toast.POSITION.BOTTOM_CENTER });
 
   useEffect(() => {
-    console.log("Fetching borrows...");
     dispatch(allBorrows());
 
     if (error) {
@@ -30,13 +26,6 @@ const BorrowList = () => {
       dispatch(clearErrors());
     }
   }, [dispatch, error]);
-
-  useEffect(() => {
-    console.log("Borrows updated:", borrows);
-  }, [borrows]);
-
-  console.log("Loading:", loading);
-  console.log("Error:", error);
 
   const filteredBorrows = () => {
     if (selectedStatus === "All") {
@@ -114,9 +103,20 @@ const BorrowList = () => {
     if (borrows && borrows.borrowings && borrows.borrowings.length > 0) {
       filteredBorrows().forEach((borrow) => {
         borrow.history.forEach((historyLog) => {
+          // Generate a bullet list of items with quantities
+          const itemsList = (
+            <ul>
+              {historyLog.borrowItems.map((item, index) => (
+                <li key={index}>
+                  {item.name} = {item.quantity}
+                </li>
+              ))}
+            </ul>
+          );
+
           data.rows.push({
             user: borrow.user,
-            numofItems: historyLog.borrowItems.length,
+            numofItems: itemsList, // Display items and quantities in bullet form
             borrowDate: new Date(historyLog.date_borrow).toLocaleString(
               "en-US",
               {

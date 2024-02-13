@@ -262,6 +262,72 @@ exports.getEquipmentById = async (req, res, next) => {
 //   });
 // };
 
+// exports.updateEquipment = async (req, res, next) => {
+//   try {
+//     let equipment = await Equipment.findById(req.params.id);
+
+//     if (!equipment) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Equipment not found" });
+//     }
+
+//     const oldEquipment = { ...equipment.toObject() };
+
+//     let images = req.body.images;
+
+//     if (images) {
+//       if (typeof images === "string") {
+//         images = [images];
+//       }
+
+//       for (let i = 0; i < equipment.images.length; i++) {
+//         const result = await cloudinary.v2.uploader.destroy(
+//           equipment.images[i].public_id
+//         );
+//       }
+
+//       let imagesLinks = [];
+//       for (let i = 0; i < images.length; i++) {
+//         const result = await cloudinary.v2.uploader.upload(images[i], {
+//           folder: "equipment",
+//         });
+//         imagesLinks.push({
+//           public_id: result.public_id,
+//           url: result.secure_url,
+//         });
+//       }
+//       req.body.images = imagesLinks;
+//     }
+
+//     if (req.body.status) {
+//       equipment.status = req.body.status;
+//     }
+
+//     const stockChange = parseInt(req.body.stock) - parseInt(oldEquipment.stock);
+
+//     const newStockHistory = {
+//       name: oldEquipment.name,
+//       quantity: Math.abs(stockChange),
+//       status: stockChange > 0 ? "Restocked" : "Deducted",
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     };
+
+//     equipment.stockHistory.push(newStockHistory);
+
+//     equipment.stock = req.body.stock;
+
+//     equipment = await equipment.save();
+
+//     return res.status(200).json({
+//       success: true,
+//       equipment,
+//     });
+//   } catch (error) {
+//     next(error); // Pass any errors to the error handling middleware
+//   }
+// };
+
 exports.updateEquipment = async (req, res, next) => {
   try {
     let equipment = await Equipment.findById(req.params.id);
@@ -306,25 +372,27 @@ exports.updateEquipment = async (req, res, next) => {
 
     const stockChange = parseInt(req.body.stock) - parseInt(oldEquipment.stock);
 
-    const newStockHistory = {
-      name: oldEquipment.name,
-      quantity: Math.abs(stockChange),
-      status: stockChange > 0 ? "Restocked" : "Deducted",
-      by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
-    };
+    if (stockChange > 0) {
+      const newStockHistory = {
+        name: oldEquipment.name,
+        quantity: Math.abs(stockChange),
+        status: "Restocked",
+        by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+      };
 
-    equipment.stockHistory.push(newStockHistory);
+      equipment.stockHistory.push(newStockHistory);
+    }
 
     equipment.stock = req.body.stock;
 
-    equipment = await equipment.save(); 
+    equipment = await equipment.save();
 
     return res.status(200).json({
       success: true,
       equipment,
     });
   } catch (error) {
-    next(error); // Pass any errors to the error handling middleware
+    next(error);
   }
 };
 

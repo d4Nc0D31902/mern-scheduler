@@ -57,18 +57,18 @@ const Sidebar = () => {
             </a>
 
             <ul className="collapse list-unstyled" id="borrowSubmenu"> */}
-              <li>
-                <Link to="/admin/borrows">
-                  <i className="fa fa-clipboard"></i> Borrow Requests
-                </Link>
-              </li>
-              {/* <li>
+          <li>
+            <Link to="/admin/borrows">
+              <i className="fa fa-clipboard"></i> Borrow Requests
+            </Link>
+          </li>
+          {/* <li>
                 <Link to="/admin/bor/history">
                   <i className="fa fa-file"></i> Borrowing Logs
                 </Link>
               </li> */}
-            {/* </ul> */}
-            {/* <Link to="/admin/borrows">
+          {/* </ul> */}
+          {/* <Link to="/admin/borrows">
               <i className="fa fa-bullhorn"></i> Borrow Requests
             </Link> */}
           {/* </li> */}
@@ -203,17 +203,22 @@ const Sidebar = () => {
                   <i className="fa fa-file"></i> Schedule Logs
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/admin/loc/history">
                   <i className="fa fa-file"></i> Location Logs
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/admin/bor/history">
                   <i className="fa fa-file"></i> Borrowing Logs
                 </Link>
               </li>
               <li>
+                <Link to="/admin/order/logs">
+                  <i className="fa fa-file"></i> Order Logs
+                </Link>
+              </li>
+              {/* <li>
                 <Link to="/admin/sp/history">
                   <i className="fa fa-file"></i> Sport Logs
                 </Link>
@@ -222,7 +227,7 @@ const Sidebar = () => {
                 <Link to="/admin/eq/history">
                   <i className="fa fa-file"></i> Equipment Logs
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/admin/stock/history">
                   <i className="fa fa-file"></i> Equipment Stock Logs

@@ -123,6 +123,13 @@ const UpdateEquipment = () => {
       formData.set("name", name);
       formData.set("description", description);
       formData.set("sport", sport);
+
+      // Validate if stockToAdd is a positive number
+      if (parseInt(stockToAdd) < 0) {
+        errMsg("Please enter a positive number for adding stock");
+        return;
+      }
+
       const newStock = parseInt(stock) + parseInt(stockToAdd);
       formData.set("stock", newStock);
       images.forEach((image) => {
@@ -243,7 +250,7 @@ const UpdateEquipment = () => {
                     </div>
                   </div>
 
-                  <div className="form-group">
+                  {/* <div className="form-group">
                     <label>Images</label>
                     <div className="custom-file">
                       <input
@@ -255,9 +262,6 @@ const UpdateEquipment = () => {
                         multiple
                         disabled
                       />
-                      {/* <label className="custom-file-label" htmlFor="customFile">
-                        Choose Images
-                      </label> */}
                     </div>
 
                     {oldImages &&
@@ -282,7 +286,7 @@ const UpdateEquipment = () => {
                         height="52"
                       />
                     ))}
-                  </div>
+                  </div> */}
 
                   <button
                     id="update_button"

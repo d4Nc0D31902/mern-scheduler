@@ -5,32 +5,26 @@ const historySchema = mongoose.Schema(
   {
     user: {
       type: String,
-      required: true,
     },
     borrowItems: [
       {
         name: {
           type: String,
-          required: true,
         },
         quantity: {
           type: Number,
-          required: true,
         },
         image: {
           type: String,
-          required: true,
         },
         equipment: {
           type: mongoose.Schema.Types.ObjectId,
-          required: true,
           ref: "Equipment",
         },
       },
     ],
     date_borrow: {
       type: Date,
-      required: true,
     },
     date_return: {
       type: Date,

@@ -1,5 +1,54 @@
 const mongoose = require("mongoose");
 
+const historySchema = mongoose.Schema(
+  {
+    customer: {
+      type: String,
+    },
+    orderItems: [
+      {
+        name: {
+          type: String,
+        },
+        quantity: {
+          type: Number,
+        },
+        image: {
+          type: String,
+        },
+        price: {
+          type: Number,
+        },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+      },
+    ],
+    totalPrice: {
+      type: Number,
+      default: 0.0,
+    },
+    orderStatus: {
+      type: String,
+      default: "Pending",
+    },
+    paymentMeth: {
+      type: String,
+    },
+    reference_num: {
+      type: String,
+    },
+    by: {
+      type: String,
+      default: "N/A",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const orderSchema = mongoose.Schema({
   shippingInfo: {
     address: {
@@ -88,14 +137,30 @@ const orderSchema = mongoose.Schema({
     required: true,
     default: 0.0,
   },
+  reference_num: {
+    type: String,
+    // required: true,
+    maxlength: 13, // Limit to 13 characters
+    validate: {
+      validator: function (v) {
+        return true;
+      },
+      message: (props) => `${props.value} is not a valid reference number!`,
+    },
+  },
   orderStatus: {
     type: String,
     required: true,
     default: "Pending",
   },
+  paymentMeth: {
+    type: String,
+    required: true,
+  },
   deliveredAt: {
     type: Date,
   },
+  history: [historySchema],
   createdAt: {
     type: Date,
     default: Date.now,
