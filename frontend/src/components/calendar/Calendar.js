@@ -30,7 +30,11 @@ function MyCalendar() {
           const data = await response.json();
 
           const approvedAppointments = data.appointments
-            .filter((appointment) => appointment.status === "Approved")
+            .filter(
+              (appointment) =>
+                appointment.status === "Approved" ||
+                appointment.status === "PE Class"
+            )
             .map((appointment) => ({
               title: appointment.title,
               start: appointment.timeStart,
@@ -38,7 +42,10 @@ function MyCalendar() {
               id: appointment._id,
               details: {
                 ...appointment,
-                requester: appointment.requester,
+                requester:
+                  appointment.status === "PE Class"
+                    ? appointment.requester
+                    : appointment.requester,
               },
             }));
 
@@ -131,9 +138,22 @@ function MyCalendar() {
     <div>
       <div className="center-request">
         <Link to="/request">
-          <button className="btn btn-primary request" style={{ backgroundColor: "maroon", marginRight: "20px" }}>Request Schedule</button>
+          <button
+            className="btn btn-primary request"
+            style={{ backgroundColor: "maroon", marginRight: "20px" }}
+          >
+            Request Schedule
+          </button>
         </Link>
-        <button className="btn btn-primary" onClick={handlePrintCalendar} style={{ backgroundColor: "maroon", marginRight: "20px", padding: '10px 35px' }}>
+        <button
+          className="btn btn-primary"
+          onClick={handlePrintCalendar}
+          style={{
+            backgroundColor: "maroon",
+            marginRight: "20px",
+            padding: "10px 35px",
+          }}
+        >
           Print Calendar
         </button>
       </div>
@@ -160,9 +180,18 @@ function MyCalendar() {
             alt="Logo"
           />
           TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES TAGUIG CITY
-          <p style={{ fontSize: "12px", marginTop: "14px" }}>The Technological University of the Philippines shall be premier state university with recognized excellence in
-            engineering and technology education at per with the leading university in the ASEAN region.</p>
-          <h4 className="my-4 text-center" style={{ textDecoration: "underline" }}>SCHEDULES</h4>
+          <p style={{ fontSize: "12px", marginTop: "14px" }}>
+            The Technological University of the Philippines shall be premier
+            state university with recognized excellence in engineering and
+            technology education at per with the leading university in the ASEAN
+            region.
+          </p>
+          <h4
+            className="my-4 text-center"
+            style={{ textDecoration: "underline" }}
+          >
+            SCHEDULES
+          </h4>
         </h6>
       </div>
       <FullCalendar
@@ -192,35 +221,43 @@ function MyCalendar() {
               &times;
             </span>
             <h2>{selectedAppointment.title}</h2>
-            <p>Requester: {selectedAppointment.requester}</p>
+            <p>
+              {selectedAppointment.status === "PE Class"
+                ? "Professor"
+                : "Requester"}
+              : {selectedAppointment.requester}
+            </p>
             <p>Location: {selectedAppointment.location}</p>
             <p>Start Time: {formatTime(selectedAppointment.timeStart)}</p>
             <p>End Time: {formatTime(selectedAppointment.timeEnd)}</p>
-            <p>Attendees:</p>
-            <ul>
-              {selectedAppointment.attendees.map((attendee, index) => (
-                <li key={index}>{attendee}</li>
-              ))}
-            </ul>
-
-            {isAuthenticated && (
+            {selectedAppointment.status !== "PE Class" && (
               <>
-                <div className="key-input-container">
-                  <label htmlFor="keyInput">Enter Key:</label>
-                  <input
-                    type="text"
-                    id="keyInput"
-                    value={keyInput}
-                    onChange={handleKeyInputChange}
-                  />
-                  <button
-                    className="btn btn-primary button-join"
-                    onClick={handleKeySubmit}
-                  >
-                    Join
-                  </button>
-                </div>
-                {keyError && <p className="key-error">{keyError}</p>}
+                <p>Attendees:</p>
+                <ul>
+                  {selectedAppointment.attendees.map((attendee, index) => (
+                    <li key={index}>{attendee}</li>
+                  ))}
+                </ul>
+                {isAuthenticated && (
+                  <>
+                    <div className="key-input-container">
+                      <label htmlFor="keyInput">Enter Key:</label>
+                      <input
+                        type="text"
+                        id="keyInput"
+                        value={keyInput}
+                        onChange={handleKeyInputChange}
+                      />
+                      <button
+                        className="btn btn-primary button-join"
+                        onClick={handleKeySubmit}
+                      >
+                        Join
+                      </button>
+                    </div>
+                    {keyError && <p className="key-error">{keyError}</p>}
+                  </>
+                )}
               </>
             )}
           </div>

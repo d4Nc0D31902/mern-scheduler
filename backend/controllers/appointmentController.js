@@ -113,10 +113,11 @@ exports.createAppointment = async (req, res, next) => {
       timeEnd,
       reason,
       professor, // Include professor here
+      status,
       key,
     } = req.body;
 
-    const status = "Pending";
+    // const status = "Pending";
     let requester = "";
 
     if (req.user.role === "professor") {
@@ -459,7 +460,6 @@ exports.updateAppointment = async (req, res, next) => {
     next(new ErrorHandler("Failed to update the appointment", 500));
   }
 };
-
 
 // @desc    Delete an appointment by ID
 // @route   DELETE /api/appointments/:id

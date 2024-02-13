@@ -48,6 +48,8 @@ const AppointmentsList = () => {
     switch (status) {
       case "Approved":
         return "green";
+      case "PE Class":
+        return "green";
       case "Pending":
         return "orange";
       case "Denied":

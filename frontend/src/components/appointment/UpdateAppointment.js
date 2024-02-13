@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import axios from "axios";
 import MetaData from "../layout/MetaData";
 import Sidebar from "../admin/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +23,8 @@ const UpdateAppointment = () => {
   const [reason, setReason] = useState("");
   const [attendees, setAttendees] = useState([]);
   const [key, setKey] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [moveSelected, setMoveSelected] = useState(false);
 
   const dispatch = useDispatch();
   const { error, appointment } = useSelector(
@@ -43,6 +46,21 @@ const UpdateAppointment = () => {
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/locations`
+        );
+        setLocations(response.data.locations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   useEffect(() => {
     if (!appointment || appointment._id !== id) {
@@ -129,15 +147,6 @@ const UpdateAppointment = () => {
               <h1 className="mb-4">Update Schedules</h1>
 
               <div className="form-group">
-                <label htmlFor="attendees_field">Attendees</label>
-                <ul className="attendees-list">
-                  {attendees.map((attendee, index) => (
-                    <li key={index}>{attendee}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="form-group">
                 <label htmlFor="title_field">Title</label>
                 <input
                   type="text"
@@ -161,7 +170,7 @@ const UpdateAppointment = () => {
                 ></textarea>
               </div>
 
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="location_field">Location</label>
                 <input
                   type="text"
@@ -169,7 +178,43 @@ const UpdateAppointment = () => {
                   className="form-control"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  disabled
+                  disabled={!moveSelected}
+                />
+              </div> */}
+
+              <div className="form-group">
+                <label htmlFor="location_field">Location:</label>
+                <select
+                  id="location_field"
+                  className="form-control"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  disabled={!moveSelected}
+                >
+                  <option value="" disabled selected>
+                    Select a Location
+                  </option>
+                  {locations.map((loc) => {
+                    if (loc.status !== "inactive") {
+                      return (
+                        <option key={loc._id} value={loc.name}>
+                          {loc.name}
+                        </option>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="move_field">Move</label>
+                <input
+                  type="checkbox"
+                  id="move_field"
+                  checked={moveSelected}
+                  onChange={() => setMoveSelected(!moveSelected)}
                 />
               </div>
 
@@ -261,7 +306,6 @@ const UpdateAppointment = () => {
                 id="login_button"
                 type="submit"
                 className="btn btn-block py-3"
-                // disabled={loading ? true : false}
               >
                 UPDATE
               </button>

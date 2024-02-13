@@ -48,6 +48,8 @@ const AppointmentsList = () => {
     switch (status) {
       case "Approved":
         return "green";
+      case "PE Class":
+        return "green";
       case "Pending":
         return "orange";
       case "Denied":
@@ -130,8 +132,7 @@ const AppointmentsList = () => {
     const filteredData = filteredAppointments();
 
     if (filteredData) {
-      // Reverse the order of rows to display latest appointments first
-      filteredData.reverse().forEach((appointment) => {
+      filteredData.forEach((appointment) => {
         appointment.history.forEach((historyRecord, index) => {
           const statusColor = getStatusColor(historyRecord.status);
 
@@ -176,6 +177,9 @@ const AppointmentsList = () => {
           });
         });
       });
+
+      // Sort the rows by createdAt in descending order
+      data.rows.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
 
     return data;

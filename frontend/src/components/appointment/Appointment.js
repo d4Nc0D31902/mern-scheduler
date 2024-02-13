@@ -21,6 +21,7 @@ const NewAppointment = () => {
   const [professor, setProfessor] = useState("");
   const [users, setUsers] = useState([]);
   const [settingsData, setSettingsData] = useState(null);
+  const [selectedRadio, setSelectedRadio] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -139,51 +140,101 @@ const NewAppointment = () => {
     return isValid;
   };
 
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+
+  //   if (validateForm()) {
+  //     const isDateValid = isDateAvailable(timeStart, timeEnd);
+  //     const isTimeValid = isTimeAvailable(timeStart, timeEnd);
+
+  //     if (!isDateValid) {
+  //       toast.error("Selected date is not available");
+  //       return;
+  //     }
+
+  //     if (!isTimeValid) {
+  //       toast.error("Selected time is not available");
+  //       return;
+  //     }
+
+  //     const status = "Pending";
+  //     const reason = "N/A";
+  //     const key = " ";
+
+  //     const appointmentData = {
+  //       userId: user._id,
+  //       attendees: attendees,
+  //       location: location,
+  //       title: title,
+  //       description: description,
+  //       timeStart: timeStart,
+  //       timeEnd: timeEnd,
+  //       professor: professor,
+  //       status: status,
+  //       reason: reason,
+  //       key: key,
+  //       appointmentType: selectedRadio, // Add appointment type to data
+  //     };
+
+  //     try {
+  //       await dispatch(createAppointment(appointmentData));
+  //       navigate("/calendar");
+  //       toast.success("Appointment requested successfully");
+  //     } catch (error) {
+  //       console.error("Error creating appointment:", error);
+  //       toast.error("Failed to request appointment");
+  //     }
+  //   }
+  // };
+
   const submitHandler = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (validateForm()) {
-      const isDateValid = isDateAvailable(timeStart, timeEnd);
-      const isTimeValid = isTimeAvailable(timeStart, timeEnd);
+  if (validateForm()) {
+    const isDateValid = isDateAvailable(timeStart, timeEnd);
+    const isTimeValid = isTimeAvailable(timeStart, timeEnd);
 
-      if (!isDateValid) {
-        toast.error("Selected date is not available");
-        return;
-      }
-
-      if (!isTimeValid) {
-        toast.error("Selected time is not available");
-        return;
-      }
-
-      const status = "Pending";
-      const reason = "N/A";
-      const key = " ";
-
-      const appointmentData = {
-        userId: user._id,
-        attendees: attendees,
-        location: location,
-        title: title,
-        description: description,
-        timeStart: timeStart,
-        timeEnd: timeEnd,
-        professor: professor,
-        status: status,
-        reason: reason,
-        key: key,
-      };
-
-      try {
-        await dispatch(createAppointment(appointmentData));
-        navigate("/calendar");
-        toast.success("Appointment requested successfully");
-      } catch (error) {
-        console.error("Error creating appointment:", error);
-        toast.error("Failed to request appointment");
-      }
+    if (!isDateValid) {
+      toast.error("Selected date is not available");
+      return;
     }
-  };
+
+    if (!isTimeValid) {
+      toast.error("Selected time is not available");
+      return;
+    }
+
+    // Set appointment status based on radio button selection
+    const status = selectedRadio === "PE Class" ? "PE Class" : "Pending";
+    const reason = "N/A";
+    const key = " ";
+
+    const appointmentData = {
+      userId: user._id,
+      attendees: attendees,
+      location: location,
+      title: title,
+      description: description,
+      timeStart: timeStart,
+      timeEnd: timeEnd,
+      professor: professor,
+      status: status,
+      reason: reason,
+      key: key,
+      appointmentType: selectedRadio, // Add appointment type to data
+    };
+
+    try {
+      await dispatch(createAppointment(appointmentData));
+      navigate("/calendar");
+      toast.success("Appointment requested successfully");
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      toast.error("Failed to request appointment");
+    }
+  }
+};
+
 
   const isDateAvailable = (startTime, endTime) => {
     const startDay = new Date(startTime).toLocaleDateString("en-US", {
@@ -390,6 +441,40 @@ const NewAppointment = () => {
               <div className="invalid-feedback">{errors.time}</div>
             )}
           </div>
+
+          {/* <div className="form-group">
+            <label>Appointment Type:</label>
+            <div>
+              <input
+                type="radio"
+                id="pe_class"
+                value="PE Class"
+                checked={selectedRadio === "PE Class"}
+                onChange={(e) => setSelectedRadio(e.target.value)}
+              />
+              <label htmlFor="pe_class" style={{ marginRight: "10px" }}>
+                PE Class
+              </label>
+            </div>
+          </div> */}
+
+          {user.role === "professor" && (
+            <div className="form-group">
+              <label>Appointment Type:</label>
+              <div>
+                <input
+                  type="radio"
+                  id="pe_class"
+                  value="PE Class"
+                  checked={selectedRadio === "PE Class"}
+                  onChange={(e) => setSelectedRadio(e.target.value)}
+                />
+                <label htmlFor="pe_class" style={{ marginRight: "10px" }}>
+                  PE Class
+                </label>
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"
