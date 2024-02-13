@@ -78,7 +78,7 @@ const OrderDetails = () => {
                 />
                 TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
               </h3>
-              <h4 className="my-4 text-center">SHIPPING INFORMATION</h4>
+              <h4 className="my-4 text-center">ORDER INFORMATION</h4>
 
               <div className="cart-item my-1">
                 {orderItems &&
@@ -109,8 +109,11 @@ const OrderDetails = () => {
               </div>
               <h4 className="mb-4 text-center">TRANSACTION DETAILS</h4>
 
-              <p>
+              {/* <p>
                 <b>Customer Name:</b> {user && user.name}
+              </p> */}
+              <p>
+                <b>Customer Name:</b> {order && order.customer}
               </p>
 
               <p>
@@ -124,10 +127,6 @@ const OrderDetails = () => {
 
               <p>
                 <b>Payment Amount:</b> ₱{totalPrice}
-              </p>
-
-              <p>
-                <b>Reference #</b> {order._id}
               </p>
 
               <hr />

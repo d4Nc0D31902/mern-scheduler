@@ -26,7 +26,19 @@ const AnnouncementCard = ({ announcement, onDelete }) => {
   return (
     <div className="announcement-card">
       <div className="announcement-details">
-        <h3>{title}</h3>
+        {images.length > 0 && (
+          <div className="image-container">
+            {images.map((image, index) => (
+              <img
+                key={index}
+                src={image.url}
+                alt={`${title}'s Image ${index + 1}`}
+                className="resized-image"
+                style={{}}
+              />
+            ))}
+          </div>
+        )}
         {user && (
           <div className="user-info">
             <div className="profile-section">
@@ -40,18 +52,31 @@ const AnnouncementCard = ({ announcement, onDelete }) => {
                   />
                 )}
               <div>
-                <p className="user-name">
+                {/* <p className="user-name">
                   {announcement.user && announcement.user.name}
-                </p>
+                </p> */}
                 {/* {announcement.user && announcement.user.role && <p className="user-role">{announcement.user.role}</p>} */}
               </div>
             </div>
           </div>
         )}
-        <p>Date: {new Date(createdAt).toLocaleDateString()}</p>
+        <h3>{title} </h3>
+        <p className="user-name">
+          {announcement.user && announcement.user.name}
+        </p>
+        <p>
+          {new Date(createdAt).toLocaleDateString("en-US", {
+            // weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </p>
+
+        {/* <p>Date: {new Date(createdAt).toLocaleDateString()}</p> */}
         <p>{body}</p>
 
-        {images.length > 0 && (
+        {/* {images.length > 0 && (
           <div className="image-container">
             {images.map((image, index) => (
               <img
@@ -62,7 +87,7 @@ const AnnouncementCard = ({ announcement, onDelete }) => {
               />
             ))}
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="announcement-buttons">

@@ -144,14 +144,18 @@ const Register = () => {
     <Fragment>
       <MetaData title={"Register User"} />
 
-      <div className="row wrapper">
+      <div className="row wrapper" style={{ margin: "20px" }}>
         <div className="col-10 col-lg-5">
           <form
-            className="shadow-lg"
+            className=""
             onSubmit={submitHandler}
             encType="multipart/form-data"
-          >
-            <h1 className="mb-3">Register</h1>
+            style={{ margin: "20px", boxShadow: "2px 2px 12px 2px " }}>
+            <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "20px", margin: "0px" }}>
+
+              TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+            </h3>
+            <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "10px", borderRadius: "2px", color: "white" }}>Registration form</h1>
 
             <div className="form-group">
               <label htmlFor="name_field">Full Name</label>

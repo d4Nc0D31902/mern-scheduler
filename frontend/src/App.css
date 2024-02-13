@@ -567,7 +567,7 @@ footer {
   margin-right: 0.3rem;
 }
 
-#sidebar ul li.active > a,
+#sidebar ul li.active>a,
 a[aria-expanded="true"] {
   color: #fff;
   background: gray;
@@ -663,8 +663,10 @@ ul.CTAs a {
 }
 
 .select-user option {
-  padding-left: 10px; /* Adjust as needed */
-  background-color: #e6ffe6; /* Green background color */
+  padding-left: 10px;
+  /* Adjust as needed */
+  background-color: #e6ffe6;
+  /* Green background color */
 }
 
 
@@ -705,15 +707,16 @@ ul.CTAs a {
 }
 
 /* Add this style to center the input and button in the form group */
-.input-group > input,
-.input-group > .input-group-append {
+.input-group>input,
+.input-group>.input-group-append {
   display: inline-block;
 }
 
 /* Add this style for responsiveness */
 @media (max-width: 576px) {
-  .input-group > input,
-  .input-group > .input-group-append {
+
+  .input-group>input,
+  .input-group>.input-group-append {
     display: block;
     width: 100%;
   }
@@ -787,4 +790,129 @@ ul.CTAs a {
 .button-request {
   background-color: gray;
   border-radius: 30px;
+}
+
+@media (max-width: 1290px) {
+  .burger-icon {
+    display: flex;
+    color: #fffdfd;
+
+  }
+
+  .nav-links {
+    display: none;
+
+  }
+
+  .nav-links a {
+    padding: 10px;
+    margin: 5px;
+
+  }
+
+  .nav-links a:hover {
+    background-color: gray;
+
+
+  }
+
+  .burger-icon.active+.nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 50;
+    background-color: #000000;
+
+    padding: 20px 40px;
+    border: 1px solid #ffffff;
+
+    border-radius: 5px;
+    z-index: 1000;
+
+
+  }
+
+
+
+
+
+}
+
+@media (min-width: 1290px) {
+  .burger-icon {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+  }
+
+
+}
+
+/* 
+@media (min-width: 690px) and (max-width: 760px) {
+  .burger-icon {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+  }
+
+  p {
+    font-size: 22px;
+  }
+}
+
+
+@media (min-width: 320px) and (max-width: 625px) {
+  .burger-icon {
+    display: flex;
+    color: #fffdfd;
+
+  }
+
+
+  .nav-links {
+    display: none;
+
+  }
+
+  .nav-links a {
+    padding: 10px;
+    margin: 5px;
+
+  }
+
+
+
+  .burger-icon.active+.nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 50;
+    background-color: #000000;
+   
+    padding: 20px 40px;
+    border: 1px solid #ffffff;
+ 
+    border-radius: 5px;
+    z-index: 1000;
+
+
+  }
+
+
+} */
+
+
+@media (max-width: 992px) {
+
+  .logoto {
+    display: none;
+  }
+
 }

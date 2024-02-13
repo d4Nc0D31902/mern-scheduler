@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import "../../App.css";
 import Search from "./Search";
 import { Link, useLocation } from "react-router-dom";
@@ -13,6 +13,7 @@ const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { borrowCartItems } = useSelector((state) => state.borrowCart);
   const location = useLocation();
+  const [showMenu, setShowMenu] = useState(false);
 
   const logoutHandler = () => {
     dispatch(logout())
@@ -31,30 +32,106 @@ const Header = () => {
     <Fragment>
       <ToastContainer />
       <nav className="navbar row">
-        <div className="col-3 col-md-2">
-          <div className="navbar-brand">
+        <div className="col-lg-1 col-md-5 ">
+          <div className="navbar-brand ">
             <Link to="/">
               <img
                 src="/images/tupt_logo.png"
                 style={{ width: "70px", height: "70px", marginLeft: "50px" }}
                 alt="Logo"
               />
+              {isStore ? null : (
+                <p style={{ position: "absolute", top: "26px", left: "140px", color: 'white', fontWeight: 'bold', }}>TUP-T SCHEDULER</p>
+              )}
             </Link>
           </div>
         </div>
 
         {isStore && (
-          <div className="col-12 col-sm-6 col-md-3">
+          <div className="col-lg-3 col-sm-6 col-md-3">
             <Search />
           </div>
         )}
 
-        <div className="col-12 col-md-6 mt-2 mt-md-0 text-center">
+        <div className=" col-md-6   text-center">
           <div
             className="d-flex align-items-center justify-content-end"
-            style={{ marginRight: "20px" }}
+            style={{ marginRight: "10px" }}
           >
-            {!isHomePage && (
+
+            <div className={`burger-icon ${showMenu ? 'active' : ''}`} onClick={() => setShowMenu(!showMenu)} style={{ marginRight: showMenu ? "20px" : "0" }}>
+              <i className="fa fa-bars"></i>
+            </div>
+
+
+
+            <div className="nav-links">
+              {!isHomePage && (
+                <>
+                  <Link
+                    to="/cart"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-shopping-basket"></i> Cart
+                      <span className="ml-1" id="cart_count">
+                        {cartItems.length}
+                      </span>
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/borrowCart"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-briefcase"></i> Borrowed
+                      <span className="ml-1" id="cart_count">
+                        {borrowCartItems.length}
+                      </span>
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/calendar"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-calendar"></i> Calendar
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/announcements"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-bullhorn"></i> Announcements
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/store"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-product-hunt"></i> Merch
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/equipmentz"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-wrench"></i> Equipment
+                    </span>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* {!isHomePage && (
               <>
                 <Link
                   to="/cart"
@@ -116,7 +193,7 @@ const Header = () => {
                   </span>
                 </Link>
               </>
-            )}
+            )} */}
 
             {user ? (
               <div className="ml-4 dropdown d-inline">
@@ -195,3 +272,4 @@ const Header = () => {
 };
 
 export default Header;
+

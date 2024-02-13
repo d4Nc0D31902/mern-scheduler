@@ -8,10 +8,10 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('')
     const dispatch = useDispatch();
     const { error, loading, message } = useSelector(state => state.forgotPassword)
-    const success = (message='' ) => toast.success(message, {
+    const success = (message = '') => toast.success(message, {
         position: toast.POSITION.BOTTOM_CENTER
     });
-    const notify = (error='' ) => toast.error(error, {
+    const notify = (error = '') => toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER
     });
     useEffect(() => {
@@ -34,8 +34,13 @@ const ForgotPassword = () => {
             <MetaData title={'Forgot Password'} />
             <div className="row wrapper">
                 <div className="col-10 col-lg-5">
+                    <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                        <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                        TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+                    </h3>
                     <form className="shadow-lg" onSubmit={submitHandler}>
-                        <h1 className="mb-3">Forgot Password</h1>
+                        <p className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "2px", color: "white" }}>
+                            In the password reset process, we simply send an email containing a verification code to your email address. Upon receiving the code, you can use it to set a new password for your account.</p>
 
                         <div className="form-group">
 
@@ -52,6 +57,7 @@ const ForgotPassword = () => {
                                 value={email}
 
                                 onChange={(e) => setEmail(e.target.value)}
+                                placeholder="juan.delacruz@tup.edu.ph"
 
                             />
 
@@ -71,7 +77,7 @@ const ForgotPassword = () => {
 
                             Send Email
 
-                    </button>
+                        </button>
 
 
 

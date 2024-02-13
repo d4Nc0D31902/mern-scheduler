@@ -126,11 +126,11 @@ const Profile = () => {
                     </div>
                   )}
 
-                  <div className="col-lg-12">
+                  {/* <div className="col-lg-12">
                     <h5 style={{ fontFamily: "calibri" }}>ROLE:</h5>
                     <p style={{ fontSize: "18px" }}>{user.role}</p>
                     <hr style={{ borderStyle: "solid", borderWidth: "2px" }} />
-                  </div>
+                  </div> */}
 
                   <div className="col-lg-12">
                     <h5 style={{ fontFamily: "calibri" }}>JOINED ON:</h5>

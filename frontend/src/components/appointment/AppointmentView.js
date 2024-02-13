@@ -5,13 +5,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  updateAppointment,
   getAppointmentDetails,
   clearErrors,
 } from "../../actions/appointmentActions";
-import { UPDATE_APPOINTMENT_RESET } from "../../constants/appointmentConstants";
 import ReactToPrint from "react-to-print";
 import PrintableLetter from "./PrintableLetter";
+import "../../Calendar.css";
 
 const AppointmentView = () => {
   const [title, setTitle] = useState("");
@@ -28,11 +27,6 @@ const AppointmentView = () => {
   const { error, appointment } = useSelector(
     (state) => state.appointmentDetails
   );
-  const {
-    loading,
-    error: updateError,
-    isUpdated,
-  } = useSelector((state) => state.appointment);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -64,18 +58,7 @@ const AppointmentView = () => {
       errMsg(error);
       dispatch(clearErrors());
     }
-
-    if (updateError) {
-      errMsg(updateError);
-      dispatch(clearErrors());
-    }
-
-    if (isUpdated) {
-      navigate("/admin/appointments");
-      successMsg("Appointment updated successfully");
-      dispatch({ type: UPDATE_APPOINTMENT_RESET });
-    }
-  }, [dispatch, error, isUpdated, navigate, updateError, appointment, id]);
+  }, [dispatch, error, appointment, id]);
 
   const formatDate = (dateTime) => {
     const formattedDate = new Date(dateTime).toISOString().slice(0, 16);
@@ -91,22 +74,6 @@ const AppointmentView = () => {
 
   const componentRef = useRef();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const updatedAppointment = {
-      title,
-      description,
-      location,
-      timeStart,
-      timeEnd,
-      status,
-      attendees,
-      reason,
-      key,
-    };
-    dispatch(updateAppointment(appointment._id, updatedAppointment));
-  };
-
   const generateRandomKey = () => {
     const randomKey = Math.random().toString(36).substr(2, 6).toUpperCase();
     setKey(randomKey);
@@ -115,145 +82,108 @@ const AppointmentView = () => {
   return (
     <Fragment>
       <MetaData title={"Appointment View"} />
-      <div className="row">
-        <div className="col-12 col-md-2"></div>
-        <div className="col-12 col-md-10">
-          <div className="wrapper my-5">
-            <ReactToPrint
-              trigger={() => <button className="btn btn-primary">Print</button>}
-              content={() => componentRef.current}
-            />{" "}
-            <button
-              className="btn btn-secondary ml-3"
-              onClick={() => window.print()}
+      <div className=" row">
+        <div className="wrapper my-4 text-center hide-on-print">
+          <div className="shadow-lg" ref={componentRef}>
+            <h6
+              className="card-title"
+              style={{
+                fontFamily: "sans-serif",
+                textAlign: "center",
+                marginBottom: "10px",
+                margin: "20px",
+                backgroundColor: "maroon",
+                color: "white",
+                padding: "20px",
+              }}
             >
-              Print Letter
-            </button>{" "}
-            <form
-              className="shadow-lg"
-              onSubmit={submitHandler}
-              ref={componentRef}
-            >
-              <h1 className="mb-4">Schedule Permit</h1>
+              <img
+                src="/images/tupt_logo.png"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  marginRight: "25px",
+                }}
+                alt="Logo"
+              />
+              TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES TAGUIG CITY
+              <p style={{ fontSize: "12px", marginTop: "14px" }}>
+                The Technological University of the Philippines shall be premier
+                state university with recognized excellence in engineering and
+                technology education at per with the leading university in the
+                ASEAN region.
+              </p>
+              <h4
+                className="my-4 text-center"
+                style={{ textDecoration: "underline" }}
+              >
+                Schedule Permit
+              </h4>
+            </h6>
 
-              <div className="form-group">
-                <label htmlFor="attendees_field">Attendees</label>
-                <ul className="attendees-list">
-                  {attendees.map((attendee, index) => (
-                    <li key={index}>{attendee}</li>
-                  ))}
-                </ul>
-              </div>
+            <div className="form-group text-center">
+              <label htmlFor="attendees_field">Attendees</label>
+              <ul className="attendees-list">
+                {attendees.map((attendee, index) => (
+                  <li key={index}>{attendee}</li>
+                ))}
+              </ul>
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="title_field">Title</label>
-                <input
-                  type="text"
-                  id="title_field"
-                  className="form-control"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  disabled
-                />
-              </div>
+            <div className="form-group text-center">
+              <label htmlFor="title_field">Title</label>
+              <p className="form-control">{title}</p>
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="body_field">Description</label>
-                <textarea
-                  className="form-control"
-                  id="body_field"
-                  rows="8"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  disabled
-                ></textarea>
-              </div>
+            <div className="form-group">
+              <label htmlFor="body_field">Description</label>
+              <p className="form-control">{description}</p>
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="location_field">Location</label>
-                <input
-                  type="text"
-                  id="location_field"
-                  className="form-control"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  disabled
-                />
-              </div>
+            <div className="form-group">
+              <label htmlFor="location_field">Location</label>
+              <p className="form-control">{location}</p>
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="timeStart_field">Start Time</label>
-                <input
-                  type="datetime-local"
-                  id="timeStart_field"
-                  className="form-control"
-                  value={timeStart}
-                  onChange={(e) => setTimeStart(e.target.value)}
-                  disabled
-                />
-              </div>
+            <div className="form-group">
+              <label htmlFor="timeStart_field">Start Time</label>
+              <p className="form-control">{timeStart}</p>
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="timeEnd_field">End Time</label>
-                <input
-                  type="datetime-local"
-                  id="timeEnd_field"
-                  className="form-control"
-                  value={timeEnd}
-                  onChange={(e) => setTimeEnd(e.target.value)}
-                  disabled
-                />
-              </div>
+            <div className="form-group">
+              <label htmlFor="timeEnd_field">End Time</label>
+              <p className="form-control">{timeEnd}</p>
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="status_field">Status</label>
-                <select
-                  id="status_field"
-                  className="form-control"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  disabled
-                >
-                  <option value="Approved">Approved</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Denied">Denied</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="reason_field">Reason of Status</label>
-                <select
-                  id="reason_field"
-                  className="form-control"
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  disabled
-                >
-                  <option value="">N/A</option>
-                  <option value="Reason 1">Reason 1</option>
-                  <option value="Reason 2">Reason 2</option>
-                  <option value="Reason 3">Reason 3</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="key_field">Key</label>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="key_field"
-                    className="form-control"
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    disabled
-                  />
-                  <div className="input-group-append"></div>
-                </div>
-              </div>
-            </form>
+            <div className="form-group">
+              <label htmlFor="status_field">Status</label>
+              <p className="form-control">{status}</p>
+            </div>
           </div>
         </div>
       </div>
+
+      <div className="text-center">
+        <ReactToPrint
+          trigger={() => (
+            <button
+              className="btn btn-primary"
+              style={{ padding: "12px 45px" }}
+            >
+              Print
+            </button>
+          )}
+          content={() => componentRef.current}
+        />
+        <button
+          className="btn btn-secondary ml-3"
+          onClick={() => window.print()}
+          style={{ padding: "12px 24px" }}
+        >
+          Print Letter
+        </button>
+      </div>
+
       {/* Render PrintableLetter only if appointment exists and timeStart is valid */}
       {appointment && appointment.timeStart && (
         <PrintableLetter appointment={appointment} />

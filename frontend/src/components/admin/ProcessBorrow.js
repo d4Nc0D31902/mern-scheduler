@@ -123,7 +123,7 @@ const BorrowDetails = () => {
             ) : (
               <div className="row">
                 <div className="col-12 col-lg-7 borrow-details">
-                  <h3
+                  <h6
                     className="card-title"
                     style={{
                       fontFamily: "sans-serif",
@@ -144,53 +144,70 @@ const BorrowDetails = () => {
                       }}
                       alt="Logo"
                     />
-                    TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
-                  </h3>
-                  <h4 className="my-4 text-center">BORROW DETAILS</h4>
+                    TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES TAGUIG CITY
+                    <p style={{ fontSize: "12px", marginTop: "10px" }}>The Technological University of the Philippines shall be premier state university with recognized excellence in
+                      engineering and technology education at per with the leading university in the ASEAN region.</p>
+                    <h4 className="my-4 text-center" style={{ textDecoration: "underline" }}>BORROWER'S SLIP</h4>
+                  </h6>
+
                   <div
                     className="cart-item my-1"
                     style={{ backgroundColor: "" }}
                   >
+
+
+
+                    <h4 className="mb-4 text-center">SPORTS AND CULTURAL DEVELOPMENT OFFICE</h4>
+
+
+                    <p>
+                      <b>Borrower's Information:</b> {user}
+                    </p>
+                    <p className="mb-4">
+                      <b>Borrowing Information:</b> {borrowingDetails || "N/A"}
+                    </p>
+                    <h4 className="mb-4 text-center">ITEM(S) BORROWED:</h4>
+
                     {borrowItems &&
                       borrowItems.map((item) => (
                         <div key={item._id} className="row my-5">
+
                           <div className="col-4 col-lg-2">
+
                             <img
                               src={item.image}
                               alt={item.name}
-                              height="45"
+                              height="65"
                               width="65"
                             />
                             <hr />
                           </div>
                           <div className="col-5 col-lg-5">
+                            <h6>Item/s Description</h6>
                             <Link to={`/product/${item.equipment}`}>
                               {item.name}
                             </Link>
                           </div>
-                          <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                            <p>Quantity: {item.quantity}</p>
+                          <div className="col-4 col-lg-2 mt-4 mt-lg-0 text-center">
+                            <h6>Quantity: </h6>
+                            {item.quantity}
                           </div>
                         </div>
                       ))}
                   </div>
-                  <h4 className="mb-4 text-center">BORROWING INFORMATION</h4>
-                  <p>
-                    <b>Borrower:</b> {user}
-                  </p>
-                  <p className="mb-4">
-                    <b>Borrowing Info:</b> {borrowingDetails || "N/A"}
-                  </p>
+
+
+
                   <p>
                     <b>Date Return:</b>{" "}
                     {date_return
                       ? new Date(date_return).toLocaleString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "2-digit",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
+                        year: "numeric",
+                        month: "short",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
                       : "Not returned yet"}
                   </p>
                   <div>
@@ -245,19 +262,21 @@ const BorrowDetails = () => {
                     <div style={{ textAlign: "center", margin: "20px 0" }}>
                       <ReactToPrint
                         trigger={() => (
-                          <button className="btn btn-primary">Print</button>
+                          <button className="btn btn-primary" style={{ padding: "12px 24px" }}>PRINT</button>
                         )} // Button to trigger printing
                         content={() => componentRef.current} // Content to be printed
                       />
                     </div>
                   </div>
                   <hr />
-                  <h4
+                  <h5
                     className="my-4 text-center"
-                    style={{ marginBottom: "200px" }}
+                    style={{ marginBottom: "200px", backgroundColor: "maroon", color: "white", padding: "20px 40px" }}
                   >
-                    Status
-                  </h4>
+                    The update status button allows the admin to swiftly approve or deny requests,
+                    ensuring efficient management of changes. By selecting either "approve" or "deny,"
+                    the admin can promptly communicate the decision regarding the update's status.
+                  </h5>
                   {/* <div className="form-group" style={{ marginBottom: "" }}>
                     <select
                       className="form-control"
@@ -279,7 +298,7 @@ const BorrowDetails = () => {
                       name="status"
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
-                      // disabled={status === "Returned"}
+                    // disabled={status === "Returned"}
                     >
                       <option value="Pending">Pending</option>
                       <option value="Approved">Approved</option>
@@ -288,13 +307,13 @@ const BorrowDetails = () => {
                       <option value="Returned">Returned</option>
                     </select>
                   </div>
-                  
+
                   <button
                     className="btn btn-primary btn-block"
                     onClick={() => updateBorrowHandler(borrow._id)}
                     style={{ marginBottom: "200px" }}
                   >
-                    Update Status
+                    UPDATE STATUS
                   </button>
                 </div>
               </div>

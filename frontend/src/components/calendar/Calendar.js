@@ -131,11 +131,39 @@ function MyCalendar() {
     <div>
       <div className="center-request">
         <Link to="/request">
-          <button className="btn btn-primary request">Request Schedule</button>
+          <button className="btn btn-primary request" style={{ backgroundColor: "maroon", marginRight: "20px" }}>Request Schedule</button>
         </Link>
-        <button className="btn btn-primary" onClick={handlePrintCalendar}>
+        <button className="btn btn-primary" onClick={handlePrintCalendar} style={{ backgroundColor: "maroon", marginRight: "20px", padding: '10px 35px' }}>
           Print Calendar
         </button>
+      </div>
+      <div className="printableHeader">
+        <h6
+          className="card-title"
+          style={{
+            fontFamily: "sans-serif",
+            textAlign: "center",
+            marginBottom: "10px",
+            margin: "20px",
+            backgroundColor: "maroon",
+            color: "white",
+            padding: "20px",
+          }}
+        >
+          <img
+            src="/images/tupt_logo.png"
+            style={{
+              width: "100px",
+              height: "100px",
+              marginRight: "25px",
+            }}
+            alt="Logo"
+          />
+          TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES TAGUIG CITY
+          <p style={{ fontSize: "12px", marginTop: "14px" }}>The Technological University of the Philippines shall be premier state university with recognized excellence in
+            engineering and technology education at per with the leading university in the ASEAN region.</p>
+          <h4 className="my-4 text-center" style={{ textDecoration: "underline" }}>SCHEDULES</h4>
+        </h6>
       </div>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
