@@ -254,6 +254,7 @@ const ProcessOrder = () => {
                       <option value="For Claiming">For Claiming</option>
 
                       <option value="Claimed">Claimed</option>
+                      <option value="Denied">Denied</option>
                     </select>
                   </div>
 

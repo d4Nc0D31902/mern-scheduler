@@ -272,7 +272,7 @@ const NewAppointment = () => {
               color: "white",
             }}
           >
-            New Appointment
+            Request Schedule
           </h1>
 
           <div className="form-group">

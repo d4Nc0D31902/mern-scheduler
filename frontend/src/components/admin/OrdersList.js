@@ -93,6 +93,8 @@ const OrdersList = () => {
       rows: [],
     };
 
+    
+
     filteredOrders.forEach((order) => {
       data.rows.push({
         numofItems: order.orderItems.length,

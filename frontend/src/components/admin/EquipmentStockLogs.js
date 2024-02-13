@@ -145,7 +145,7 @@ const EquipmentsList = () => {
 
   return (
     <Fragment>
-      <MetaData title={"Stock History"} />
+      <MetaData title={"Equipment Stock History"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -153,7 +153,7 @@ const EquipmentsList = () => {
         <div className="col-12 col-md-10">
           <Fragment>
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h1 className="my-5">Stock History</h1>
+              <h1 className="my-5">Equipment Stock History</h1>
               {/* <Link to="/admin/equipment" className="btn btn-primary">
                 Back to Equipments
               </Link> */}

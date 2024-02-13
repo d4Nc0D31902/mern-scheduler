@@ -44,15 +44,15 @@ const ConfirmBorrow = () => {
           <p>
             <b>Name:</b> {user && user.name}
           </p>
-          <p>
+          {/* <p>
             <b>Date of Borrow:</b> {dateOfBorrow}
-          </p>
-          <p>
+          </p> */}
+          {/* <p>
             <b>Reason for Borrow:</b> {reasonOfBorrow}
-          </p>
+          </p> */}
           <hr />
 
-          <h4 className="mt-4">Your Borrow Items:</h4>
+          <h4 className="mt-4">Your Items:</h4>
           {borrowCartItems.map((item) => (
             <Fragment key={item.equipment}>
               <hr />
