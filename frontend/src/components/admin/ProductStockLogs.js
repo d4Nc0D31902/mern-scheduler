@@ -67,8 +67,15 @@ const ProductsList = () => {
 
     if (products && products.length > 0) {
       products.forEach((product) => {
-        product.stockHistory.forEach((historyEntry) => {
-          if (selectedStatus === "" || historyEntry.status === selectedStatus) {
+        product.stockHistory
+          .filter(
+            (historyEntry) =>
+              (selectedStatus === "" ||
+                historyEntry.status === selectedStatus) &&
+              (historyEntry.status === "Restocked" ||
+                historyEntry.status === "Sold")
+          )
+          .forEach((historyEntry) => {
             data.rows.push({
               name: historyEntry.name,
               quantity: historyEntry.quantity,
@@ -90,12 +97,14 @@ const ProductsList = () => {
                 }
               ),
             });
-          }
-        });
+          });
       });
     } else {
       console.log("Products data is empty or undefined.");
     }
+
+    // Sort the rows by createdAt from latest to oldest
+    data.rows.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return data;
   };

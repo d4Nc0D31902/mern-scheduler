@@ -130,7 +130,8 @@ const AppointmentsList = () => {
     const filteredData = filteredAppointments();
 
     if (filteredData) {
-      filteredData.forEach((appointment) => {
+      // Reverse the order of rows to display latest appointments first
+      filteredData.reverse().forEach((appointment) => {
         appointment.history.forEach((historyRecord, index) => {
           const statusColor = getStatusColor(historyRecord.status);
 

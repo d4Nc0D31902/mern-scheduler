@@ -157,6 +157,9 @@ const BorrowList = () => {
       });
     }
 
+    // Reverse the order of rows to display latest borrows first
+    data.rows.reverse();
+
     return data;
   };
 

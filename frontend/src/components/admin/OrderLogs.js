@@ -97,60 +97,66 @@ const OrdersList = () => {
     if (orders && orders.length > 0) {
       orders.forEach((order) => {
         order.history.forEach((historyLog) => {
-          let statusColor;
-          switch (historyLog.orderStatus) {
-            case "Pending":
-              statusColor = "orange";
-              break;
-            case "For Pickup":
-              statusColor = "orange";
-              break;
-            case "Sold":
-              statusColor = "green";
-              break;
-            case "Denied":
-              statusColor = "red";
-              break;
-            default:
-              statusColor = "";
-              break;
+          // Check if the order status matches the selected filter
+          if (filter === "All" || historyLog.orderStatus === filter) {
+            let statusColor;
+            switch (historyLog.orderStatus) {
+              case "Pending":
+                statusColor = "orange";
+                break;
+              case "For Pickup":
+                statusColor = "orange";
+                break;
+              case "Sold":
+                statusColor = "green";
+                break;
+              case "Denied":
+                statusColor = "red";
+                break;
+              default:
+                statusColor = "";
+                break;
+            }
+
+            // Generate a bullet list of items with quantities
+            const itemsList = (
+              <ul>
+                {historyLog.orderItems.map((item) => (
+                  <li key={item._id}>
+                    {item.name} = {item.quantity}
+                  </li>
+                ))}
+              </ul>
+            );
+
+            data.rows.push({
+              customer: historyLog.customer,
+              numofItems: itemsList, // Display items and quantities in bullet form
+              totalPrice: `₱${historyLog.totalPrice}`,
+              orderStatus: (
+                <span style={{ color: statusColor }}>
+                  {historyLog.orderStatus}
+                </span>
+              ),
+              paymentMethod: historyLog.paymentMeth,
+              referenceNum: historyLog.reference_num,
+              by: historyLog.by,
+              createdAt: new Date(order.createdAt).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              }),
+            });
           }
-
-          // Generate a bullet list of items with quantities
-          const itemsList = (
-            <ul>
-              {historyLog.orderItems.map((item) => (
-                <li key={item._id}>
-                  {item.name} = {item.quantity}
-                </li>
-              ))}
-            </ul>
-          );
-
-          data.rows.push({
-            customer: historyLog.customer,
-            numofItems: itemsList, // Display items and quantities in bullet form
-            totalPrice: `₱${historyLog.totalPrice}`,
-            orderStatus: (
-              <span style={{ color: statusColor }}>
-                {historyLog.orderStatus}
-              </span>
-            ),
-            paymentMethod: historyLog.paymentMeth,
-            referenceNum: historyLog.reference_num,
-            by: historyLog.by,
-            createdAt: new Date(order.createdAt).toLocaleString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }),
-          });
         });
       });
     }
+
+    // Reverse the order of rows to display latest orders first
+    data.rows.reverse();
 
     return data;
   };
