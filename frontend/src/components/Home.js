@@ -127,10 +127,10 @@ const Home = () => {
               <div className="col-6 col-md-9">
                 <div className="row">
                   {products
-                    .filter(
-                      (product) =>
-                        product.stock > 0 && product.status !== "Out of Stock"
-                    )
+                    // .filter(
+                    //   (product) =>
+                    //     product.stock > 0 && product.status !== "Out of Stock"
+                    // )
                     .map((product) => (
                       <Product key={product._id} product={product} col={4} />
                     ))}
