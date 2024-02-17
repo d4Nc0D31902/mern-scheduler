@@ -72,7 +72,7 @@ const BorrowList = () => {
     const data = {
       columns: [
         {
-          label: "User",
+          label: "Requester",
           field: "user",
           sort: "asc",
         },
@@ -82,7 +82,7 @@ const BorrowList = () => {
           sort: "asc",
         },
         {
-          label: "Borrow Date",
+          label: "Date of Request",
           field: "borrowDate",
           sort: "asc",
         },

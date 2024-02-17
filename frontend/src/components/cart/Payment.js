@@ -16,10 +16,10 @@ const Payment = () => {
   const { error } = useSelector((state) => state.newOrder);
 
   const [paymentMethod, setPaymentMethod] = useState("Walk-In");
-  const [referenceNum, setReferenceNum] = useState(""); // State for Reference #
-  const [referenceNumError, setReferenceNumError] = useState(""); // State for Reference # Error
-  const [screenShot, setScreenShot] = useState([]); // State for screenshot images
-  const [screenShotPreview, setScreenShotPreview] = useState([]); // State for preview of screenshot images
+  const [referenceNum, setReferenceNum] = useState("");
+  const [referenceNumError, setReferenceNumError] = useState("");
+  const [screenShot, setScreenShot] = useState([]);
+  const [screenShotPreview, setScreenShotPreview] = useState([]);
 
   useEffect(() => {
     if (error) {
@@ -31,8 +31,8 @@ const Payment = () => {
     orderItems: cartItems,
     shippingInfo,
     paymentMeth: paymentMethod,
-    reference_num: referenceNum, // Include reference number in the order object
-    screenShot: screenShot, // Include screenshots in the order object
+    reference_num: referenceNum,
+    screenShot: screenShot,
   };
 
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -77,40 +77,19 @@ const Payment = () => {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  //   document.querySelector("#pay_btn").disabled = true;
-
-  //   // Validate reference number before submitting the form
-  //   if (!validateReferenceNum()) {
-  //     return;
-  //   }
-
-  //   order.paymentInfo = {
-  //     id: "pi_1DpdYh2eZvKYlo2CYIynhU32",
-  //     status: "succeeded",
-  //   };
-  //   dispatch(createOrder(order));
-  //   dispatch(clearCart());
-  //   navigate("/success");
-  // };
-
   const submitHandler = async (e) => {
     e.preventDefault();
     document.querySelector("#pay_btn").disabled = true;
 
-    // Validate reference number before submitting the form
     if (!validateReferenceNum()) {
       return;
     }
 
-    // Validate screenshot if payment method is GCash
     if (paymentMethod === "GCash" && screenShot.length === 0) {
       errMsg("Screenshot is required for GCash payment");
       return;
     }
 
-    // Continue with order creation
     order.paymentInfo = {
       id: "pi_1DpdYh2eZvKYlo2CYIynhU32",
       status: "succeeded",
@@ -169,7 +148,7 @@ const Payment = () => {
                       }}
                     />
                   </div>
-                  <label className="form-label mt-3">Upload Screenshot</label>
+                  <label className="form-label mt-3">Upload Screenshot:</label>
                   <div className="custom-file">
                     <input
                       type="file"
@@ -215,7 +194,7 @@ const Payment = () => {
                   value={referenceNum}
                   onChange={(e) => setReferenceNum(e.target.value)}
                   onBlur={validateReferenceNum}
-                  pattern="[0-9]{13}" // Pattern for exactly 13 numeric numbers
+                  pattern="[0-9]{13}"
                   title="Reference # must be exactly 13 numeric numbers"
                 />
 

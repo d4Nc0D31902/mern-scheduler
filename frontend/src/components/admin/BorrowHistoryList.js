@@ -61,7 +61,7 @@ const BorrowList = () => {
     const data = {
       columns: [
         {
-          label: "User",
+          label: "Requester",
           field: "user",
           sort: "asc",
         },
@@ -71,12 +71,12 @@ const BorrowList = () => {
           sort: "asc",
         },
         {
-          label: "Borrow Date",
+          label: "Date of Request",
           field: "borrowDate",
           sort: "asc",
         },
         {
-          label: "Return Date",
+          label: "Date Returned",
           field: "returnDate",
           sort: "asc",
         },
@@ -86,12 +86,12 @@ const BorrowList = () => {
           sort: "asc",
         },
         {
-          label: "Action By",
+          label: "Officer",
           field: "by",
           sort: "asc",
         },
         {
-          label: "Created At",
+          label: "Date of Log",
           field: "createdAt",
           sort: "asc",
         },

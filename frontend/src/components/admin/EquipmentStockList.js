@@ -66,12 +66,12 @@ const EquipmentsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Equipment",
           field: "name",
           sort: "asc",
         },
         {
-          label: "Stock",
+          label: "Remaining Stocks",
           field: "stock",
           sort: "asc",
         },

@@ -29,7 +29,7 @@ const ListOrders = () => {
           sort: "asc",
         },
         {
-          label: "Amount",
+          label: "Total Amount",
           field: "amount",
           sort: "asc",
         },

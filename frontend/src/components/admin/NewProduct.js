@@ -191,7 +191,7 @@ const NewProduct = () => {
                 </h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Merch:</label>
+                  <label htmlFor="name_field">Product:</label>
                   <input
                     placeholder="Put the name of the merch"
                     type="text"

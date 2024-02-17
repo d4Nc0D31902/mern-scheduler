@@ -150,7 +150,7 @@ const UpdateProduct = () => {
                 </h3>
                 <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Product</h1>
                 <div className="form-group">
-                  <label htmlFor="name_field">Merch:</label>
+                  <label htmlFor="name_field">Product:</label>
                   <input
                     type="text"
                     id="name_field"
@@ -214,7 +214,7 @@ const UpdateProduct = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="seller_field">Sellers Name: </label>
+                  <label htmlFor="seller_field">Seller's Name: </label>
                   <input
                     type="text"
                     id="seller_field"

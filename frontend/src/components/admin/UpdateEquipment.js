@@ -178,7 +178,7 @@ const UpdateEquipment = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="sport_field">Category in Sport:</label>
+                    <label htmlFor="sport_field">Sport Category:</label>
                     <select
                       id="sport_field"
                       className="form-control"

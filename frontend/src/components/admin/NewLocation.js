@@ -103,12 +103,12 @@ const NewLocation = () => {
                   />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
-                <h1 className="mb-4 text-center">New Location</h1>
+                <h1 className="mb-4 text-center">Add New Location</h1>
 
                 <div className="form-group">
-                  <label htmlFor="name_field">Name a Location</label>
+                  <label htmlFor="name_field">Add a Location:</label>
                   <input
-                    placeholder="put here new location"
+                    placeholder="Input Location Here"
                     type="text"
                     id="name_field"
                     className={`form-control ${
@@ -128,7 +128,7 @@ const NewLocation = () => {
                   className="btn btn-block py-3"
                   disabled={loading ? true : false}
                 >
-                  CREATE
+                  ADD
                 </button>
               </form>
             </div>

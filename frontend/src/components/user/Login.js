@@ -66,7 +66,7 @@ const Login = () => {
                         className="form-control"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="juan.rodriguez@tup.edu.ph"
+                        placeholder="john.doe@tup.edu.ph"
                         style={{ marginBottom: "30px", borderStyle: "solid" }}
                       />
                     </div>

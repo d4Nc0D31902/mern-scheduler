@@ -183,10 +183,10 @@ const UpdateProduct = () => {
                     color: "white",
                   }}
                 >
-                  Add or Remove Product Stock
+                  Add Stock
                 </h1>
                 <div className="form-group">
-                  <label htmlFor="name_field">Merch:</label>
+                  <label htmlFor="name_field">Product:</label>
                   <input
                     type="text"
                     id="name_field"

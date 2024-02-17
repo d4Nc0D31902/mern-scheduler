@@ -79,7 +79,7 @@ const EquipmentsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Equipment",
           field: "name",
           sort: "asc",
         },
@@ -94,12 +94,12 @@ const EquipmentsList = () => {
           sort: "asc",
         },
         {
-          label: "Witnessed By",
+          label: "Officer",
           field: "by",
           sort: "asc",
         },
         {
-          label: "Created At",
+          label: "Date of Log",
           field: "createdAt",
           sort: "asc",
         },
@@ -116,8 +116,7 @@ const EquipmentsList = () => {
                 historyEntry.status === selectedStatus) &&
               (historyEntry.status === "Borrowed" ||
                 historyEntry.status === "Returned" ||
-                historyEntry.status === "Restocked" ||
-                historyEntry.status === "Denied")
+                historyEntry.status === "Restocked")
           )
           .forEach((historyEntry) => {
             data.rows.push({
@@ -175,7 +174,7 @@ const EquipmentsList = () => {
                 <option value="Borrowed">Borrowed</option>
                 <option value="Returned">Returned</option>
                 <option value="Restocked">Restocked</option>
-                <option value="Denied">Denied</option>
+                {/* <option value="Denied">Denied</option> */}
                 {/* <option value="Pending">Pending</option>
                 <option value="Borrowed">Borrowed</option>
                 <option value="Returned">Returned</option> */}

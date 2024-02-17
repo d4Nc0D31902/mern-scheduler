@@ -170,7 +170,7 @@ const NewAnnouncement = () => {
               </div>
 
               <div className="form-group">
-                <label>Upload Images</label>
+                <label>Upload Images:</label>
                 <div className="custom-file">
                   <input
                     type="file"

@@ -66,7 +66,7 @@ const OrdersList = () => {
     const data = {
       columns: [
         {
-          label: "Customer Name",
+          label: "Customer",
           field: "customerName",
           sort: "asc",
         },
@@ -76,7 +76,7 @@ const OrdersList = () => {
           sort: "asc",
         },
         {
-          label: "Amount",
+          label: "Total Amount",
           field: "amount",
           sort: "asc",
         },

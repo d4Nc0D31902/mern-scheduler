@@ -118,15 +118,15 @@ const BorrowDetails = () => {
             <h4 className="mb-4 text-center">BORROW DETAILS</h4>
 
             <p>
-              <b>Borrower:</b> {user}
+              <b>Requester:</b> {user}
             </p>
 
             <p className="mb-4">
-              <b>Borrowing Info:</b> {borrowingDetails || "N/A"}
+              <b>Request Info:</b> {borrowingDetails || "N/A"}
             </p>
 
             <p>
-              <b>Date Return:</b>{" "}
+              <b>Date Returned:</b>{" "}
               {date_return ? date_return : "Not returned yet"}
             </p>
 

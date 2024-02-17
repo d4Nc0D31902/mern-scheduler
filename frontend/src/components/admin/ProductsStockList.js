@@ -87,12 +87,12 @@ const ProductsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Product",
           field: "name",
           sort: "asc",
         },
         {
-          label: "Stock",
+          label: "Remaining Stocks",
           field: "stock",
           sort: "asc",
         },

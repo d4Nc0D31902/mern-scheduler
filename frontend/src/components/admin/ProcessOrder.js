@@ -165,7 +165,7 @@ const ProcessOrder = () => {
                   <h4 className="mb-4 text-center">PAYMENT INFORMATION</h4>
 
                   <p>
-                    <b>Customer Name:</b> {order && order.customer}
+                    <b>Customer :</b> {order && order.customer}
                   </p>
 
                   <p>
@@ -181,35 +181,32 @@ const ProcessOrder = () => {
                     <b>Payment Amount:</b> ₱{totalPrice}
                   </p>
 
-                    <p>
-                      <b>Screenshot: </b>
-                    </p>
-                    {order &&
-                    order.screenShot &&
-                    order.screenShot.length > 0 ? (
-                      <Fragment>
-                        {order.screenShot.map((image, index) => (
-                          <div key={index} className="row">
-                            <div className="col-3">
-                              <a
-                                href={image.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <img
-                                  src={image.url}
-                                  alt={`Screenshot ${index + 1}`}
-                                  className="img-fluid"
-                                />
-                              </a>
-                            </div>
+                  <p>
+                    <b>Screenshot: </b>
+                  </p>
+                  {order && order.screenShot && order.screenShot.length > 0 ? (
+                    <Fragment>
+                      {order.screenShot.map((image, index) => (
+                        <div key={index} className="row">
+                          <div className="col-3">
+                            <a
+                              href={image.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <img
+                                src={image.url}
+                                alt={`Screenshot ${index + 1}`}
+                                className="img-fluid"
+                              />
+                            </a>
                           </div>
-                        ))}
-                      </Fragment>
-                    ) : (
-                      <p>No screenshots uploaded</p>
-                    )}
-
+                        </div>
+                      ))}
+                    </Fragment>
+                  ) : (
+                    <p>No screenshots uploaded</p>
+                  )}
 
                   <p>
                     <b>Reference #:</b> {reference_num}
@@ -253,7 +250,7 @@ const ProcessOrder = () => {
                     >
                       <option value="Processing">Pending</option>
                       <option value="For Pickup">For Pickup</option>
-                      <option value="Sold">Sold</option>}
+                      <option value="Sold">Sold</option>
                       <option value="Denied">Denied</option>
                     </select>
                   </div>

@@ -158,7 +158,7 @@ const Register = () => {
             <h1 className="mb-4 text-center" style={{ backgroundColor: "maroon", padding: "10px", borderRadius: "2px", color: "white" }}>Registration form</h1>
 
             <div className="form-group">
-              <label htmlFor="name_field">Full Name</label>
+              <label htmlFor="name_field">Full Name:</label>
               <input
                 type="text"
                 id="name_field"
@@ -174,7 +174,7 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email_field">Email</label>
+              <label htmlFor="email_field">Email:</label>
               <div className="d-flex">
                 <input
                   type="text"
@@ -199,7 +199,7 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password_field">Password</label>
+              <label htmlFor="password_field">Password:</label>
               <input
                 type="password"
                 id="password_field"
@@ -216,7 +216,7 @@ const Register = () => {
 
             {/* Department Dropdown */}
             <div className="form-group">
-              <label htmlFor="department_field">Department</label>
+              <label htmlFor="department_field">Department:</label>
               <select
                 id="department_field"
                 className={`form-control ${errors.department && "is-invalid"}`}
@@ -238,7 +238,7 @@ const Register = () => {
 
             {/* Course Dropdown */}
             <div className="form-group">
-              <label htmlFor="course_field">Course</label>
+              <label htmlFor="course_field">Course:</label>
               <select
                 id="course_field"
                 className={`form-control ${errors.course && "is-invalid"}`}
@@ -260,7 +260,7 @@ const Register = () => {
 
             {/* Year Dropdown */}
             <div className="form-group">
-              <label htmlFor="year_field">Year</label>
+              <label htmlFor="year_field">Year:</label>
               <select
                 id="year_field"
                 className={`form-control ${errors.year && "is-invalid"}`}
@@ -282,7 +282,7 @@ const Register = () => {
             {/* End of Dropdowns */}
 
             <div className="form-group">
-              <label htmlFor="avatar_upload">Avatar</label>
+              <label htmlFor="avatar_upload">Profile:</label>
               <div className="d-flex align-items-center">
                 <div>
                   <figure className="avatar mr-3 item-rtl">

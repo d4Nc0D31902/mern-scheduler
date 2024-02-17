@@ -108,7 +108,7 @@ const LocationsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Location",
           field: "name",
           sort: "asc",
         },
@@ -175,7 +175,7 @@ const LocationsList = () => {
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h1 className="my-5">All Locations</h1>
               <Link to="/admin/location" className="btn btn-primary">
-                Create Location
+                Add New Location
               </Link>
             </div>
             {loading ? (

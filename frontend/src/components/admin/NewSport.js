@@ -106,13 +106,14 @@ const NewSport = () => {
                   />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
-                <h1 className="mb-4 text-center">New Sport</h1>
+                <h1 className="mb-4 text-center">Add New Sport</h1>
 
                 <div className="form-group">
                   <label htmlFor="name_field">Name of the Sport:</label>
                   <input
                     type="text"
                     id="name_field"
+                    placeholder="Input New Sport"
                     className={`form-control ${
                       errors.name ? "is-invalid" : ""
                     }`}
@@ -130,7 +131,7 @@ const NewSport = () => {
                   className="btn btn-block py-3"
                   disabled={loading ? true : false}
                 >
-                  CREATE
+                  ADD
                 </button>
               </form>
             </div>

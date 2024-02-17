@@ -66,7 +66,7 @@ const EquipmentsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Equipment",
           field: "name",
           sort: "asc",
         },
@@ -76,12 +76,12 @@ const EquipmentsList = () => {
           sort: "asc",
         },
         {
-          label: "Sport",
+          label: "Sport Category",
           field: "sport",
           sort: "asc",
         },
         {
-          label: "Stock",
+          label: "Remaining Stocks",
           field: "stock",
           sort: "asc",
         },
@@ -153,7 +153,7 @@ const EquipmentsList = () => {
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h1 className="my-5">All Equipments</h1>
               <Link to="/admin/equipment" className="btn btn-primary">
-                Create Equipment
+                Add New Equipment
               </Link>
             </div>
             {loading ? (

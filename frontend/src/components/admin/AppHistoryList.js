@@ -76,7 +76,7 @@ const AppointmentsList = () => {
     const data = {
       columns: [
         {
-          label: "Sched Title",
+          label: "Title",
           field: "schedTitle",
           sort: "asc",
         },
@@ -101,12 +101,12 @@ const AppointmentsList = () => {
           sort: "asc",
         },
         {
-          label: "Time Start",
+          label: "Date & Time Start",
           field: "timeStart",
           sort: "asc",
         },
         {
-          label: "Time End",
+          label: "Date & Time End",
           field: "timeEnd",
           sort: "asc",
         },
@@ -116,12 +116,12 @@ const AppointmentsList = () => {
           sort: "asc",
         },
         {
-          label: "Action At",
+          label: "Officer",
           field: "by",
           sort: "asc",
         },
         {
-          label: "Created At",
+          label: "Date of Log",
           field: "createdAt",
           sort: "asc",
         },

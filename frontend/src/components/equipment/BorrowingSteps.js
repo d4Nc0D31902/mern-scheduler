@@ -20,13 +20,13 @@ import { Link } from "react-router-dom";
       {confirmBorrow ? (
         <Link to="/confirmBorrow" className="float-right">
           <div className="triangle2-active"></div>
-          <div className="step active-step">Confirm Borrow</div>
+          <div className="step active-step">Confirm Request</div>
           <div className="triangle-active"></div>
         </Link>
       ) : (
         <Link to="#!" disabled>
           <div className="triangle2-incomplete"></div>
-          <div className="step incomplete">Confirm Borrow</div>
+          <div className="step incomplete">Confirm Request</div>
           <div className="triangle-incomplete"></div>
         </Link>
       )}
@@ -34,13 +34,13 @@ import { Link } from "react-router-dom";
       {borrow ? (
         <Link to="/borrow" className="float-right">
           <div className="triangle2-active"></div>
-          <div className="step active-step">Borrow</div>
+          <div className="step active-step">Request</div>
           <div className="triangle-active"></div>
         </Link>
       ) : (
         <Link to="#!" disabled>
           <div className="triangle2-incomplete"></div>
-          <div className="step incomplete">Borrow</div>
+          <div className="step incomplete">Request</div>
           <div className="triangle-incomplete"></div>
         </Link>
       )}

@@ -25,6 +25,7 @@ const UpdateAppointment = () => {
   const [key, setKey] = useState("");
   const [locations, setLocations] = useState([]);
   const [moveSelected, setMoveSelected] = useState(false);
+  const [professor, setProfessor] = useState("");
 
   const dispatch = useDispatch();
   const { error, appointment } = useSelector(
@@ -67,6 +68,7 @@ const UpdateAppointment = () => {
       dispatch(getAppointmentDetails(id));
     } else {
       setTitle(appointment.title);
+      setProfessor(appointment.professor || "");
       setDescription(appointment.description);
       setLocation(appointment.location);
       setTimeStart(formatDateTimeLocal(appointment.timeStart));
@@ -118,6 +120,7 @@ const UpdateAppointment = () => {
       attendees,
       reason,
       key,
+      professor,
     };
     dispatch(updateAppointment(appointment._id, updatedAppointment));
   };
@@ -144,14 +147,40 @@ const UpdateAppointment = () => {
         <div className="col-12 col-md-10">
           <div className="wrapper my-5">
             <form className="shadow-lg" onSubmit={submitHandler}>
-              <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
-                <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+              <h3
+                className="card-title"
+                style={{
+                  fontFamily: "sans-serif",
+                  textAlign: "center",
+                  marginBottom: "10px",
+                  margin: "20px",
+                }}
+              >
+                <img
+                  src="/images/tupt_logo.png"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    marginRight: "25px",
+                  }}
+                  alt="Logo"
+                />
                 TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
               </h3>
-              <h1 className="mb-4  text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Schedules</h1>
+              <h1
+                className="mb-4  text-center"
+                style={{
+                  backgroundColor: "maroon",
+                  padding: "20px",
+                  borderRadius: "20px",
+                  color: "white",
+                }}
+              >
+                Update Schedules
+              </h1>
 
               <div className="form-group">
-                <label htmlFor="title_field">Title</label>
+                <label htmlFor="title_field">Title:</label>
                 <input
                   type="text"
                   id="title_field"
@@ -163,7 +192,7 @@ const UpdateAppointment = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="body_field">Description</label>
+                <label htmlFor="body_field">Description:</label>
                 <textarea
                   className="form-control"
                   id="body_field"
@@ -223,7 +252,19 @@ const UpdateAppointment = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="timeStart_field">Start Time</label>
+                <label htmlFor="professor_field">Professor:</label>
+                <input
+                  type="text"
+                  id="professor_field"
+                  className="form-control"
+                  value={professor}
+                  onChange={(e) => setProfessor(e.target.value)}
+                  disabled
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="timeStart_field">Date & Start Time:</label>
                 <input
                   type="datetime-local"
                   id="timeStart_field"
@@ -235,7 +276,7 @@ const UpdateAppointment = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="timeEnd_field">End Time</label>
+                <label htmlFor="timeEnd_field">Date & End Time:</label>
                 <input
                   type="datetime-local"
                   id="timeEnd_field"
@@ -247,7 +288,7 @@ const UpdateAppointment = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="status_field">Status</label>
+                <label htmlFor="status_field">Status:</label>
                 <select
                   id="status_field"
                   className="form-control"
@@ -264,7 +305,7 @@ const UpdateAppointment = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="reason_field">Reason of Status</label>
+                <label htmlFor="reason_field">Reason of Status:</label>
                 <select
                   id="reason_field"
                   className="form-control"
@@ -282,7 +323,7 @@ const UpdateAppointment = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="key_field">Key</label>
+                <label htmlFor="key_field">Key ID:</label>
                 <div className="input-group">
                   <input
                     type="text"

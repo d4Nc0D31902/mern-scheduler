@@ -37,7 +37,7 @@ const ProductsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Product",
           field: "name",
           sort: "asc",
         },
@@ -52,12 +52,12 @@ const ProductsList = () => {
           sort: "asc",
         },
         {
-          label: "Witnessed By",
+          label: "Officer",
           field: "by",
           sort: "asc",
         },
         {
-          label: "Created At",
+          label: "Date of Log",
           field: "createdAt",
           sort: "asc",
         },

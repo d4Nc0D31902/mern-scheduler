@@ -75,7 +75,7 @@ const CategoriesList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Category",
           field: "name",
           sort: "asc",
         },
@@ -142,7 +142,7 @@ const CategoriesList = () => {
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h1 className="my-5">All Categories</h1>
               <Link to="/admin/category" className="btn btn-primary">
-                Create Category
+                Add New Category
               </Link>
             </div>
             {loading ? (

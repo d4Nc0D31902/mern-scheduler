@@ -80,12 +80,12 @@ const OrdersList = () => {
           sort: "asc",
         },
         {
-          label: "Action By",
+          label: "Officer",
           field: "by",
           sort: "asc",
         },
         {
-          label: "Created At",
+          label: "Date of Log",
           field: "createdAt",
           sort: "asc",
         },
@@ -139,7 +139,8 @@ const OrdersList = () => {
                 </span>
               ),
               paymentMethod: historyLog.paymentMeth,
-              referenceNum: historyLog.reference_num,
+              // referenceNum: historyLog.reference_num,
+              referenceNum: `#${historyLog.reference_num}`,
               by: historyLog.by,
               createdAt: new Date(order.createdAt).toLocaleString("en-US", {
                 year: "numeric",

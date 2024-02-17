@@ -41,7 +41,17 @@ const Header = () => {
                 alt="Logo"
               />
               {isStore ? null : (
-                <p style={{ position: "absolute", top: "26px", left: "140px", color: 'white', fontWeight: 'bold', }}>TUP-T SCHEDULER</p>
+                <p
+                  style={{
+                    position: "absolute",
+                    top: "26px",
+                    left: "140px",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  TUP-T SCHEDULER
+                </p>
               )}
             </Link>
           </div>
@@ -58,12 +68,13 @@ const Header = () => {
             className="d-flex align-items-center justify-content-end"
             style={{ marginRight: "10px" }}
           >
-
-            <div className={`burger-icon ${showMenu ? 'active' : ''}`} onClick={() => setShowMenu(!showMenu)} style={{ marginRight: showMenu ? "20px" : "0" }}>
+            <div
+              className={`burger-icon ${showMenu ? "active" : ""}`}
+              onClick={() => setShowMenu(!showMenu)}
+              style={{ marginRight: showMenu ? "20px" : "0" }}
+            >
               <i className="fa fa-bars"></i>
             </div>
-
-
 
             <div className="nav-links">
               {!isHomePage && (
@@ -85,19 +96,10 @@ const Header = () => {
                     style={{ textDecoration: "none", marginLeft: "10px" }}
                   >
                     <span id="cart">
-                      <i className="fa fa-briefcase"></i> Borrowed
+                      <i className="fa fa-briefcase"></i> Items
                       <span className="ml-1" id="cart_count">
                         {borrowCartItems.length}
                       </span>
-                    </span>
-                  </Link>
-
-                  <Link
-                    to="/calendar"
-                    style={{ textDecoration: "none", marginLeft: "10px" }}
-                  >
-                    <span id="cart">
-                      <i className="fa fa-calendar"></i> Calendar
                     </span>
                   </Link>
 
@@ -107,6 +109,15 @@ const Header = () => {
                   >
                     <span id="cart">
                       <i className="fa fa-bullhorn"></i> Announcements
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/calendar"
+                    style={{ textDecoration: "none", marginLeft: "10px" }}
+                  >
+                    <span id="cart">
+                      <i className="fa fa-calendar"></i> Schedules
                     </span>
                   </Link>
 
@@ -124,7 +135,7 @@ const Header = () => {
                     style={{ textDecoration: "none", marginLeft: "10px" }}
                   >
                     <span id="cart">
-                      <i className="fa fa-wrench"></i> Equipment
+                      <i className="fa fa-wrench"></i> Equipments
                     </span>
                   </Link>
                 </>
@@ -272,4 +283,3 @@ const Header = () => {
 };
 
 export default Header;
-

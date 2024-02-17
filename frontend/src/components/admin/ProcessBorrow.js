@@ -161,10 +161,10 @@ const BorrowDetails = () => {
 
 
                     <p>
-                      <b>Borrower's Information:</b> {user}
+                      <b>Requester's Information:</b> {user}
                     </p>
                     <p className="mb-4">
-                      <b>Borrowing Information:</b> {borrowingDetails || "N/A"}
+                      <b>Request Information:</b> {borrowingDetails || "N/A"}
                     </p>
                     <h4 className="mb-4 text-center">ITEM(S) BORROWED:</h4>
 
@@ -199,7 +199,7 @@ const BorrowDetails = () => {
 
 
                   <p>
-                    <b>Date Return:</b>{" "}
+                    <b>Date Returned:</b>{" "}
                     {date_return
                       ? new Date(date_return).toLocaleString("en-US", {
                         year: "numeric",
@@ -211,7 +211,7 @@ const BorrowDetails = () => {
                       : "Not returned yet"}
                   </p>
                   <div>
-                    <b>Issue:</b>{" "}
+                    <b>Issue/s:</b>{" "}
                     <div
                       className="form-group"
                       style={{ display: "inline-block" }}
@@ -245,7 +245,7 @@ const BorrowDetails = () => {
                     <b>Status:</b> {orderStatus}
                   </p>
                   <div>
-                    <b>Reason Status:</b>{" "}
+                    <b>Reason of Status:</b>{" "}
                     <div
                       className="form-group"
                       style={{ display: "inline-block" }}

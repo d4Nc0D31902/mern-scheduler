@@ -95,7 +95,7 @@ const Borrow = () => {
             <h1 className="mb-4">Borrowing Information</h1>
 
             <div className="form-group">
-              <label htmlFor="date_borrow_field">Date Borrow</label>
+              <label htmlFor="date_borrow_field">Date of Request:</label>
               <input
                 type="datetime-local"
                 id="date_borrow_field"
@@ -113,7 +113,7 @@ const Borrow = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="reason_borrow_field">Reason for Borrow</label>
+              <label htmlFor="reason_borrow_field">Reason of Request:</label>
               <select
                 id="reason_borrow_field"
                 className="form-control"

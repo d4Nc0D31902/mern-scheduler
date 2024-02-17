@@ -103,9 +103,9 @@ const NewCategory = () => {
                   />
                   TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
                 </h3>
-                <h1 className="mb-4 text-center">New Category</h1>
+                <h1 className="mb-4 text-center">Add New Category</h1>
                 <div className="form-group">
-                  <label htmlFor="name_field">Category Name:</label>
+                  <label htmlFor="name_field">Category:</label>
                   <input
                     placeholder="ex.(sportswear etc..)"
                     type="text"
@@ -126,7 +126,7 @@ const NewCategory = () => {
                   className="btn btn-block py-3"
                   disabled={loading ? true : false}
                 >
-                  CREATE
+                  ADD
                 </button>
               </form>
             </div>

@@ -50,7 +50,6 @@ const OrderDetails = () => {
     window.print();
   };
 
-
   return (
     <Fragment>
       <MetaData title={"Order Details"} />
@@ -119,7 +118,7 @@ const OrderDetails = () => {
                 <b>Customer Name:</b> {user && user.name}
               </p> */}
               <p>
-                <b>Customer Name:</b> {order && order.customer}
+                <b>Customer:</b> {order && order.customer}
               </p>
 
               <p>
@@ -135,7 +134,43 @@ const OrderDetails = () => {
                 <b>Payment Amount:</b> ₱{totalPrice}
               </p>
 
+              <p>
+                <b>Screenshot: </b>
+              </p>
+              {order && order.screenShot && order.screenShot.length > 0 ? (
+                <Fragment>
+                  {order.screenShot.map((image, index) => (
+                    <div key={index} className="row">
+                      <div className="col-3">
+                        <a
+                          href={image.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={image.url}
+                            alt={`Screenshot ${index + 1}`}
+                            className="img-fluid"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </Fragment>
+              ) : (
+                <p>No screenshots uploaded</p>
+              )}
+
               <hr />
+
+              <p>
+                <b>Payment Method:</b> {order && order.paymentMeth}
+              </p>
+
+              <p>
+                <b>Reference Number:</b> {order && order.reference_num}
+              </p>
+              
               <p>
                 <b>Payment Status: </b>
                 <b className={isPaid ? "greenColor" : "redColor"}>
@@ -147,7 +182,7 @@ const OrderDetails = () => {
                 <b
                   className={
                     order.orderStatus &&
-                      String(order.orderStatus).includes("Delivered")
+                    String(order.orderStatus).includes("Delivered")
                       ? "greenColor"
                       : "redColor"
                   }

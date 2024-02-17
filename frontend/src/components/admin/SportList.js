@@ -73,7 +73,7 @@ const SportsList = () => {
     const data = {
       columns: [
         {
-          label: "Name",
+          label: "Sport",
           field: "name",
           sort: "asc",
         },
@@ -137,7 +137,7 @@ const SportsList = () => {
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h1 className="my-5">All Sports</h1>
               <Link to="/admin/sport" className="btn btn-primary">
-                Create Sport
+                Add New Sport
               </Link>
             </div>
             {loading ? (

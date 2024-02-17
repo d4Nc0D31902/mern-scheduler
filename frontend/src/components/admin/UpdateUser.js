@@ -157,7 +157,7 @@ const UpdateUser = () => {
                 {/* Conditionally render Department Dropdown */}
                 {role !== "admin" && (
                   <div className="form-group">
-                    <label htmlFor="department_field">Department</label>
+                    <label htmlFor="department_field">Department:</label>
                     <select
                       id="department_field"
                       className={`form-control ${
@@ -185,7 +185,7 @@ const UpdateUser = () => {
                 {/* Conditionally render Course Dropdown based on user's role */}
                 {role !== "professor" && role !== "admin" && (
                   <div className="form-group">
-                    <label htmlFor="course_field">Course</label>
+                    <label htmlFor="course_field">Course:</label>
                     <select
                       id="course_field"
                       className={`form-control ${
@@ -211,7 +211,7 @@ const UpdateUser = () => {
                 {/* Conditionally render Year Dropdown based on user's role */}
                 {role !== "professor" && role !== "admin" && (
                   <div className="form-group">
-                    <label htmlFor="year_field">Year</label>
+                    <label htmlFor="year_field">Year:</label>
                     <select
                       id="year_field"
                       className={`form-control ${errors.year && "is-invalid"}`}

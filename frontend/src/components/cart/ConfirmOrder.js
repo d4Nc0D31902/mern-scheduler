@@ -63,8 +63,8 @@ const ConfirmOrder = () => {
 
                   <div className="col-4 col-lg-4 mt-4 mt-lg-0">
                     <p>
-                      {item.quantity} x ${item.price} ={" "}
-                      <b>${(item.quantity * item.price).toFixed(2)}</b>
+                      {item.quantity} x ₱{item.price} ={" "}
+                      <b>₱{(item.quantity * item.price).toFixed(2)}</b>
                     </p>
                   </div>
                 </div>

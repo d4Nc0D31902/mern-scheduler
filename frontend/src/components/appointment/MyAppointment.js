@@ -49,12 +49,12 @@ const MyAppointment = () => {
           sort: "asc",
         },
         {
-          label: "Start Time",
+          label: "Date & Start Time",
           field: "startTime",
           sort: "asc",
         },
         {
-          label: "End Time",
+          label: "Date & End Time",
           field: "endTime",
           sort: "asc",
         },
