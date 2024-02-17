@@ -181,16 +181,6 @@ const UsersList = () => {
           sort: "asc",
         },
         {
-          label: "Scheduled Penalty",
-          field: "sched_penalty",
-          sort: "asc",
-        },
-        {
-          label: "Borrowed Penalty",
-          field: "borr_penalty",
-          sort: "asc",
-        },
-        {
           label: "Role",
           field: "role",
           sort: "asc",
@@ -226,8 +216,6 @@ const UsersList = () => {
         name: user.name,
         email: user.email,
         role: <span className={roleClass}>{user.role}</span>,
-        sched_penalty: user.sched_penalty,
-        borr_penalty: user.borr_penalty,
         actions: (
           <Fragment>
             {user.status === "active" && (

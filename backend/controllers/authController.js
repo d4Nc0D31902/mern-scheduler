@@ -254,6 +254,44 @@ exports.deleteUser = async (req, res, next) => {
   });
 };
 
+// exports.deactivateUser = async (req, res, next) => {
+//   const user = await User.findByIdAndUpdate(
+//     req.params.id,
+//     { status: "inactive" },
+//     { new: true }
+//   );
+
+//   if (!user) {
+//     return next(
+//       new ErrorHandler(`User not found with id: ${req.params.id}`, 404)
+//     );
+//   }
+
+//   res.status(200).json({
+//     success: true,
+//     message: "User deactivated successfully",
+//   });
+// };
+
+// exports.reactivateUser = async (req, res, next) => {
+//   const user = await User.findByIdAndUpdate(
+//     req.params.id,
+//     { status: "active" },
+//     { new: true }
+//   );
+
+//   if (!user) {
+//     return next(
+//       new ErrorHandler(`User not found with id: ${req.params.id}`, 404)
+//     );
+//   }
+
+//   res.status(200).json({
+//     success: true,
+//     message: "User reactivated successfully",
+//   });
+// };
+
 exports.deactivateUser = async (req, res, next) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
@@ -266,6 +304,16 @@ exports.deactivateUser = async (req, res, next) => {
       new ErrorHandler(`User not found with id: ${req.params.id}`, 404)
     );
   }
+
+  // Email notification for deactivation
+  const emailOptions = {
+    email: user.email,
+    subject: "Account Deactivated",
+    message: "Your account has been deactivated.",
+    html: "<p>Your account has been deactivated.</p>",
+  };
+
+  await sendEmail(emailOptions); // Send email
 
   res.status(200).json({
     success: true,
@@ -285,6 +333,16 @@ exports.reactivateUser = async (req, res, next) => {
       new ErrorHandler(`User not found with id: ${req.params.id}`, 404)
     );
   }
+
+  // Email notification for reactivation
+  const emailOptions = {
+    email: user.email,
+    subject: "Account Reactivated",
+    message: "Your account has been reactivated.",
+    html: "<p>Your account has been reactivated.</p>",
+  };
+
+  await sendEmail(emailOptions); // Send email
 
   res.status(200).json({
     success: true,

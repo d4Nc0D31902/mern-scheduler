@@ -253,7 +253,7 @@ const ProcessOrder = () => {
                     >
                       <option value="Processing">Pending</option>
                       <option value="For Pickup">For Pickup</option>
-                      {order.stock > 0 && <option value="Sold">Sold</option>}
+                      <option value="Sold">Sold</option>}
                       <option value="Denied">Denied</option>
                     </select>
                   </div>

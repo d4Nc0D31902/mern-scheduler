@@ -1,6 +1,8 @@
 const Order = require("../models/order");
 const Product = require("../models/product");
+const User = require("../models/user");
 const cloudinary = require("cloudinary");
+const sendEmail = require("../utils/sendEmail");
 
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
@@ -121,6 +123,75 @@ const mongoose = require("mongoose");
 //   }
 // };
 
+// exports.newOrder = async (req, res, next) => {
+//   const {
+//     orderItems,
+//     shippingInfo,
+//     itemsPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paymentInfo,
+//     reference_num,
+//     paymentMeth,
+//     screenShot,
+//   } = req.body;
+
+//   try {
+//     let screenShotLinks = [];
+
+//     if (screenShot && screenShot.length > 0) {
+//       for (let i = 0; i < screenShot.length; i++) {
+//         const result = await cloudinary.uploader.upload(screenShot[i], {
+//           folder: "orders",
+//         });
+
+//         screenShotLinks.push({
+//           public_id: result.public_id,
+//           url: result.secure_url,
+//         });
+//       }
+//     }
+
+//     const order = await Order.create({
+//       orderItems,
+//       shippingInfo,
+//       itemsPrice,
+//       shippingPrice,
+//       totalPrice,
+//       paymentInfo,
+//       screenShot: screenShotLinks,
+//       paidAt: Date.now(),
+//       user: req.user._id,
+//       customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       reference_num,
+//       paymentMeth,
+//       orderStatus: "Pending",
+//       history: [
+//         {
+//           customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//           orderItems,
+//           totalPrice,
+//           orderStatus: "Pending",
+//           paymentMeth,
+//           reference_num,
+//           by: "N/A",
+//           createdAt: Date.now(),
+//         },
+//       ],
+//     });
+
+//     res.status(200).json({
+//       success: true,
+//       order,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
+
 exports.newOrder = async (req, res, next) => {
   const {
     orderItems,
@@ -177,6 +248,42 @@ exports.newOrder = async (req, res, next) => {
         },
       ],
     });
+
+    // Fetch user's email from the User model
+    // const user = await User.findById(req.user._id);
+    // if (!user) {
+    //   return next(new ErrorHandler("User not found", 404));
+    // }
+    // const userEmail = user.email;
+
+    // Construct email notification for new order
+    const emailOptions = {
+      email: req.user.email,
+      subject: "New Order",
+      message:
+        `Your order with reference number ${reference_num} has been successfully placed.\n\n` +
+        `Order Details:\n` +
+        `Items: ${orderItems
+          .map((item) => `${item.name} - ${item.quantity}`)
+          .join("\n")}\n` +
+        `Shipping Info: ${JSON.stringify(shippingInfo)}\n` +
+        `Total Price: ${totalPrice}\n` +
+        `Payment Method: ${paymentMeth}\n`,
+      html:
+        `<p>Your order with reference number ${reference_num} has been successfully placed.</p>` +
+        `<p><strong>Order Details:</strong></p>` +
+        `<p><strong>Items:</strong><br>${orderItems
+          .map((item) => `${item.name} - ${item.quantity}`)
+          .join("<br>")}</p>` +
+        `<p><strong>Shipping Info:</strong><br>${JSON.stringify(
+          shippingInfo
+        )}</p>` +
+        `<p><strong>Total Price:</strong> ${totalPrice}</p>` +
+        `<p><strong>Payment Method:</strong> ${paymentMeth}</p>`,
+    };
+
+    // Send email notification
+    await sendEmail(emailOptions);
 
     res.status(200).json({
       success: true,
@@ -261,6 +368,48 @@ exports.allOrders = async (req, res, next) => {
 //   });
 // };
 
+// exports.updateOrder = async (req, res, next) => {
+//   try {
+//     const order = await Order.findById(req.params.id);
+//     if (!order) {
+//       return next(new ErrorHandler("Order not found", 404));
+//     }
+
+//     // Create history record based on the current order details
+//     const historyRecord = {
+//       customer: order.customer,
+//       orderItems: order.orderItems,
+//       totalPrice: order.totalPrice,
+//       orderStatus: req.body.status,
+//       paymentMeth: order.paymentMeth,
+//       reference_num: order.reference_num,
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       createdAt: order.createdAt,
+//     };
+//     order.orderItems.forEach(async (item) => {
+//       await updateStock(item.product, item.quantity, req.user);
+//     });
+
+//     order.orderStatus = req.body.status;
+//     if (req.body.status === "Sold") {
+//       order.deliveredAt = Date.now();
+//     }
+
+//     // Save the updated order
+//     await order.save();
+
+//     // Add the history record to the order's history array
+//     order.history.push(historyRecord);
+//     await order.save();
+
+//     res.status(200).json({
+//       success: true,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 exports.updateOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -294,6 +443,24 @@ exports.updateOrder = async (req, res, next) => {
     // Add the history record to the order's history array
     order.history.push(historyRecord);
     await order.save();
+
+    // Fetch user's email from the User model
+    const user = await User.findById(order.user);
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+    const userEmail = user.email;
+
+    // Construct email notification for order update
+    const emailOptions = {
+      email: userEmail,
+      subject: "Order Update",
+      message: `Your order with reference number ${order.reference_num} has been updated to ${req.body.status}.`,
+      html: `<p>Your order with reference number ${order.reference_num} has been updated to ${req.body.status}.</p>`,
+    };
+
+    // Send email notification
+    await sendEmail(emailOptions);
 
     res.status(200).json({
       success: true,
