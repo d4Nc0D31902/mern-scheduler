@@ -114,6 +114,12 @@ const orderSchema = mongoose.Schema({
       type: String,
     },
   },
+  screenShot: [
+    {
+      public_id: String,
+      url: String,
+    },
+  ],
   paidAt: {
     type: Date,
   },

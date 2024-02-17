@@ -1,5 +1,6 @@
 const Order = require("../models/order");
 const Product = require("../models/product");
+const cloudinary = require("cloudinary");
 
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
@@ -66,6 +67,60 @@ const mongoose = require("mongoose");
 //   });
 // };
 
+// exports.newOrder = async (req, res, next) => {
+//   const {
+//     orderItems,
+//     shippingInfo,
+//     itemsPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paymentInfo,
+//     reference_num,
+//     paymentMeth,
+//   } = req.body;
+
+//   try {
+//     // Create new order
+//     const order = await Order.create({
+//       orderItems,
+//       shippingInfo,
+//       itemsPrice,
+//       shippingPrice,
+//       totalPrice,
+//       paymentInfo,
+//       paidAt: Date.now(),
+//       user: req.user._id,
+//       customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       reference_num,
+//       paymentMeth,
+//       orderStatus: "Pending",
+//       history: [
+//         {
+//           // Create new history record within the order
+//           customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//           orderItems,
+//           totalPrice,
+//           orderStatus: "Pending",
+//           paymentMeth,
+//           reference_num,
+//           by: "N/A",
+//           createdAt: Date.now(),
+//         },
+//       ],
+//     });
+
+//     res.status(200).json({
+//       success: true,
+//       order,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
+
 exports.newOrder = async (req, res, next) => {
   const {
     orderItems,
@@ -76,10 +131,25 @@ exports.newOrder = async (req, res, next) => {
     paymentInfo,
     reference_num,
     paymentMeth,
+    screenShot,
   } = req.body;
 
   try {
-    // Create new order
+    let screenShotLinks = [];
+
+    if (screenShot && screenShot.length > 0) {
+      for (let i = 0; i < screenShot.length; i++) {
+        const result = await cloudinary.uploader.upload(screenShot[i], {
+          folder: "orders",
+        });
+
+        screenShotLinks.push({
+          public_id: result.public_id,
+          url: result.secure_url,
+        });
+      }
+    }
+
     const order = await Order.create({
       orderItems,
       shippingInfo,
@@ -87,6 +157,7 @@ exports.newOrder = async (req, res, next) => {
       shippingPrice,
       totalPrice,
       paymentInfo,
+      screenShot: screenShotLinks,
       paidAt: Date.now(),
       user: req.user._id,
       customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
@@ -95,7 +166,6 @@ exports.newOrder = async (req, res, next) => {
       orderStatus: "Pending",
       history: [
         {
-          // Create new history record within the order
           customer: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
           orderItems,
           totalPrice,

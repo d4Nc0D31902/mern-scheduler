@@ -181,6 +181,36 @@ const ProcessOrder = () => {
                     <b>Payment Amount:</b> ₱{totalPrice}
                   </p>
 
+                    <p>
+                      <b>Screenshot: </b>
+                    </p>
+                    {order &&
+                    order.screenShot &&
+                    order.screenShot.length > 0 ? (
+                      <Fragment>
+                        {order.screenShot.map((image, index) => (
+                          <div key={index} className="row">
+                            <div className="col-3">
+                              <a
+                                href={image.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <img
+                                  src={image.url}
+                                  alt={`Screenshot ${index + 1}`}
+                                  className="img-fluid"
+                                />
+                              </a>
+                            </div>
+                          </div>
+                        ))}
+                      </Fragment>
+                    ) : (
+                      <p>No screenshots uploaded</p>
+                    )}
+
+
                   <p>
                     <b>Reference #:</b> {reference_num}
                   </p>

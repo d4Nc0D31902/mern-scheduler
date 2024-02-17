@@ -5,6 +5,7 @@ import CheckoutSteps from "./CheckoutSteps";
 
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder, clearErrors } from "../../actions/orderActions";
+import { toast } from "react-toastify";
 import { clearCart } from "../../actions/cartActions";
 
 const Payment = () => {
@@ -17,6 +18,8 @@ const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("Walk-In");
   const [referenceNum, setReferenceNum] = useState(""); // State for Reference #
   const [referenceNumError, setReferenceNumError] = useState(""); // State for Reference # Error
+  const [screenShot, setScreenShot] = useState([]); // State for screenshot images
+  const [screenShotPreview, setScreenShotPreview] = useState([]); // State for preview of screenshot images
 
   useEffect(() => {
     if (error) {
@@ -29,6 +32,7 @@ const Payment = () => {
     shippingInfo,
     paymentMeth: paymentMethod,
     reference_num: referenceNum, // Include reference number in the order object
+    screenShot: screenShot, // Include screenshots in the order object
   };
 
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -48,6 +52,49 @@ const Payment = () => {
     }
   };
 
+  const handleScreenshotChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    setScreenShotPreview([]);
+    setScreenShot([]);
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setScreenShotPreview((oldArray) => [...oldArray, reader.result]);
+          setScreenShot((oldArray) => [...oldArray, reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const errMsg = (message = "") =>
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   document.querySelector("#pay_btn").disabled = true;
+
+  //   // Validate reference number before submitting the form
+  //   if (!validateReferenceNum()) {
+  //     return;
+  //   }
+
+  //   order.paymentInfo = {
+  //     id: "pi_1DpdYh2eZvKYlo2CYIynhU32",
+  //     status: "succeeded",
+  //   };
+  //   dispatch(createOrder(order));
+  //   dispatch(clearCart());
+  //   navigate("/success");
+  // };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     document.querySelector("#pay_btn").disabled = true;
@@ -57,6 +104,13 @@ const Payment = () => {
       return;
     }
 
+    // Validate screenshot if payment method is GCash
+    if (paymentMethod === "GCash" && screenShot.length === 0) {
+      errMsg("Screenshot is required for GCash payment");
+      return;
+    }
+
+    // Continue with order creation
     order.paymentInfo = {
       id: "pi_1DpdYh2eZvKYlo2CYIynhU32",
       status: "succeeded",
@@ -101,22 +155,49 @@ const Payment = () => {
               </div>
               {paymentMethod === "GCash" && (
                 <Fragment>
-                  <img
-                    src="/images/qr.png"
-                    alt="Schedule Icon"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      marginBottom: "10px",
-                    }}
-                  />
-                  <p>
-                    <b>
-                      *REMINDER! TAKE A SCREENSHOT OF YOUR REFERENCE #. NO
-                      SCREENSHOT, NO TRANSACTION.*
-                    </b>
-                  </p>
+                  <div style={{ textAlign: "center" }}>
+                    <img
+                      src="/images/qr.png"
+                      alt="GCash QR Code"
+                      style={{
+                        width: "50%",
+                        height: "auto",
+                        marginBottom: "10px",
+                        display: "block", // Ensures the image is centered horizontally
+                        marginLeft: "auto", // Centers the image horizontally
+                        marginRight: "auto", // Centers the image horizontally
+                      }}
+                    />
+                  </div>
+                  <label className="form-label mt-3">Upload Screenshot</label>
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="screenshot"
+                      className="custom-file-input"
+                      id="customFile"
+                      onChange={handleScreenshotChange}
+                      multiple
+                    />
+                    <label className="custom-file-label" htmlFor="customFile">
+                      Upload
+                    </label>
+                  </div>
+                  {screenShotPreview.map((img) => (
+                    <img
+                      src={img}
+                      key={img}
+                      alt="Screenshot Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
+                  ))}
                 </Fragment>
+              )}
+
+              {paymentMethod === "GCash" && referenceNumError && (
+                <div className="invalid-feedback">{referenceNumError}</div>
               )}
             </div>
 
