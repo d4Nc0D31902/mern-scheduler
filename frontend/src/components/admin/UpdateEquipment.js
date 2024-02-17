@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Sidebar from "../admin/Sidebar";
 import {
   updateEquipment,
   getEquipmentDetails,
@@ -136,7 +137,11 @@ const UpdateEquipment = () => {
     <Fragment>
       <MetaData title={"Update Equipment"} />
       <div className="container">
+
         <div className="row">
+          <div className="col-12 col-md-2">
+            <Sidebar />
+          </div>
           <div className="col-12 col-md-8 m-auto">
             <Fragment>
               <div className="wrapper my-5">

@@ -82,38 +82,53 @@ const Home = () => {
       ) : (
         <Fragment>
           <MetaData title={"Schedule Now!"} />
-          <h1 id="products_heading">Latest Products</h1>
-          <section id="products" className="container mt-5">
+          {/* <div className="text-center" style={{ marginTop: "50px" }}><h6
+            className="card-title"
+            style={{
+              fontFamily: "sans-serif",
+              textAlign: "center",
+              marginBottom: "10px",
+              margin: "20px",
+              backgroundColor: "maroon",
+              color: "white",
+              padding: "20px",
+            }}
+          >
+            <img
+              src="/images/tupt_logo.png"
+              style={{
+                width: "100px",
+                height: "100px",
+                marginRight: "25px",
+              }}
+              alt="Logo"
+            />
+            TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES TAGUIG CITY
+            <p style={{ fontSize: "12px", marginTop: "14px" }}>
+              The Technological University of the Philippines shall be premier
+              state university with recognized excellence in engineering and
+              technology education at per with the leading university in the ASEAN
+              region.
+            </p>
+            <h4
+              className="my-4 text-center"
+              style={{ textDecoration: "underline" }}
+            >
+              MERCHANDISE
+            </h4>
+          </h6></div> */}
+
+          <section id="products" className="container ">
             <div className="row">
               <div className="col-6 col-md-3 mt-5 mb-5">
-                <div className="px-5">
-                  <Range
-                    marks={{
-                      1: `₱1`,
-                      1000: `₱1000`,
-                    }}
-                    min={1}
-                    max={1000}
-                    defaultValue={[1, 1000]}
-                    tipFormatter={(value) => `$${value}`}
-                    tipProps={{
-                      placement: "top",
-                      visible: true,
-                    }}
-                    value={price}
-                    onChange={(price) => setPrice(price)}
-                  />
-                  <hr className="my-5" />
-                  <div className="mt-5">
-                    <h4 className="mb-3">Categories</h4>
-                    <ul className="pl-0">
+                <div className="px-4">
+                  <div className="merch-card p-4">
+                    <h4 className="merch-title mb-3">MERCHANDISE CATEGORIES</h4>
+                    <ul className="merch-list pl-0">
                       {categories.map((categoryItem) => (
                         <li
-                          style={{
-                            cursor: "pointer",
-                            listStyleType: "none",
-                          }}
                           key={categoryItem._id}
+                          className="merch-item"
                           onClick={() => handleCategoryClick(categoryItem.name)}
                         >
                           {categoryItem.name}
@@ -121,39 +136,47 @@ const Home = () => {
                       ))}
                     </ul>
                   </div>
+                  <div className="merch-logo d-flex justify-content-center align-items-center mt-4">
+                    <img
+                      src="/images/tupt_logo.png"
+                      className="img-fluid"
+                      style={{ width: "150px", height: "150px" }}
+                      alt="Logo"
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="col-6 col-md-9">
                 <div className="row">
                   {products
-                    // .filter(
-                    //   (product) =>
-                    //     product.stock > 0 && product.status !== "Out of Stock"
-                    // )
+
                     .map((product) => (
-                      <Product key={product._id} product={product} col={4} />
+                      <Product key={product._id} product={product} col={2} />
                     ))}
                 </div>
+                {resPerPage <= count && (
+                  <div className="d-flex justify-content-center mt-5">
+                    <Pagination
+                      activePage={currentPage}
+                      itemsCountPerPage={resPerPage}
+                      totalItemsCount={productsCount}
+                      onChange={setCurrentPageNo}
+                      nextPageText={"Next"}
+                      prevPageText={"Prev"}
+                      firstPageText={"First"}
+                      lastPageText={"Last"}
+                      itemClass="page-item"
+                      linkClass="page-link"
+                    />
+                  </div>
+                )}
               </div>
+
             </div>
+
           </section>
-          {resPerPage <= count && (
-            <div className="d-flex justify-content-center mt-5">
-              <Pagination
-                activePage={currentPage}
-                itemsCountPerPage={resPerPage}
-                totalItemsCount={productsCount}
-                onChange={setCurrentPageNo}
-                nextPageText={"Next"}
-                prevPageText={"Prev"}
-                firstPageText={"First"}
-                lastPageText={"Last"}
-                itemClass="page-item"
-                linkClass="page-link"
-              />
-            </div>
-          )}
+
         </Fragment>
       )}
     </Fragment>

@@ -21,8 +21,8 @@ const PrintableLetter = ({ appointment }) => {
 
   return (
     <div className="center-div" style={{ marginBottom: "150px" }}>
-      <div className="wrapper my-8 col-6 ">
-        <div className="letter shadow-lg">
+      <div className="wrapper my-12 col-12  " style={{ borderStyle: "solid", borderColor: "black", borderWidth: "4px" }}>
+        <div className="letter ">
           <h6
             className="card-title"
             style={{

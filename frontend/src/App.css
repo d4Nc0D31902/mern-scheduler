@@ -8,6 +8,12 @@ body {
   overflow-x: hidden;
 }
 
+@media print {
+  .print-button {
+    display: none !important;
+  }
+}
+
 /* Equipment Container */
 .container {
   margin: 30px auto;
@@ -105,6 +111,39 @@ nav {
   color: black;
   font-weight: bold;
   font-size: 0.9rem;
+}
+.merch-card {
+  background-color: maroon;
+  border-radius: 10px;
+  color: white;
+}
+
+.merch-title {
+  font-size: 1.25rem;
+}
+
+.merch-list {
+  margin-bottom: 0;
+}
+
+.merch-item {
+  cursor: pointer;
+  list-style-type: none;
+  padding: 5px 0;
+}
+
+.merch-item:hover {
+  text-decoration: underline;
+}
+
+.merch-logo img {
+  width: 100px;
+  height: 100px;
+}
+
+.merch li:hover {
+  cursor: pointer;
+  background-color: gray;
 }
 
 /* Home page */

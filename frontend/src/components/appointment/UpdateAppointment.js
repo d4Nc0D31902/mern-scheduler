@@ -144,7 +144,11 @@ const UpdateAppointment = () => {
         <div className="col-12 col-md-10">
           <div className="wrapper my-5">
             <form className="shadow-lg" onSubmit={submitHandler}>
-              <h1 className="mb-4">Update Schedules</h1>
+              <h3 className="card-title" style={{ fontFamily: "sans-serif", textAlign: "center", marginBottom: "10px", margin: "20px" }}>
+                <img src="/images/tupt_logo.png" style={{ width: "100px", height: "100px", marginRight: "25px" }} alt="Logo" />
+                TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES
+              </h3>
+              <h1 className="mb-4  text-center" style={{ backgroundColor: "maroon", padding: "20px", borderRadius: "20px", color: "white" }}>Update Schedules</h1>
 
               <div className="form-group">
                 <label htmlFor="title_field">Title</label>

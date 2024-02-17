@@ -2,39 +2,43 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Product = ({ product }) => {
-  // Check if the product status is "inactive"
+
   if (product.status === "inactive") {
-    return null; // Don't render the product if it's inactive
+    return null;
   }
 
   return (
-    <div className="col-sm-12 col-md-6 col-lg-3 my-3">
-      <div className="card p-3 rounded">
-        {product.images && product.images.length > 0 && (
+    <div className="col-sm-12 col-md-2 col-lg-4 mb-4">
+      <div className="card h-100 border-0 shadow-lg" style={{}}>
+        <Link to={`/product/${product._id}`}>
           <img
-            className="card-img-top mx-auto img-fluid"
-            src={product.images[0].url}
+            className="card-img-top"
+            src={product.images && product.images.length > 0 ? product.images[0].url : "placeholder.jpg"}
             alt={product.name}
           />
-        )}
-        <div className="card-body d-flex flex-column">
-          <h5 className="card-title">
-            <a href="">{product.name}</a>
+        </Link>
+        <div className="card-body">
+          <h5 className="card-title mb-2">
+            <Link to={`/product/${product._id}`} className="text-decoration-none text-dark">
+              {product.name}
+            </Link>
           </h5>
-          <div className="ratings mt-auto">
-            <div className="rating-outer">
-              <div
-                className="rating-inner"
-                style={{ width: `${(product.ratings / 5) * 100}%` }}
-              ></div>
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="ratings">
+              <div className="rating-outer">
+                <div
+                  className="rating-inner"
+                  style={{ width: `${(product.ratings / 5) * 100}%` }}
+                ></div>
+              </div>
+              <span className="text-muted ms-1">({product.numOfReviews} reviews)</span>
             </div>
-            <span id="no_of_reviews">({product.numOfReviews} reviews)</span>
+            <h6 className="mb-0">₱{product.price}</h6>
           </div>
-          <p className="card-text">₱{product.price}</p>
           <Link
             to={`/product/${product._id}`}
-            id="view_btn"
-            className="btn btn-block"
+            className="btn btn-primary mt-3 btn-sm d-block w-100"
+            style={{ backgroundColor: "maroon" }}
           >
             View Details
           </Link>

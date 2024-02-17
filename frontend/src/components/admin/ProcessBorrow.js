@@ -219,6 +219,7 @@ const BorrowDetails = () => {
                       <select
                         value={issue}
                         onChange={(e) => setIssue(e.target.value)}
+                        className="form-control"
                       >
                         <option value="N/A">N/A</option>
                         <option value="Damage">Damage</option>
@@ -250,6 +251,7 @@ const BorrowDetails = () => {
                       style={{ display: "inline-block" }}
                     >
                       <select
+                        className="form-control"
                         value={reasonStatus}
                         onChange={(e) => setReasonStatus(e.target.value)}
                       >
@@ -269,14 +271,14 @@ const BorrowDetails = () => {
                     </div>
                   </div>
                   <hr />
-                  <h5
+                  {/* <h5
                     className="my-4 text-center"
                     style={{ marginBottom: "200px", backgroundColor: "maroon", color: "white", padding: "20px 40px" }}
                   >
                     The update status button allows the admin to swiftly approve or deny requests,
                     ensuring efficient management of changes. By selecting either "approve" or "deny,"
                     the admin can promptly communicate the decision regarding the update's status.
-                  </h5>
+                  </h5> */}
                   {/* <div className="form-group" style={{ marginBottom: "" }}>
                     <select
                       className="form-control"

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 
 import Loader from "../layout/Loader";
+import "../../App.css";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -44,6 +45,11 @@ const OrderDetails = () => {
 
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
+
+  const handlePrintCalendar = () => {
+    window.print();
+  };
+
 
   return (
     <Fragment>
@@ -141,7 +147,7 @@ const OrderDetails = () => {
                 <b
                   className={
                     order.orderStatus &&
-                    String(order.orderStatus).includes("Delivered")
+                      String(order.orderStatus).includes("Delivered")
                       ? "greenColor"
                       : "redColor"
                   }
@@ -149,6 +155,18 @@ const OrderDetails = () => {
                   {orderStatus}
                 </b>
               </p>
+              <button
+                className="btn btn-primary text-center print-button"
+                onClick={handlePrintCalendar}
+                style={{
+                  backgroundColor: "maroon",
+                  marginRight: "20px",
+                  padding: "10px 35px",
+                  marginBottom: "200px",
+                }}
+              >
+                Print Receipt
+              </button>
             </div>
           </div>
 

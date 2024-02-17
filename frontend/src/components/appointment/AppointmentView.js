@@ -84,8 +84,8 @@ const AppointmentView = () => {
       <MetaData title={"Appointment View"} />
       <div className=" row">
         <div className="wrapper my-4 text-center hide-on-print">
-          <div className="shadow-lg" ref={componentRef}>
-            <h6
+          <div className="" ref={componentRef}>
+            <h3
               className="card-title"
               style={{
                 fontFamily: "sans-serif",
@@ -107,7 +107,7 @@ const AppointmentView = () => {
                 alt="Logo"
               />
               TECHNOLOGICAL UNIVERSITY OF THE PHILIPPINES TAGUIG CITY
-              <p style={{ fontSize: "12px", marginTop: "14px" }}>
+              <p style={{ fontSize: "18px", marginTop: "14px" }}>
                 The Technological University of the Philippines shall be premier
                 state university with recognized excellence in engineering and
                 technology education at per with the leading university in the
@@ -119,45 +119,63 @@ const AppointmentView = () => {
               >
                 Schedule Permit
               </h4>
-            </h6>
-
-            <div className="form-group text-center">
-              <label htmlFor="attendees_field">Attendees</label>
-              <ul className="attendees-list">
-                {attendees.map((attendee, index) => (
-                  <li key={index}>{attendee}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="form-group text-center">
-              <label htmlFor="title_field">Title</label>
-              <p className="form-control">{title}</p>
-            </div>
-
+            </h3>
             <div className="form-group">
-              <label htmlFor="body_field">Description</label>
-              <p className="form-control">{description}</p>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="location_field">Location</label>
-              <p className="form-control">{location}</p>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="timeStart_field">Start Time</label>
-              <p className="form-control">{timeStart}</p>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="timeEnd_field">End Time</label>
-              <p className="form-control">{timeEnd}</p>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="status_field">Status</label>
-              <p className="form-control">{status}</p>
+              <div className="letter-info">
+                <h3>{title}</h3>
+                <p style={{ fontSize: "12px" }}>{description}</p>
+                <div className="attendees">
+                  <h5>ATTENDEES:</h5>
+                  <ul className="attendees-list">
+                    {attendees.map((attendee, index) => (
+                      <li key={index}>{attendee}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="location-time">
+                  <div className="location">
+                    <h5>LOCATION:</h5>
+                    <p>{location}</p>
+                  </div>
+                  <div className="time">
+                    <h5>TIME:</h5>
+                    <p>
+                      <span>
+                        Time Start:{" "}
+                        {new Date(timeStart).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}{" "}
+                        {new Date(timeStart).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </span>{" "}
+                      <br />{" "}
+                      <span>
+                        {" "}
+                        Time End:{" "}
+                        {new Date(timeEnd).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}{" "}
+                        {new Date(timeEnd).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div className="status">
+                  <h4>Status:</h4>
+                  <p>{status}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -186,7 +204,9 @@ const AppointmentView = () => {
 
       {/* Render PrintableLetter only if appointment exists and timeStart is valid */}
       {appointment && appointment.timeStart && (
-        <PrintableLetter appointment={appointment} />
+        <div className="print-only">
+          <PrintableLetter appointment={appointment} />
+        </div>
       )}
     </Fragment>
   );

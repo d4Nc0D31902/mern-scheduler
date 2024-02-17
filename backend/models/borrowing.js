@@ -92,7 +92,6 @@ const borrowingSchema = mongoose.Schema({
   },
   issue: {
     type: String,
-    required: true,
     enum: {
       values: [
         "N/A",
