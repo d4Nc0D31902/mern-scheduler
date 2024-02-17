@@ -437,6 +437,80 @@ exports.allBorrowings = async (req, res, next) => {
 //   }
 // };
 
+// exports.updateBorrowing = async (req, res, next) => {
+//   try {
+//     const borrowing = await Borrowing.findById(req.params.id);
+//     if (!borrowing) {
+//       return next(new ErrorHandler("Borrowing not found", 404));
+//     }
+
+//     const equipmentHistory = [];
+
+//     for (const item of borrowing.borrowItems) {
+//       const equipment = await Equipment.findById(item.equipment);
+//       if (!equipment) {
+//         return next(new ErrorHandler("Equipment not found", 404));
+//       }
+
+//       const itemHistory = {
+//         name: item.name,
+//         quantity: item.quantity,
+//         status: req.body.status,
+//         by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//       };
+
+//       equipment.stockHistory.push(itemHistory);
+
+//       if (req.body.status === "Borrowed") {
+//         equipment.stock -= item.quantity;
+//       } else if (req.body.status === "Returned") {
+//         equipment.stock += item.quantity;
+//       }
+
+//       await equipment.save();
+//     }
+
+//     const historyObj = {
+//       user: borrowing.user,
+//       borrowItems: borrowing.borrowItems,
+//       date_borrow: borrowing.borrowingInfo.date_borrow,
+//       date_return: req.body.status === "Returned" ? Date.now() : null,
+//       status: req.body.status,
+//       by: `${req.user.name} - ${req.user.department}, ${req.user.course}, ${req.user.year}`,
+//     };
+
+//     borrowing.history.push(historyObj);
+
+//     borrowing.status = req.body.status;
+//     borrowing.date_return = req.body.status === "Returned" ? Date.now() : null;
+//     borrowing.reason_status = req.body.reason_status || "N/A";
+//     borrowing.issue = req.body.issue || "N/A";
+
+//     await borrowing.save();
+
+//     // Fetch user's email from the User model using borrowing.userId
+//     const user = await User.findById(borrowing.userId);
+//     if (!user) {
+//       return next(new ErrorHandler("User not found", 404));
+//     }
+
+//     // Construct email notification for borrowing update
+//     const emailOptions = {
+//       email: user.email,
+//       subject: "Borrowing of Equipment Update",
+//       message: `Your borrowing has been updated.`,
+//       html: `<p>Your borrowing has been updated.</p>`,
+//     };
+
+//     // Send email notification
+//     await sendEmail(emailOptions);
+
+//     res.status(200).json({ success: true });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 exports.updateBorrowing = async (req, res, next) => {
   try {
     const borrowing = await Borrowing.findById(req.params.id);
@@ -492,6 +566,12 @@ exports.updateBorrowing = async (req, res, next) => {
     const user = await User.findById(borrowing.userId);
     if (!user) {
       return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Update user's penalty based on reason_status
+    if (req.body.reason_status !== "N/A") {
+      user.penalty += 1;
+      await user.save();
     }
 
     // Construct email notification for borrowing update
