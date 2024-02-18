@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.get("/", (req, res) => {
-  res.send("Server Online");
+  res.send("Server Online and Ready to Go");
 });
 
 const PORT = process.env.PORT || 3000;
