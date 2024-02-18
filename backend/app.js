@@ -16,6 +16,7 @@ const order = require("./routes/order");
 const errorMiddleware = require("./middlewares/errors");
 
 app.use(express.json({ limit: "100mb" }));
+
 app.use(
   cors({
     origin: [
@@ -25,6 +26,18 @@ app.use(
     credentials: true,
   })
 );
+
+// Custom middleware to set CORS headers
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // or set it to the specific origin
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+  next();
+});
+
 app.use(cookieParser());
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 
@@ -41,4 +54,5 @@ app.use("/api/v1", categories);
 app.use("/api/v1", borrows);
 
 app.use(errorMiddleware);
+
 module.exports = app;
