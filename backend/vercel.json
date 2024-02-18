@@ -9,11 +9,14 @@
   "routes": [
     {
       "src": "/api/v1/me",
-      "dest": "/app.js" 
+      "dest": "/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/server.js"
+      "dest": "/server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://mern-scheduler-frontend.vercel.app"
+      }
     }
   ]
 }
