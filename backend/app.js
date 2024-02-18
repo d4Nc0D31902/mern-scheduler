@@ -21,6 +21,7 @@ app.use(
     origin: [
       "https://mern-scheduler-frontend.vercel.app",
       "http://localhost:3000",
+      "https://mern-scheduler-frontend-c6tkoe79g.vercel.app", // Add the specific origin causing the CORS error
     ],
     credentials: true,
   })
