@@ -1,3 +1,4 @@
+// Import necessary modules
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -15,6 +16,7 @@ const auth = require("./routes/auth");
 const order = require("./routes/order");
 const errorMiddleware = require("./middlewares/errors");
 
+// Middleware setup
 app.use(express.json({ limit: "100mb" }));
 app.use(
   cors({
@@ -28,6 +30,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 
+// Route setup
 app.use("/api/v1", products);
 app.use("/api/v1", auth);
 app.use("/api/v1", order);
@@ -40,5 +43,24 @@ app.use("/api/v1", sports);
 app.use("/api/v1", categories);
 app.use("/api/v1", borrows);
 
+// Route to handle /api/v1/me and add CORS headers
+app.get("/api/v1/me", (req, res, next) => {
+  // Add CORS headers for this route
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://mern-scheduler-frontend.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  // Proceed to next middleware
+  next();
+});
+
+// Error middleware
 app.use(errorMiddleware);
+
 module.exports = app;
