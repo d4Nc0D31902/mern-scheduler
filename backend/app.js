@@ -27,15 +27,20 @@ app.use(
   })
 );
 
-// Custom middleware to set CORS headers
+// Custom middleware to ensure CORS headers are included in all responses
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // or set it to the specific origin
+  res.header("Access-Control-Allow-Origin", "*"); // You can replace * with the specific origin if needed
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization, Content-Length, X-Requested-With"
   );
-  next();
+  // Ensure browser preflight requests (OPTIONS) are handled properly
+  if (req.method === "OPTIONS") {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
 app.use(cookieParser());
