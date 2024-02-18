@@ -22,7 +22,7 @@ app.use(
   //   credentials: true,
   // })
   cors({
-    origin: "https://mern-scheduler-frontend.vercel.app/",
+    origin: ["https://mern-scheduler-frontend.vercel.app"],
     credentials: true,
   })
 );
