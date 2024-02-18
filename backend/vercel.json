@@ -8,47 +8,47 @@
   ],
   "routes": [
     {
-      "src": "/api/announcement",
+      "src": "/api/v1/announcement",
       "dest": "backend/routes/announcement.js"
     },
     {
-      "src": "/api/appointment",
+      "src": "/api/v1/appointment",
       "dest": "backend/routes/appointment.js"
     },
     {
-      "src": "/api/auth",
+      "src": "/api/v1/auth",
       "dest": "backend/routes/auth.js"
     },
     {
-      "src": "/api/borrow",
+      "src": "/api/v1/borrow",
       "dest": "backend/routes/borrow.js"
     },
     {
-      "src": "/api/category",
+      "src": "/api/v1/category",
       "dest": "backend/routes/category.js"
     },
     {
-      "src": "/api/equipment",
+      "src": "/api/v1/equipment",
       "dest": "backend/routes/equipment.js"
     },
     {
-      "src": "/api/location",
+      "src": "/api/v1/location",
       "dest": "backend/routes/location.js"
     },
     {
-      "src": "/api/order",
+      "src": "/api/v1/order",
       "dest": "backend/routes/order.js"
     },
     {
-      "src": "/api/product",
+      "src": "/api/v1/product",
       "dest": "backend/routes/product.js"
     },
     {
-      "src": "/api/settings",
+      "src": "/api/v1/settings",
       "dest": "backend/routes/settings.js"
     },
     {
-      "src": "/api/sport",
+      "src": "/api/v1/sport",
       "dest": "backend/routes/sport.js"
     },
     {
