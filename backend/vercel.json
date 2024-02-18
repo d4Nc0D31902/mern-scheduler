@@ -8,6 +8,50 @@
   ],
   "routes": [
     {
+      "src": "/api/announcement",
+      "dest": "backend/routes/announcement.js"
+    },
+    {
+      "src": "/api/appointment",
+      "dest": "backend/routes/appointment.js"
+    },
+    {
+      "src": "/api/auth",
+      "dest": "backend/routes/auth.js"
+    },
+    {
+      "src": "/api/borrow",
+      "dest": "backend/routes/borrow.js"
+    },
+    {
+      "src": "/api/category",
+      "dest": "backend/routes/category.js"
+    },
+    {
+      "src": "/api/equipment",
+      "dest": "backend/routes/equipment.js"
+    },
+    {
+      "src": "/api/location",
+      "dest": "backend/routes/location.js"
+    },
+    {
+      "src": "/api/order",
+      "dest": "backend/routes/order.js"
+    },
+    {
+      "src": "/api/product",
+      "dest": "backend/routes/product.js"
+    },
+    {
+      "src": "/api/settings",
+      "dest": "backend/routes/settings.js"
+    },
+    {
+      "src": "/api/sport",
+      "dest": "backend/routes/sport.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "server.js"
     }
