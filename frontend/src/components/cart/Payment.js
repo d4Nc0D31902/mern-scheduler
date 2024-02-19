@@ -142,9 +142,9 @@ const Payment = () => {
                         width: "50%",
                         height: "auto",
                         marginBottom: "10px",
-                        display: "block", // Ensures the image is centered horizontally
-                        marginLeft: "auto", // Centers the image horizontally
-                        marginRight: "auto", // Centers the image horizontally
+                        display: "block", 
+                        marginLeft: "auto", 
+                        marginRight: "auto",
                       }}
                     />
                   </div>

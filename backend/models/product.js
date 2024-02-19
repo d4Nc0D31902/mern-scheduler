@@ -68,7 +68,7 @@ const productSchema = new mongoose.Schema({
     maxLength: [5, "Product name cannot exceed 5 characters"],
     default: 0,
   },
-  stockHistory: [stockHistorySchema], // Adding stock history array
+  stockHistory: [stockHistorySchema], 
   numOfReviews: {
     type: Number,
     default: 0,
