@@ -89,7 +89,7 @@ exports.forgotPassword = async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: "ShopIT Password Recovery",
+      subject: "TUP-T Scheduler Password Recovery",
       message,
       html,
     });
