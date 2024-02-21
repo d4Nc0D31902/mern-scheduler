@@ -59,14 +59,14 @@ const PrintableLetter = ({ appointment }) => {
             </h4>
           </h6>
           <div className=" " style={{ padding: "40px" }}>
-            <p>Date: {formatDate(appointment.timeStart)}</p>
-            <p>Dear (Department Head),</p>
+            <p>Date: (INPUT DATE)</p>
+            <p>Dear (DEPARTMENT HEAD),</p>
             <p>
               We are writing to inform you about your upcoming appointment
-              titled {appointment.title} scheduled on{" "}
-              {formatDate(appointment.timeStart)} at{" "}
-              {formatTime(appointment.timeStart)}. That will also be player or
-              will occur on {appointment.location}
+              titled (INPUT TITLE HERE) scheduled on{" "}
+              (INPUT TIME START) at{" "}
+              (INPUT TIME END). That will also be player or
+              will occur on (INPUT LOCATION)
             </p>
             {/* <p>Location: {appointment.location}</p> */}
             <p>
@@ -75,6 +75,8 @@ const PrintableLetter = ({ appointment }) => {
             </p>
             <p>Best regards,</p>
             <p>(Your Organization/Name)</p>
+
+            <p>(SECTION HEAD)</p>
           </div>
         </div>
       </div>

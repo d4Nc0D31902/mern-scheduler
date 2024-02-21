@@ -322,6 +322,35 @@ const UpdateAppointment = () => {
                 </select>
               </div>
 
+              <p>
+                <b>Waiver & Letter: </b>
+              </p>
+              {appointment &&
+              appointment.screenShot &&
+              appointment.screenShot.length > 0 ? (
+                <Fragment>
+                  {appointment.screenShot.map((image, index) => (
+                    <div key={index} className="row">
+                      <div className="col-3">
+                        <a
+                          href={image.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={image.url}
+                            alt={`Screenshot ${index + 1}`}
+                            className="img-fluid"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </Fragment>
+              ) : (
+                <p>No screenshots uploaded</p>
+              )}
+
               <div className="form-group">
                 <label htmlFor="key_field">Key ID:</label>
                 <div className="input-group">
